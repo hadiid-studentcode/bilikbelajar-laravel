@@ -12,4 +12,13 @@ class jawabanEvaluasi extends Model
 
     protected $table = 'jawaban_evaluasis';
     protected $guarded = ['id'];
+
+    public function evaluasi()
+    {
+        return $this->belongsTo(Evaluasi::class);
+    }
+    public function siswa()
+    {
+        return $this->belongsTo(Siswa::class);
+    }
 }

@@ -11,4 +11,9 @@ class Materi extends Model
     use HasFactory;
     protected $table = 'materis';
     protected $guarded = ['id'];
+
+    public function guru()
+    {
+        return $this->belongsTo(Guru::class);
+    }
 }

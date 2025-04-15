@@ -11,4 +11,9 @@ class Evaluasi extends Model
     use HasFactory;
     protected $table = 'evaluasis';
     protected $guarded = ['id'];
+    
+    public function materi()
+    {
+        return $this->belongsTo(Materi::class);
+    }
 }
