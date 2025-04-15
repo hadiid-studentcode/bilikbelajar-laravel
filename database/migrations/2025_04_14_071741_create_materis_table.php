@@ -15,8 +15,9 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->foreignId('guru_id')->references('id')->on('gurus')->onDelete('cascade')->onUpdate('cascade');
             $table->string('nama');
-            $table->text('deskripsi');
+            $table->text('deskripsi')->nullable();
             $table->string('file')->nullable();
+            $table->string('video')->nullable();
             $table->timestamps();
         });
     }
