@@ -11,7 +11,12 @@ class CapaianTujuanPembelajaranController extends Controller
 {
   public function index()
   {
-    return view('guru.cp_tp.index');
+    $capaian = capaianPembelajaran::first();
+    $tujuan = tujuanPembelajaran::first();
+
+
+
+    return view('guru.cp_tp.index', compact('capaian', 'tujuan'));
   }
 
   public function store(Request $request)
@@ -35,6 +40,20 @@ class CapaianTujuanPembelajaranController extends Controller
       return back()->with('success', 'Berhasil menambahkan capaian tujuan pembelajaran');
     } catch (\Throwable $th) {
       return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
+    }
+  }
+  public function destroy($cp, $tp)
+  {
+    try {
+      $capaian = capaianPembelajaran::findOrFail($cp);
+      $tujuan = tujuanPembelajaran::findOrFail($tp);
+
+      $capaian->delete();
+      $tujuan->delete();
+
+      return back()->with('success', 'Berhasil menghapus capaian tujuan pembelajaran');
+    } catch (\Throwable $th) {
+      return back()->with('error', 'Gagal menghapus capaian tujuan pembelajaran');
     }
   }
 }
