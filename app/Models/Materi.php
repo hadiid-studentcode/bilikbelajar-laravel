@@ -9,7 +9,9 @@ class Materi extends Model
 {
     /** @use HasFactory<\Database\Factories\MateriFactory> */
     use HasFactory;
+
     protected $table = 'materis';
+
     protected $guarded = ['id'];
 
     public function guru()

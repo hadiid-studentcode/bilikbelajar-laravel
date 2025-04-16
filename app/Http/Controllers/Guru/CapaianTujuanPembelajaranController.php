@@ -9,51 +9,48 @@ use Illuminate\Http\Request;
 
 class CapaianTujuanPembelajaranController extends Controller
 {
-  public function index()
-  {
-    $capaian = capaianPembelajaran::first();
-    $tujuan = tujuanPembelajaran::first();
+    public function index()
+    {
+        $capaian = capaianPembelajaran::first();
+        $tujuan = tujuanPembelajaran::first();
 
-
-
-    return view('guru.cp_tp.index', compact('capaian', 'tujuan'));
-  }
-
-  public function store(Request $request)
-  {
-
-
-    try {
-      $request->validate([
-        'tp' => 'required',
-        'cp' => 'required',
-
-      ]);
-
-      tujuanPembelajaran::create([
-        'dekripsi' => $request->tp,
-      ]);
-      capaianPembelajaran::create([
-        'dekripsi' => $request->cp,
-      ]);
-
-      return back()->with('success', 'Berhasil menambahkan capaian tujuan pembelajaran');
-    } catch (\Throwable $th) {
-      return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
+        return view('guru.cp_tp.index', compact('capaian', 'tujuan'));
     }
-  }
-  public function destroy($cp, $tp)
-  {
-    try {
-      $capaian = capaianPembelajaran::findOrFail($cp);
-      $tujuan = tujuanPembelajaran::findOrFail($tp);
 
-      $capaian->delete();
-      $tujuan->delete();
+    public function store(Request $request)
+    {
+        try {
+            $request->validate([
+                'tp' => 'required',
+                'cp' => 'required',
 
-      return back()->with('success', 'Berhasil menghapus capaian tujuan pembelajaran');
-    } catch (\Throwable $th) {
-      return back()->with('error', 'Gagal menghapus capaian tujuan pembelajaran');
+            ]);
+
+            tujuanPembelajaran::create([
+                'dekripsi' => $request->tp,
+            ]);
+            capaianPembelajaran::create([
+                'dekripsi' => $request->cp,
+            ]);
+
+            return back()->with('success', 'Berhasil menambahkan capaian tujuan pembelajaran');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
+        }
     }
-  }
+
+    public function destroy($cp, $tp)
+    {
+        try {
+            $capaian = capaianPembelajaran::findOrFail($cp);
+            $tujuan = tujuanPembelajaran::findOrFail($tp);
+
+            $capaian->delete();
+            $tujuan->delete();
+
+            return back()->with('success', 'Berhasil menghapus capaian tujuan pembelajaran');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal menghapus capaian tujuan pembelajaran');
+        }
+    }
 }

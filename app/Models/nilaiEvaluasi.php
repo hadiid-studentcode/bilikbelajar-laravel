@@ -11,12 +11,14 @@ class nilaiEvaluasi extends Model
     use HasFactory;
 
     protected $table = 'nilai_evaluasis';
+
     protected $guarded = ['id'];
 
     public function materi()
     {
         return $this->belongsTo(Materi::class);
     }
+
     public function siswa()
     {
         return $this->belongsTo(Siswa::class);

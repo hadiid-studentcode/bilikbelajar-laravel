@@ -9,7 +9,9 @@ class Guru extends Model
 {
     /** @use HasFactory<\Database\Factories\GuruFactory> */
     use HasFactory;
+
     protected $table = 'gurus';
+
     protected $guarded = ['id'];
 
     public function user()

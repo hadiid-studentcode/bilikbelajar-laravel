@@ -9,6 +9,8 @@ class capaianPembelajaran extends Model
 {
     /** @use HasFactory<\Database\Factories\CapaianPembelajaranFactory> */
     use HasFactory;
+
     protected $guarded = ['id'];
+
     protected $table = 'capaian_pembelajarans';
 }

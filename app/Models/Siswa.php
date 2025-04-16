@@ -9,6 +9,8 @@ class Siswa extends Model
 {
     /** @use HasFactory<\Database\Factories\SiswaFactory> */
     use HasFactory;
+
     protected $table = 'siswas';
+
     protected $guarded = ['id'];
 }

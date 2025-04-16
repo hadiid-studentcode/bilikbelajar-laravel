@@ -9,6 +9,8 @@ class tujuanPembelajaran extends Model
 {
     /** @use HasFactory<\Database\Factories\TujuanPembelajaranFactory> */
     use HasFactory;
+
     protected $table = 'tujuan_pembelajarans';
+
     protected $guarded = ['id'];
 }

@@ -9,7 +9,9 @@ class Kuis extends Model
 {
     /** @use HasFactory<\Database\Factories\KuisFactory> */
     use HasFactory;
+
     protected $table = 'kuis';
+
     protected $guarded = ['id'];
 
     public function materi()
