@@ -39,6 +39,30 @@ class CapaianTujuanPembelajaranController extends Controller
         }
     }
 
+    public function update(Request $request, $capaian, $tujuan)
+    {
+        try {
+            $request->validate([
+                'tp' => 'required',
+                'cp' => 'required',
+            ]);
+
+            $capaian = capaianPembelajaran::findOrFail($capaian);
+            $tujuan = tujuanPembelajaran::findOrFail($tujuan);
+
+            $capaian->update([
+                'dekripsi' => $request->cp,
+            ]);
+            $tujuan->update([
+                'dekripsi' => $request->tp,
+            ]);
+
+            return back()->with('success', 'Berhasil mengubah capaian tujuan pembelajaran');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal mengubah capaian tujuan pembelajaran');
+        }
+    }
+
     public function destroy($cp, $tp)
     {
         try {

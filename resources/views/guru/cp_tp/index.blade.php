@@ -19,8 +19,10 @@
 
 
     @if ($capaian && $tujuan)
-        <form class="text-center container" action="" method="post">
+        <form class="text-center container" action="{{ route('guru.cptp.update', [$capaian->id, $tujuan->id]) }}"
+            method="post">
             @csrf
+            @method('PUT')
             <div class="mb-3">
                 <label for="cp" class="form-label">Capaian Pembelajaran</label>
                 <textarea class="form-control" id="cp" name="cp" rows="7">{{ $capaian->dekripsi }}</textarea>

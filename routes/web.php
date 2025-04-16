@@ -20,6 +20,7 @@ Route::prefix('guru')->name('guru.')->group(function () {
     Route::prefix('/cptp')->name('cptp.')->group(function () {
         Route::get('/', [GuruCapaianTujuanPembelajaranController::class, 'index'])->name('index');
         Route::post('/store', [GuruCapaianTujuanPembelajaranController::class, 'store'])->name('store');
+        Route::put('/put/{cp}/{tp}', [GuruCapaianTujuanPembelajaranController::class, 'update'])->name('update');
         Route::delete('/destroy/{cp}/{tp}', [GuruCapaianTujuanPembelajaranController::class, 'destroy'])->name('destroy');
     });
 
