@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Guru\CapaianTujuanPembelajaranController as GuruCapaianTujuanPembelajaranController;
+use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,7 +15,11 @@ Route::get('/404', function () {
 
 Route::prefix('guru')->name('guru.')->group(function () {
     Route::get('/', function () {
-        return back();
+        return redirect()->route('guru.dashboard.index');
+    });
+
+    Route::prefix('/dashboard')->name('dashboard.')->group(function () {
+        Route::get('/', [GuruDashboardController::class, 'index'])->name('index');
     });
 
     Route::prefix('/cptp')->name('cptp.')->group(function () {
@@ -28,7 +33,6 @@ Route::prefix('guru')->name('guru.')->group(function () {
         Route::get('/', [GuruMateriController::class, 'index'])->name('index');
         Route::post('/store', [GuruMateriController::class, 'index'])->name('store');
     });
-
 });
 
 Route::name('siswa.')->group(function () {

@@ -15,6 +15,8 @@
 
 <body>
     <h1 class="text-center">Capaian dan Tujuan Pembelajaran</h1>
+        <a href="{{ route('guru.dashboard.index') }}">Dashboard</a> <br>
+
 
 
 
