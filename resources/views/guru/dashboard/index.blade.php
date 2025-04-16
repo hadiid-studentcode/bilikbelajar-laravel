@@ -17,6 +17,11 @@
 
     <a href="{{ route('guru.cptp.index') }}">CPTP</a> <br>
     <a href="{{ route('guru.materi.index') }}">Materi</a>
+
+    <form action="{{ route('logout') }}" method="post">
+        @csrf
+        <button class="btn btn-primary" type="submit">Logout</button>
+    </form>
     
 </body>
 </html>

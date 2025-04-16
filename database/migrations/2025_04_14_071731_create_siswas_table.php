@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id()->autoIncrement();
             $table->string('nama');
             $table->string('asal_sekolah');
+            $table->enum('kelas', [10, 11, 12]);
             $table->timestamps();
         });
     }
