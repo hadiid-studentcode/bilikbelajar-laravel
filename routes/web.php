@@ -7,12 +7,12 @@ use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-  return redirect()->route('guru.dashboard.index');
+  dd('halaman home');
 });
 
-Route::get('/404', function () {
-    return view('404');
-});
+// Route::get('/404', function () {
+//     return view('404');
+// });
 
 Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     Route::get('/', function () {
@@ -32,7 +32,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
 
     Route::prefix('/materi')->name('materi.')->group(function () {
         Route::get('/', [GuruMateriController::class, 'index'])->name('index');
-        Route::post('/store', [GuruMateriController::class, 'index'])->name('store');
+        Route::post('/store', [GuruMateriController::class, 'store'])->name('store');
     });
 });
 

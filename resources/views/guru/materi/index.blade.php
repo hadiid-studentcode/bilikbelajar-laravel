@@ -17,10 +17,24 @@
 
 <body>
 
-    <h1> </h1>
+    <h1>Manajemen Materi</h1>
 
-    <form action="" method="post">
+    <form action="{{ route('guru.materi.store') }}" method="post" enctype="multipart/form-data">
+        @csrf
 
+        <label for="nama">Nama Materi</label>
+        <input type="text" name="nama" id="nama"> <br>
+
+        <label for="file">Upload File</label>
+        <input type="file" name="file" id="file"> <br>
+
+        <label for="video">Upload Video</label>
+        <input type="file" name="video" id="video"> <br>
+
+        <label for="deskripsi">deskripsi</label>
+        <textarea name="deskripsi" id="deskripsi" cols="60" rows="10"></textarea> <br>
+
+        <button class="btn btn-primary" type="submit">Simpan</button>
 
 
     </form>
