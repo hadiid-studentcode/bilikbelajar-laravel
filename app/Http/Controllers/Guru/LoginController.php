@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public function index()
     {
-        return view('auth.login');
+        return view('auth.guru.login');
     }
 
     public function authenticate(Request $request): RedirectResponse

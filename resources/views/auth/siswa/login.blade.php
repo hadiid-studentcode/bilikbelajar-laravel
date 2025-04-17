@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Materi | Guru</title>
-
+    <title>Login</title>
 
     <!-- Styles / Scripts -->
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
@@ -16,32 +15,32 @@
 </head>
 
 <body>
+    <h1>Login Siswa</h1>
 
-    <h1>Manajemen Materi</h1>
-
-    <form action="{{ route('guru.materi.store') }}" method="post" enctype="multipart/form-data">
+    <form action="{{ route('siswa.login') }}" method="post">
         @csrf
-
-        <label for="nama">Nama Materi</label>
+        <label for="nama">Nama</label>
         <input type="text" name="nama" id="nama"> <br>
 
-        <label for="kelas">kelas</label>
+        <label for="asalSekolah">Asal Sekolah</label> <br>
+        <input type="text" name="asalSekolah" id="asalSekolah"> <br>
+
+        <label for="kelas">Kelas</label> <br>
         <select name="kelas" id="kelas">
             <option value="10">10</option>
             <option value="11">11</option>
             <option value="12">12</option>
-        </select> <br>
+        </select>
 
-        <label for="file">Upload File</label>
-        <input type="file" name="file" id="file"> <br>
 
-        <label for="video">Upload Video</label>
-        <input type="file" name="video" id="video"> <br>
 
-        <label for="deskripsi">deskripsi</label>
-        <textarea name="deskripsi" id="deskripsi" cols="60" rows="10"></textarea> <br>
+        <button type="submit">Login</button>
 
-        <button class="btn btn-primary" type="submit">Simpan</button>
+
+        {{ session('siswa') }}
+
+<br>
+            <a href="{{ route('siswa.logout') }}">Logout</a>
 
 
     </form>

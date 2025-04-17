@@ -22,6 +22,7 @@ class MateriController extends Controller
         try {
             $request->validate([
                 'nama' => 'required',
+                'kelas' => 'required',
                 'deskripsi' => 'nullable',
                 'file' => 'nullable',
                 'video' => 'nullable',
@@ -34,6 +35,7 @@ class MateriController extends Controller
             Materi::create([
                 'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
                 'nama' => $request->input('nama'),
+                'kelas' => $request->input('kelas'),
                 'deskripsi' => $request->input('deskripsi'),
                 'file' => $file,
                 'video' => $video,

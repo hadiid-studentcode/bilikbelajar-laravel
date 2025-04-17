@@ -3,11 +3,13 @@
 use App\Http\Controllers\Guru\CapaianTujuanPembelajaranController as GuruCapaianTujuanPembelajaranController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
+use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
+use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
 use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-  dd('halaman home');
+    return view('welcome');
 });
 
 // Route::get('/404', function () {
@@ -36,10 +38,14 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     });
 });
 
-Route::name('siswa.')->group(function () {
-    Route::get('/materi', function () {
-        dd('siswa materi');
-    })->name('materi');
+Route::prefix('/siswa')->name('siswa.')->group(function () {
+    Route::prefix('/dashboard')->name('dashboard.')->group(function () {
+        Route::get('/', [SiswaDashboardController::class, 'index'])->name('index');
+    });
+
+    Route::prefix('/materi')->name('materi.')->group(function () {
+        Route::get('/{id}', [SiswaMateriController::class, 'show'])->name('show');
+    });
 });
 
 
