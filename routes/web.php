@@ -5,7 +5,6 @@ use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
-use Illuminate\Support\Facades\Redis;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -48,5 +47,4 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 });
 
-
-include __DIR__ . '/auth.php';
+include __DIR__.'/auth.php';

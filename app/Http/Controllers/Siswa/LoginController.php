@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Siswa;
+use Illuminate\Http\Request;
 
 class LoginController extends Controller
 {
@@ -12,6 +12,7 @@ class LoginController extends Controller
     {
         return view('auth.siswa.login');
     }
+
     public function login(Request $request)
     {
 
@@ -31,6 +32,7 @@ class LoginController extends Controller
                 $request->session()->regenerate();
 
                 $request->session()->put('siswa', $siswa);
+
                 return redirect()->route('siswa.dashboard.index')->with('success', 'Login Berhasil');
             } else {
                 $siswaBaru = Siswa::create([
@@ -40,6 +42,7 @@ class LoginController extends Controller
                 ]);
                 $request->session()->regenerate();
                 $request->session()->put('siswa', $siswaBaru);
+
                 return redirect()->route('siswa.dashboard.index')->with('success', 'Login Berhasil');
             }
         } catch (\Throwable $th) {
@@ -53,6 +56,7 @@ class LoginController extends Controller
 
             session()->forget('siswa');
             session()->flush();
+
             return redirect()->route('siswa.login')->with('success', 'Logout Berhasil');
         } catch (\Throwable $th) {
             dd($th->getMessage());

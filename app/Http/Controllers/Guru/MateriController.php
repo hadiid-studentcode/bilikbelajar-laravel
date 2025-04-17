@@ -14,10 +14,9 @@ class MateriController extends Controller
     {
         return view('guru.materi.index');
     }
+
     public function store(Request $request)
     {
-
-
 
         try {
             $request->validate([
@@ -28,9 +27,8 @@ class MateriController extends Controller
                 'video' => 'nullable',
             ]);
 
-            $file =  $request->file('file')->store('materi/file');
+            $file = $request->file('file')->store('materi/file');
             $video = $request->file('video')->store('materi/video');
-
 
             Materi::create([
                 'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
@@ -44,6 +42,7 @@ class MateriController extends Controller
             return redirect()->back()->with('success', 'Materi berhasil ditambahkan');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return redirect()->back()->with('error', 'Materi gagal ditambahkan');
         }
     }

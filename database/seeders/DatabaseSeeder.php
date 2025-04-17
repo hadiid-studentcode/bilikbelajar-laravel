@@ -16,8 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-
-        $user =   User::firstOrCreate([
+        $user = User::firstOrCreate([
             'username' => 'guru',
             'password' => bcrypt('guru'),
         ]);
