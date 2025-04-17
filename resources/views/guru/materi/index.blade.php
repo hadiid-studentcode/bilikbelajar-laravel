@@ -19,32 +19,11 @@
 
     <h1>Manajemen Materi</h1>
 
-    <form action="{{ route('guru.materi.store') }}" method="post" enctype="multipart/form-data">
-        @csrf
+    @foreach ($kelas as $k)
+        <h1><a href="{{ route('guru.materi.kelas', $k->value) }}">Kelas {{ $k->value }}</a></h1>
+    @endforeach
 
-        <label for="nama">Nama Materi</label>
-        <input type="text" name="nama" id="nama"> <br>
-
-        <label for="kelas">kelas</label>
-        <select name="kelas" id="kelas">
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select> <br>
-
-        <label for="file">Upload File</label>
-        <input type="file" name="file" id="file"> <br>
-
-        <label for="video">Upload Video</label>
-        <input type="file" name="video" id="video"> <br>
-
-        <label for="deskripsi">deskripsi</label>
-        <textarea name="deskripsi" id="deskripsi" cols="60" rows="10"></textarea> <br>
-
-        <button class="btn btn-primary" type="submit">Simpan</button>
-
-
-    </form>
+   
 
 </body>
 

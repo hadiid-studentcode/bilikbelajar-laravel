@@ -12,9 +12,35 @@ class MateriController extends Controller
 {
     public function index()
     {
-        return view('guru.materi.index');
+        $kelas = [
+            (object) [
+                'id' => '1',
+                'nama' => 'Kelas 10',
+                'value' => '10',
+            ],
+            (object) [
+                'id' => '2',
+                'nama' => 'Kelas 11',
+                'value' => '11',
+            ],
+            (object) [
+                'id' => '3',
+                'nama' => 'Kelas 12',
+                'value' => '12',
+            ]
+        ];
+
+
+        return view('guru.materi.index', compact('kelas'));
     }
 
+    public function kelas($kelas)
+    {
+        $materi = Materi::where('kelas', $kelas)->get();
+
+        return view('guru.materi.show', compact('materi', 'kelas'));
+    }
+  
     public function store(Request $request)
     {
 

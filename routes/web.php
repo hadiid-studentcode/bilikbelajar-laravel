@@ -33,6 +33,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
 
     Route::prefix('/materi')->name('materi.')->group(function () {
         Route::get('/', [GuruMateriController::class, 'index'])->name('index');
+        Route::get('/kelas/{id}', [GuruMateriController::class, 'kelas'])->name('kelas');
         Route::post('/store', [GuruMateriController::class, 'store'])->name('store');
     });
 });
