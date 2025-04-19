@@ -9,8 +9,10 @@ use App\Models\tujuanPembelajaran;
 
 class DashboardController extends Controller
 {
+    protected $title = 'Dashboard';
     public function index()
     {
+        $title = $this->title;
 
         if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
@@ -20,7 +22,7 @@ class DashboardController extends Controller
         $tujuanPembelajaran = tujuanPembelajaran::first();
         $capaianPembelajaran = capaianPembelajaran::first();
 
-        return view('siswa.dashboard.index', compact('materi', 'tujuanPembelajaran', 'capaianPembelajaran'));
+        return view('siswa.dashboard.index', compact('materi', 'tujuanPembelajaran', 'capaianPembelajaran', 'title'));
     }
 
     public function show() {}

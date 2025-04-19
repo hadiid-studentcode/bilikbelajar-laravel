@@ -23,11 +23,13 @@
 
 <body>
     <!-- Layout wrapper -->
-    <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-wrapper layout-content-navbar {{ session()->has('siswa') ? 'layout-without-menu' : '' }}">
         <div class="layout-container">
             <!-- Menu -->
 
+            @if(!session()->has('siswa'))
             @include('partials.sidebar')
+            @endif
             <!-- / Menu -->
 
             <!-- Layout container -->

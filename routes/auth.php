@@ -11,4 +11,4 @@ Route::post('/logout', [GuruLoginController::class, 'logout'])->name('logout')->
 
 Route::get('/siswa', [SiswaLoginController::class, 'index'])->name('siswa');
 Route::post('/siswa', [SiswaLoginController::class, 'login'])->name('siswa.login');
-Route::get('/siswa/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');
+Route::post('/siswa/logout', [SiswaLoginController::class, 'logout'])->name('siswa.logout');

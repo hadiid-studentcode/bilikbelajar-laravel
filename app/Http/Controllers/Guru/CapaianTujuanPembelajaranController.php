@@ -18,8 +18,6 @@ class CapaianTujuanPembelajaranController extends Controller
         $title = $this->title;
         $capaian = capaianPembelajaran::first();
         $tujuan = tujuanPembelajaran::first();
-        
-
         return view('guru.cp_tp.index', compact('capaian', 'tujuan', 'title'));
     }
 
