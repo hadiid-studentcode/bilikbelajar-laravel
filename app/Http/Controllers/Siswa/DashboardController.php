@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $tujuanPembelajaran = tujuanPembelajaran::first();
         $capaianPembelajaran = capaianPembelajaran::first();
 
+
         return view('siswa.dashboard.index', compact('materi', 'tujuanPembelajaran', 'capaianPembelajaran', 'title'));
     }
 

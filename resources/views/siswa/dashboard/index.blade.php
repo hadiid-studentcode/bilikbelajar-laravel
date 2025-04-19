@@ -118,7 +118,7 @@
                         <a href="#kursus" class="btn btn-light btn-lg">
                             <i class="bx bx-book-reader me-1"></i> Mulai Belajar
                         </a>
-                      
+
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12">
@@ -133,7 +133,7 @@
     <div class="container-xxl flex-grow-1 container-p-y">
 
         <div class="row" id="kursus">
-            <div class="col-lg-8 mb-4 order-0">
+            <div class="col-lg-12 mb-4 order-0">
                 <div class="card">
                     <div class="d-flex align-items-end row">
                         <div class="col-sm-7">
@@ -145,8 +145,46 @@
                                     Kami harap Anda mendapatkan pengalaman belajar yang menyenangkan dan bermanfaat.
                                     Mari kita mulai petualangan belajar bersama!
                                 </p>
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="card accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button type="button" class="accordion-button collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#cp"
+                                                    aria-expanded="false" aria-controls="cp">
+                                                    Capaian Pembelajaran
+                                                </button>
+                                            </h2>
 
-                                <a href="javascript:;" class="btn btn-sm btn-outline-primary">Profile</a>
+                                            <div id="cp" class="accordion-collapse collapse"
+                                                data-bs-parent="#cp" style="">
+                                                <div class="accordion-body">
+                                                    {{ $capaianPembelajaran->dekripsi }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                     <div class="col">
+                                        <div class="card accordion-item">
+                                            <h2 class="accordion-header" id="headingOne">
+                                                <button type="button" class="accordion-button collapsed"
+                                                    data-bs-toggle="collapse" data-bs-target="#tp"
+                                                    aria-expanded="false" aria-controls="accordionOne">
+                                                    Tujuan Pembelajaran
+                                                </button>
+                                            </h2>
+
+                                            <div id="tp" class="accordion-collapse collapse"
+                                                data-bs-parent="#tp" style="">
+                                                <div class="accordion-body">
+                                                    {{ $tujuanPembelajaran->dekripsi }}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
                             </div>
                         </div>
                         <div class="col-sm-5 text-center text-sm-left">
@@ -159,7 +197,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-4 col-md-4 order-1">
+            {{-- <div class="col-lg-4 col-md-4 order-1">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-6 mb-12">
                         <div class="card">
@@ -180,7 +218,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
         </div>
         <div class="row">
