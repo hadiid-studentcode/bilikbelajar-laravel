@@ -15,6 +15,7 @@ class KuisController extends Controller
 
         $title = $this->title;
         $kuis = Kuis::where('materi_id', $materi_id)->get();
+       
 
         return view('guru.materi.kuis.index', compact('title', 'materi_id', 'kuis'));
     }
@@ -73,10 +74,10 @@ class KuisController extends Controller
             return back()->with('error', 'Gagal memperbarui kuis: ' . $e->getMessage());
         }
     }
-    public function destroy($id)
+    public function destroy($materi_id)
     {
         try {
-            Kuis::destroy($id);
+            Kuis::where('materi_id', $materi_id)->delete();
             return back()->with('success', 'Kuis berhasil dihapus');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menghapus kuis: ' . $e->getMessage());

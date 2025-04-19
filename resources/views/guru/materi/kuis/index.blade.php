@@ -32,12 +32,47 @@
         <div class="row">
             <div class="col-12">
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Daftar Kuis</h5>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQuizModal">
-                            <i class="bx bx-plus"></i> {{ $kuis ? 'Edit' : 'Tambah' }} Kuis
-                        </button>
+                    <div class="card-header">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                            <h5 class="mb-0">Daftar Kuis</h5>
+                            <div class="d-flex flex-wrap gap-2">
+                                <button type="button" class="btn btn-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#createQuizModal">
+                                    <i class="bx bx-plus"></i>
+                                    <span>@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif ({{ $materi->judul }}) Kuis</span>
+                                </button>
 
+                                @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
+                                    <form action="{{ route('guru.materi.kuis.destroy', $materi_id) }}" method="POST" id="deleteQuizForm">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="button" class="btn btn-danger d-flex align-items-center gap-1" 
+                                            data-bs-toggle="modal" data-bs-target="#deleteQuizModal">
+                                            <i class="bx bx-trash"></i>
+                                            <span>Hapus Kuis</span>
+                                        </button>
+                                    </form>
+
+                                    <!-- Modal Konfirmasi Hapus -->
+                                    <div class="modal fade" id="deleteQuizModal" tabindex="-1" aria-hidden="true">
+                                        <div class="modal-dialog modal-dialog-centered">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Konfirmasi Hapus</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p class="mb-0">Apakah Anda yakin ingin menghapus kuis ini? Tindakan ini tidak dapat dibatalkan.</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteQuizForm').submit()">Hapus</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+                        </div>
                     </div>
                     <div class="card-body">
 
@@ -185,22 +220,22 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">{{ $kuis ? 'Edit' : 'Tambah' }} Kuis Baru</h5>
+                    <h5 class="modal-title">@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif Kuis Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form
-                        action="@if ($kuis) {{ route('guru.materi.kuis.update', $materi_id) }}@else {{ route('guru.materi.kuis.store', $materi_id) }} @endif"
+                        action="@if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1) {{ route('guru.materi.kuis.update', $materi_id) }}@else {{ route('guru.materi.kuis.store', $materi_id) }} @endif"
                         method="POST" id="createQuizForm">
                         @csrf
-                        @if ($kuis)
+                        @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
                             @method('PUT')
                         @endif
 
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-3">Daftar Soal</h6>
-                                @if ($kuis)
+                                @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
                                     @foreach ($kuis as $k)
                                         <div class="card mb-3">
                                             <div class="card-body">
@@ -291,10 +326,12 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">{{ $kuis ? 'Update' : 'Tambah' }}
+                            <button type="submit" class="btn btn-primary">@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif
                                 Kuis</button>
+
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
