@@ -20,13 +20,13 @@
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
         <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold">Daftar Materi</h4>
+            <h4 class="fw-bold">Daftar Materi Kelas {{ $kelas }}</h4>
             <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMateriModal">
                 <i class="bx bx-plus"></i> Tambah Materi
             </button>
         </div>
 
-        <div class="row mb-4">
+        {{-- <div class="row mb-4">
             <div class="col-md-6">
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Cari materi...">
@@ -35,28 +35,27 @@
                     </button>
                 </div>
             </div>
-        </div>
+        </div> --}}
 
         <div class="row g-4">
-            @for ($i = 1; $i <= 6; $i++)
+            @foreach ($materi as $m)
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="card materi-card h-100">
-                        <img src="https://source.unsplash.com/random/800x600?education,{{ $i }}"
-                            class="card-img-top" alt="Materi Image">
+                        <img src="{{ asset('assets/img/kursus/1.jpg') }}" class="card-img-top" alt="Materi Image">
                         <div class="card-body">
-                            <h5 class="card-title">Matematika Dasar {{ $i }}</h5>
-                            <p class="card-text text-muted mb-0">Kelas: X</p>
-                            <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia,
-                                molestiae quas vel sint commodi...</p>
+                            <h5 class="card-title">{{ $m->nama }}</h5>
+                            <p class="card-text text-muted mb-0">Kelas: {{ $m->kelas }}</p>
+                            <p class="card-text"></p>
                             <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted"><i class="bx bx-time"></i> {{ date('d M Y') }}</span>
+                                <span class="text-muted"><i class="bx bx-time"></i>
+                                    {{ $m->created_at->diffForHumans() }}</span>
                                 <div>
                                     <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal"
-                                        data-bs-target="#editMateriModal{{ $i }}">
+                                        data-bs-target="#editMateriModal{{ $m->id }}">
                                         <i class="bx bx-edit"></i>
                                     </button>
                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteMateriModal{{ $i }}">
+                                        data-bs-target="#deleteMateriModal{{ $m->id }}">
                                         <i class="bx bx-trash"></i>
                                     </button>
                                 </div>
@@ -64,98 +63,153 @@
                         </div>
                     </div>
                 </div>
-            @endfor
+            @endforeach
         </div>
     </div>
 
     <!-- Create Modal -->
     <div class="modal fade" id="createMateriModal" tabindex="-1">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-fullscreen">
             <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Tambah Materi Baru</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-header bg-primary">
+                    <h5 class="modal-title text-white">Tambah Materi Baru</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label class="form-label">Judul Materi</label>
-                            <input type="text" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kelas</label>
-                            <select class="form-select">
-                                <option>X</option>
-                                <option>XI</option>
-                                <option>XII</option>
-                            </select>
+                    <form id="createMateriForm" action="{{ route('guru.materi.store') }}" enctype="multipart/form-data"
+                        method="POST">
+                        @csrf
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nama Materi <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" name="nama" required>
+                                <div class="invalid-feedback">Nama materi harus diisi</div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Kelas <span class="text-danger">*</span></label>
+                                <select class="form-select" name="kelas" required>
+                                    <option selected value="{{ $kelas }}">{{ $kelas }}</option>
+
+                                </select>
+                                <div class="invalid-feedback">Pilih kelas</div>
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" rows="3"></textarea>
+                            <textarea class="form-control" name="deskripsi" rows="15" placeholder="Tuliskan deskripsi materi di sini..."></textarea>
                         </div>
-                        <div class="mb-3">
-                            <label class="form-label">Gambar</label>
-                            <input type="file" class="form-control">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">File Materi</label>
+                                <input type="file" class="form-control" name="file"
+                                    accept=".pdf,.doc,.docx,.ppt,.pptx">
+                                <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX (Max. 10MB)</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Video Pembelajaran</label>
+                                <input type="file" class="form-control" name="video" accept="video/*">
+                                <small class="text-muted">Format: MP4, MKV, AVI (Max. 100MB)</small>
+                            </div>
                         </div>
                     </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="button" class="btn btn-primary">Simpan</button>
+                <div class="modal-footer bg-light">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="bx bx-x me-1"></i> Batal
+                    </button>
+                    <button type="submit" form="createMateriForm" class="btn btn-primary">
+                        <i class="bx bx-save me-1"></i> Simpan Materi
+                    </button>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Edit Modal -->
-    @for ($i = 1; $i <= 6; $i++)
-        <div class="modal fade" id="editMateriModal{{ $i }}" tabindex="-1">
-            <div class="modal-dialog">
+    @foreach ($materi as $m)
+        <div class="modal fade" id="editMateriModal{{ $m->id }}" tabindex="-1">
+            <div class="modal-dialog modal-fullscreen">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Materi</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    <div class="modal-header bg-info">
+                        <h5 class="modal-title text-white">Edit Materi</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form>
-                            <div class="mb-3">
-                                <label class="form-label">Judul Materi</label>
-                                <input type="text" class="form-control" required
-                                    value="Matematika Dasar {{ $i }}">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label">Kelas</label>
-                                <select class="form-select">
-                                    <option selected>X</option>
-                                    <option>XI</option>
-                                    <option>XII</option>
-                                </select>
+                        <form id="editMateriForm{{ $m->id }}" action="{{ route('guru.materi.update', $m->id) }}"
+                            method="POST" enctype="multipart/form-data">
+                            @csrf
+                            @method('PUT')
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Nama Materi <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" name="nama" required
+                                        value="{{ $m->nama }}">
+                                    <div class="invalid-feedback">Nama materi harus diisi</div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Kelas <span class="text-danger">*</span></label>
+                                    <select class="form-select" name="kelas" required>
+                                        <option value="{{ $m->kelas }}" selected>{{ $m->kelas }}</option>
+
+                                    </select>
+                                </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Deskripsi</label>
-                                <textarea class="form-control" rows="3">Lorem ipsum dolor sit amet consectetur adipisicing elit. Maxime mollitia, molestiae quas vel sint commodi...</textarea>
+                                <textarea class="form-control" name="deskripsi" rows="15">{{ $m->deskripsi }}</textarea>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Gambar</label>
-                                <input type="file" class="form-control">
-                                <div class="mt-2">
-                                    <img src="https://source.unsplash.com/random/800x600?education,{{ $i }}"
-                                        class="img-thumbnail" width="200">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">File Materi</label>
+                                        <input type="file" class="form-control" name="file"
+                                            accept=".pdf,.doc,.docx,.ppt,.pptx" value="{{ $m->file }}">
+                                        <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX (Max. 10MB)</small>
+                                        @if($m->file != null)
+                                        <div class="mt-2">
+                                            <a target="_blank" href="{{ asset('storage/' . $m->file) }}"
+                                                class="btn btn-info">
+                                                <i class="bx bx-file me-1"></i> Materi
+                                            </a>
+                                        </div>
+                                        @endif
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label class="form-label">Video Pembelajaran</label>
+                                        <input type="file" class="form-control" name="video" accept="video/*"
+                                            value="{{ $m->video }}">
+                                        <small class="text-muted">Format: MP4, MKV, AVI (Max. 100MB)</small>
+                                        @if($m->video != null)
+                                        <div class="mt-2">
+                                            <a target="_blank" href="{{ asset('storage/' . $m->video) }}"
+                                                class="btn btn-info">
+                                                <i class="bx bx-video me-1"></i> Video
+                                            </a>
+                                        </div>
+                                        @endif
+                                    </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary">Simpan Perubahan</button>
+                    <div class="modal-footer bg-light">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x me-1"></i> Batal
+                        </button>
+                        <button type="submit" form="editMateriForm{{ $m->id }}" class="btn btn-info">
+                            <i class="bx bx-save me-1"></i> Simpan Perubahan
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
+    @endforeach
 
-        <!-- Delete Modal -->
-        <div class="modal fade" id="deleteMateriModal{{ $i }}" tabindex="-1">
+    <!-- Delete Modal -->
+    @foreach ($materi as $m)
+        <div class="modal fade" id="deleteMateriModal{{ $m->id }}" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -163,36 +217,22 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Apakah Anda yakin ingin menghapus materi "Matematika Dasar {{ $i }}"?</p>
+                        <p>Apakah Anda yakin ingin menghapus materi "{{ $m->nama }}"?</p>
                         <p class="text-danger"><small>Tindakan ini tidak dapat dibatalkan.</small></p>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-danger"
-                            onclick="deleteMateri({{ $i }})">Hapus</button>
+                        <form action="{{ route('guru.materi.destroy', $m->id) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
-    @endfor
+    @endforeach
 @endsection
 
 @push('js')
-    <script>
-        function confirmDelete(id) {
-            if (confirm('Apakah Anda yakin ingin menghapus materi ini?')) {
-                // Handle delete action
-                console.log('Deleting materi with id:', id);
-            }
-        }
-
-        function deleteMateri(id) {
-            // Handle delete action here
-            console.log('Deleting materi with id:', id);
-            // Close modal after deletion
-            $(`#deleteMateriModal${id}`).modal('hide');
-            // Show success message
-            alert('Materi berhasil dihapus!');
-        }
-    </script>
 @endpush
