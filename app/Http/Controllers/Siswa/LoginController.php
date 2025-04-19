@@ -10,6 +10,11 @@ class LoginController extends Controller
 {
     public function index()
     {
+
+        if(session('siswa')) {
+            return redirect()->route('siswa.dashboard.index');
+        }
+
         return view('auth.siswa.login');
     }
 

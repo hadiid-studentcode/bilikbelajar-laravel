@@ -34,6 +34,10 @@
         <h5>{{ $m->kelas }}</h5>
         <a href="{{ route('siswa.materi.show', $m->id) }}">Lihat Materi</a>
     @endforeach
+    
+    <br>    
+
+    <a href="{{ route('siswa.logout') }}">Keluar</a>
 
 
 </body>

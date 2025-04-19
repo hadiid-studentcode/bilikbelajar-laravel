@@ -1,13 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="light-style customizer-hide" dir="ltr"
+    data-theme="theme-default" data-assets-path="{{ asset('assets/') }}" data-template="vertical-menu-template-free">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Login</title>
+    <meta charset="utf-8" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <!-- Styles / Scripts -->
+    <title>{{ env('APP_NAME') }} | Login</title>
+
+    <meta name="description" content="" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('assets/bilikbelajar/icon/icon.png') }}" />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+        rel="stylesheet" />
+
+    <!-- Icons. Uncomment required icon fonts -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/fonts/boxicons.css') }}" />
+
+    <!-- Core CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/theme-default.css') }}"
+        class="template-customizer-theme-css" />
+    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
+
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
+
+    <!-- Page CSS -->
+    <!-- Page -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/css/pages/page-auth.css') }}" />
+    <!-- Helpers -->
+    <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
+
+    <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+    <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+    <script src="{{ asset('assets/js/config.js') }}"></script>
+
     @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     @else
@@ -15,36 +50,85 @@
 </head>
 
 <body>
-    <h1>Login Siswa</h1>
+    <!-- Content -->
 
-    <form action="{{ route('siswa.login') }}" method="post">
-        @csrf
-        <label for="nama">Nama</label>
-        <input type="text" name="nama" id="nama"> <br>
+    <div class="container-xxl">
+        <div class="authentication-wrapper authentication-basic container-p-y">
+            <div class="authentication-inner">
+                <!-- Register -->
+                <div class="card">
+                    <div class="card-body">
+                        <!-- Logo -->
+                        <div class="app-brand justify-content-center">
+                            <a href="{{ route('home') }}" class="app-brand-link gap-2">
+                                <span class="app-brand-logo demo">
+                                    <img src="{{ asset('assets/bilikbelajar/icon/icon.png') }}" width="50" />
+                                </span>
+                                <span class="app-brand-text demo text-body fw-bolder">Bilik Belajar</span>
+                            </a>
+                        </div>
+                        <!-- /Logo -->
+                        <p class="mb-4">Masuk Sebagai Siswa</p>
 
-        <label for="asalSekolah">Asal Sekolah</label> <br>
-        <input type="text" name="asalSekolah" id="asalSekolah"> <br>
+                        <form id="formAuthentication" class="mb-3" action="{{ route('siswa.login') }}"
+                            method="POST">
+                            @csrf
+                            <div class="mb-3">
+                                <label for="nama" class="form-label">Nama</label>
+                                <input type="text" class="form-control" id="email" name="nama"
+                                    placeholder="Masukkan Nama Siswa" autofocus />
+                            </div>
+                            <div class="mb-3">
+                                <label for="asalSekolah" class="form-label">Asal Sekolah</label>
+                                <input type="text" class="form-control" id="asalSekolah" name="asalSekolah"
+                                    placeholder="Masukkan Asal Sekolah" autofocus />
+                            </div>
 
-        <label for="kelas">Kelas</label> <br>
-        <select name="kelas" id="kelas">
-            <option value="10">10</option>
-            <option value="11">11</option>
-            <option value="12">12</option>
-        </select>
+                            <div class="mb-3">
+                                <label for="Kelas" class="form-label">Kelas</label>
+                                <select name="kelas" id="kelas" class="form-select">
+                                    <option selected>Pilih Kelas</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                </select>
+                            </div>
 
 
 
-        <button type="submit">Login</button>
+                            <div class="mb-3">
+                                <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
+                            </div>
+                        </form>
 
 
-        {{ session('siswa') }}
+                    </div>
+                </div>
+                <!-- /Register -->
+            </div>
+        </div>
+    </div>
 
-<br>
-            <a href="{{ route('siswa.logout') }}">Logout</a>
 
+    <!-- Core JS -->
+    <!-- build:js assets/vendor/js/core.js -->
+    <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>
+    <script src="{{ asset('assets/vendor/js/bootstrap.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js') }}"></script>
 
-    </form>
+    <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
+    <!-- endbuild -->
 
+    <!-- Vendors JS -->
+
+    <!-- Main JS -->
+    <script src="{{ asset('assets/js/main.js') }}"></script>
+
+    <!-- Page JS -->
+
+    <!-- Place this tag in your head or just before your close body tag. -->
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>
