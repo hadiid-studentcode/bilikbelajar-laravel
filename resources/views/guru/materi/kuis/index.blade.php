@@ -189,21 +189,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="" method="POST" id="createQuizForm">
+                    <form action="{{ route('guru.materi.kuis.store', $materi_id) }}" method="POST" id="createQuizForm">
                         @csrf
-                        <div class="mb-3">
-                            <label class="form-label">Judul Kuis</label>
-                            <input type="text" class="form-control" name="judul" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" rows="3"></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Durasi (menit)</label>
-                            <input type="number" class="form-control" name="durasi" required min="1">
-                        </div>
-
+                       
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-3">Daftar Soal</h6>

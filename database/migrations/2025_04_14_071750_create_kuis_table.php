@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('jawaban_b')->nullable();
             $table->string('jawaban_c')->nullable();
             $table->string('jawaban_d')->nullable();
-            $table->enum('jawaban_benar', ['a', 'b', 'c', 'd']);
+            $table->string('jawaban_e')->nullable();
+            $table->enum('jawaban_benar', ['a', 'b', 'c', 'd', 'e'])->nullable();
             $table->integer('poin_benar')->default(0);
             $table->timestamps();
         });

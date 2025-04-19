@@ -159,7 +159,7 @@
                                             <div id="cp" class="accordion-collapse collapse" data-bs-parent="#cp"
                                                 style="">
                                                 <div class="accordion-body">
-                                                    {{ $capaianPembelajaran->dekripsi }}
+                                                    {{ $capaianPembelajaran?->dekripsi }}
                                                 </div>
                                             </div>
                                         </div>
@@ -177,7 +177,7 @@
                                             <div id="tp" class="accordion-collapse collapse" data-bs-parent="#tp"
                                                 style="">
                                                 <div class="accordion-body">
-                                                    {{ $tujuanPembelajaran->dekripsi }}
+                                                    {{ $tujuanPembelajaran?->dekripsi }}
                                                 </div>
                                             </div>
                                         </div>

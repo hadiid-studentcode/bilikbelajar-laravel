@@ -43,10 +43,9 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::put('/{id}', [GuruMateriController::class, 'update'])->name('update');
         Route::delete('/{id}', [GuruMateriController::class, 'destroy'])->name('destroy');
 
-
         Route::prefix('/kuis')->name('kuis.')->group(function () {
             Route::get('/{materi_id}', [GuruKuisController::class, 'index'])->name('index');
-          
+            Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
         });
 
     });
@@ -62,4 +61,4 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 });
 
-include __DIR__ . '/auth.php';
+include __DIR__.'/auth.php';

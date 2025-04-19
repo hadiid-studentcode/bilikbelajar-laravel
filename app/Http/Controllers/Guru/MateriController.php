@@ -8,15 +8,14 @@ use App\Models\Materi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class MateriController extends Controller
 {
     protected $title = 'Materi';
+
     public function index()
     {
         $title = $this->title;
-
 
         return view('guru.materi.index', compact('title'));
     }
@@ -50,7 +49,6 @@ class MateriController extends Controller
                 $video = $request->file('video')->store('materi/video');
             }
 
-
             Materi::create([
                 'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
                 'nama' => $request->input('nama'),
@@ -67,6 +65,7 @@ class MateriController extends Controller
             return redirect()->back()->with('error', 'Materi gagal ditambahkan');
         }
     }
+
     public function update(Request $request, $id)
     {
         try {
@@ -107,6 +106,7 @@ class MateriController extends Controller
             return redirect()->back()->with('error', 'Materi gagal diupdate');
         }
     }
+
     public function destroy($id)
     {
         try {
