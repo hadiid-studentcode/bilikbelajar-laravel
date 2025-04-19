@@ -27,9 +27,8 @@ class MateriController extends Controller
                 'id' => '3',
                 'nama' => 'Kelas 12',
                 'value' => '12',
-            ]
+            ],
         ];
-
 
         return view('guru.materi.index', compact('kelas'));
     }
@@ -40,7 +39,7 @@ class MateriController extends Controller
 
         return view('guru.materi.show', compact('materi', 'kelas'));
     }
-  
+
     public function store(Request $request)
     {
 

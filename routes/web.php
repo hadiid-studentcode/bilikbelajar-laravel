@@ -5,22 +5,19 @@ use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
-use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('guru.dashboard.index');
     }
-    if(session('siswa')) {
+    if (session('siswa')) {
         return redirect()->route('siswa.dashboard.index');
     }
+
     return view('welcome');
 })->name('home');
-
-
-
-
 
 Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     Route::get('/', function () {
@@ -55,4 +52,4 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 });
 
-include __DIR__ . '/auth.php';
+include __DIR__.'/auth.php';

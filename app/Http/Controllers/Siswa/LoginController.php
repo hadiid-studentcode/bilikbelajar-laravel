@@ -11,7 +11,7 @@ class LoginController extends Controller
     public function index()
     {
 
-        if(session('siswa')) {
+        if (session('siswa')) {
             return redirect()->route('siswa.dashboard.index');
         }
 
