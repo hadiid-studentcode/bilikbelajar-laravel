@@ -46,6 +46,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::prefix('/kuis')->name('kuis.')->group(function () {
             Route::get('/{materi_id}', [GuruKuisController::class, 'index'])->name('index');
             Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
+            Route::put('/{materi_id}/update', [GuruKuisController::class, 'update'])->name('update');
         });
 
     });

@@ -34,13 +34,13 @@
                 <div class="card">
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Daftar Kuis</h5>
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                            data-bs-target="#createQuizModal">
-                            <i class="bx bx-plus"></i> Tambah Kuis
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createQuizModal">
+                            <i class="bx bx-plus"></i> {{ $kuis ? 'Edit' : 'Tambah' }} Kuis
                         </button>
+
                     </div>
                     <div class="card-body">
-                       
+
                         <div class="card">
                             <div class="card-body">
                                 <div class="row g-3">
@@ -185,59 +185,114 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Kuis Baru</h5>
+                    <h5 class="modal-title">{{ $kuis ? 'Edit' : 'Tambah' }} Kuis Baru</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('guru.materi.kuis.store', $materi_id) }}" method="POST" id="createQuizForm">
+                    <form
+                        action="@if ($kuis) {{ route('guru.materi.kuis.update', $materi_id) }}@else {{ route('guru.materi.kuis.store', $materi_id) }} @endif"
+                        method="POST" id="createQuizForm">
                         @csrf
-                       
+                        @if ($kuis)
+                            @method('PUT')
+                        @endif
+
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-3">Daftar Soal</h6>
-                                @for ($i = 1; $i <= 10; $i++)
-                                    <div class="card mb-3">
-                                        <div class="card-body">
-                                            <h6 class="mb-3">Soal {{ $i }}</h6>
-                                            <div class="mb-3">
-                                                <label class="form-label">Pertanyaan</label>
-                                                <textarea class="form-control" name="soal[{{ $i }}][pertanyaan]" rows="2" required></textarea>
-                                            </div>
-                                            <div class="row mb-3">
-                                                <div class="col-md-6">
-                                                    <label class="form-label">Bobot Nilai</label>
-                                                    <input type="number" class="form-control" name="soal[{{ $i }}][bobot]" required min="1" max="100" value="10">
+                                @if ($kuis)
+                                    @foreach ($kuis as $k)
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <h6 class="mb-3">Soal {{ $loop->iteration }}</h6>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Pertanyaan</label>
+                                                    <textarea class="form-control" name="soal[{{ $loop->iteration }}][pertanyaan]" rows="2" required>{{ $k->pertanyaan }}</textarea>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Bobot Nilai</label>
+                                                        <input type="number" class="form-control"
+                                                            name="soal[{{ $loop->iteration }}][bobot]" required
+                                                            min="1" max="100" value="{{ $k->poin_benar }}">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label d-block">Pilihan Jawaban</label>
+                                                    @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="soal[{{ $loop->parent->iteration }}][jawaban_benar]"
+                                                                value="{{ $opsi }}"
+                                                                id="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}"
+                                                                {{ $opsi == $k->jawaban_benar ? 'checked' : '' }}
+                                                                {{ $opsi == 'a' ? 'required' : '' }}>
+                                                            <label class="form-check-label w-100"
+                                                                for="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}">
+                                                                <div class="input-group">
+                                                                    <span
+                                                                        class="input-group-text">{{ strtoupper($opsi) }}</span>
+                                                                    <input type="text" class="form-control"
+                                                                        name="soal[{{ $loop->parent->iteration }}][opsi][{{ $opsi }}]"
+                                                                        value="{{ $k->{'jawaban_' . $opsi} }}" required>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
                                                 </div>
                                             </div>
-                                            <div class="mb-3">
-                                                <label class="form-label d-block">Pilihan Jawaban</label>
-                                                @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
-                                                    <div class="form-check mb-2">
-                                                        <input class="form-check-input" type="radio" 
-                                                            name="soal[{{ $i }}][jawaban_benar]" 
-                                                            value="{{ $opsi }}" 
-                                                            id="soal{{ $i }}Opsi{{ $opsi }}"
-                                                            {{ $opsi == 'a' ? 'required' : '' }}>
-                                                        <label class="form-check-label w-100" for="soal{{ $i }}Opsi{{ $opsi }}">
-                                                            <div class="input-group">
-                                                                <span class="input-group-text">{{ strtoupper($opsi) }}</span>
-                                                                <input type="text" class="form-control" 
-                                                                    name="soal[{{ $i }}][opsi][{{ $opsi }}]" 
-                                                                    required>
-                                                            </div>
-                                                        </label>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    @for ($i = 1; $i <= 10; $i++)
+                                        <div class="card mb-3">
+                                            <div class="card-body">
+                                                <h6 class="mb-3">Soal {{ $i }}</h6>
+                                                <div class="mb-3">
+                                                    <label class="form-label">Pertanyaan</label>
+                                                    <textarea class="form-control" name="soal[{{ $i }}][pertanyaan]" rows="2" required></textarea>
+                                                </div>
+                                                <div class="row mb-3">
+                                                    <div class="col-md-6">
+                                                        <label class="form-label">Bobot Nilai</label>
+                                                        <input type="number" class="form-control"
+                                                            name="soal[{{ $i }}][bobot]" required
+                                                            min="1" max="100" value="10">
                                                     </div>
-                                                @endforeach
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label class="form-label d-block">Pilihan Jawaban</label>
+                                                    @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
+                                                        <div class="form-check mb-2">
+                                                            <input class="form-check-input" type="radio"
+                                                                name="soal[{{ $i }}][jawaban_benar]"
+                                                                value="{{ $opsi }}"
+                                                                id="soal{{ $i }}Opsi{{ $opsi }}"
+                                                                {{ $opsi == 'a' ? 'required' : '' }}>
+                                                            <label class="form-check-label w-100"
+                                                                for="soal{{ $i }}Opsi{{ $opsi }}">
+                                                                <div class="input-group">
+                                                                    <span
+                                                                        class="input-group-text">{{ strtoupper($opsi) }}</span>
+                                                                    <input type="text" class="form-control"
+                                                                        name="soal[{{ $i }}][opsi][{{ $opsi }}]"
+                                                                        required>
+                                                                </div>
+                                                            </label>
+                                                        </div>
+                                                    @endforeach
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                @endfor
+                                    @endfor
+                                @endif
                             </div>
                         </div>
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan Kuis</button>
+                            <button type="submit" class="btn btn-primary">{{ $kuis ? 'Update' : 'Tambah' }}
+                                Kuis</button>
                         </div>
                     </form>
                 </div>
@@ -311,7 +366,8 @@
                                                 <div class="form-check mb-2">
                                                     <input class="form-check-input" type="radio" checked disabled>
                                                     <label class="form-check-label text-success">
-                                                        <i class="bx bx-check"></i> Langkah-langkah sistematis untuk menyelesaikan masalah
+                                                        <i class="bx bx-check"></i> Langkah-langkah sistematis untuk
+                                                        menyelesaikan masalah
                                                     </label>
                                                 </div>
                                                 <div class="form-check mb-2">
@@ -340,8 +396,8 @@
                                 <!-- Soal 2 -->
                                 <div class="accordion-item">
                                     <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#soal2">
+                                        <button class="accordion-button collapsed" type="button"
+                                            data-bs-toggle="collapse" data-bs-target="#soal2">
                                             <div class="d-flex justify-content-between align-items-center w-100 me-3">
                                                 <span>Soal #2</span>
                                                 <span class="badge bg-danger">Salah (+0)</span>
@@ -394,16 +450,17 @@
 @endsection
 
 @push('js')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Handle detail button click
-    const detailButtons = document.querySelectorAll('.btn-info');
-    detailButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const modal = new bootstrap.Modal(document.getElementById('detailJawabanModal'));
-            modal.show();
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Handle detail button click
+            const detailButtons = document.querySelectorAll('.btn-info');
+            detailButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const modal = new bootstrap.Modal(document.getElementById(
+                        'detailJawabanModal'));
+                    modal.show();
+                });
+            });
         });
-    });
-});
-</script>
+    </script>
 @endpush
