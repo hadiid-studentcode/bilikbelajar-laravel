@@ -10,27 +10,13 @@ use Illuminate\Support\Facades\Auth;
 
 class MateriController extends Controller
 {
+    protected $title = 'Materi';
     public function index()
     {
-        $kelas = [
-            (object) [
-                'id' => '1',
-                'nama' => 'Kelas 10',
-                'value' => '10',
-            ],
-            (object) [
-                'id' => '2',
-                'nama' => 'Kelas 11',
-                'value' => '11',
-            ],
-            (object) [
-                'id' => '3',
-                'nama' => 'Kelas 12',
-                'value' => '12',
-            ],
-        ];
+        $title = $this->title;
+    
 
-        return view('guru.materi.index', compact('kelas'));
+        return view('guru.materi.index', compact( 'title'));
     }
 
     public function kelas($kelas)

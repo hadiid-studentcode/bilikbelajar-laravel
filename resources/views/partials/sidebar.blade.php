@@ -4,7 +4,7 @@
              <span class="app-brand-logo demo">
                  <img src="{{ asset('assets/bilikbelajar/icon/icon.png') }}" width="50" />
              </span>
-             <span class="app-brand-text demo menu-text fw-bolder">Bilik Belajar</span>
+             <span class="app-brand-text menu-text fw-bolder" style="font-size: 20px">Bilik Belajar</span>
          </a>
 
          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -40,7 +40,7 @@
          <li class="menu-header small text-uppercase">
              <span class="menu-header-text">Kursus</span>
          </li>
-         <li class="menu-item">
+         <li class="menu-item {{ request()->is('guru/materi*') ? 'active' : '' }}">
              <a href="{{ route('guru.materi.index') }}" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-dock-top"></i>
                  <div data-i18n="Account Settings">Materi</div>
