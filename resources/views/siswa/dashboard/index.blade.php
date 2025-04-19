@@ -150,32 +150,32 @@
                                         <div class="card accordion-item">
                                             <h2 class="accordion-header" id="headingOne">
                                                 <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse" data-bs-target="#cp"
-                                                    aria-expanded="false" aria-controls="cp">
+                                                    data-bs-toggle="collapse" data-bs-target="#cp" aria-expanded="false"
+                                                    aria-controls="cp">
                                                     Capaian Pembelajaran
                                                 </button>
                                             </h2>
 
-                                            <div id="cp" class="accordion-collapse collapse"
-                                                data-bs-parent="#cp" style="">
+                                            <div id="cp" class="accordion-collapse collapse" data-bs-parent="#cp"
+                                                style="">
                                                 <div class="accordion-body">
                                                     {{ $capaianPembelajaran->dekripsi }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                     <div class="col">
+                                    <div class="col">
                                         <div class="card accordion-item">
                                             <h2 class="accordion-header" id="headingOne">
                                                 <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse" data-bs-target="#tp"
-                                                    aria-expanded="false" aria-controls="accordionOne">
+                                                    data-bs-toggle="collapse" data-bs-target="#tp" aria-expanded="false"
+                                                    aria-controls="accordionOne">
                                                     Tujuan Pembelajaran
                                                 </button>
                                             </h2>
 
-                                            <div id="tp" class="accordion-collapse collapse"
-                                                data-bs-parent="#tp" style="">
+                                            <div id="tp" class="accordion-collapse collapse" data-bs-parent="#tp"
+                                                style="">
                                                 <div class="accordion-body">
                                                     {{ $tujuanPembelajaran->dekripsi }}
                                                 </div>
@@ -227,7 +227,25 @@
                 <div class="card h-100">
 
                     <div class="card-body">
+                        @if ($materi->isEmpty())
+                            <div class="col-12">
+                                <div class="alert alert-info d-flex align-items-center" role="alert">
+                                    <span class="alert-icon text-info me-2">
+                                        <i class="bx bx-info-circle"></i>
+                                    </span>
+                                    <div>
+                                        <h6 class="alert-heading mb-1">Hai {{ session('siswa')->nama }}!</h6>
+                                        <p class="mb-0">
+                                            Maaf, belum ada materi pembelajaran yang tersedia untuk kelas {{ session('siswa')->kelas }} saat ini.
+                                            Silakan cek kembali beberapa saat lagi.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+
                         <div class="row row-cols-1 row-cols-md-4 g-4 mb-5">
+
                             @foreach ($materi as $m)
                                 <div class="col">
                                     <div class="card h-100 shadow-sm hover-elevate-up">

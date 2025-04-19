@@ -38,6 +38,16 @@
         </div> --}}
 
         <div class="row g-4">
+            @if($materi->isEmpty())
+                <div class="col-12">
+                    <div class="alert alert-info d-flex align-items-center" role="alert">
+                        <i class="bx bx-info-circle me-2"></i>
+                        <div>
+                            Belum ada materi yang ditambahkan untuk kelas ini.
+                        </div>
+                    </div>
+                </div>
+            @endif
             @foreach ($materi as $m)
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="card materi-card h-100">
@@ -124,6 +134,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Edit Modal -->
     @foreach ($materi as $m)
