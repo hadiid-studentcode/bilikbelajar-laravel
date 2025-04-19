@@ -21,9 +21,10 @@ class MateriController extends Controller
 
     public function kelas($kelas)
     {
+        $title = $this->title;
         $materi = Materi::where('kelas', $kelas)->get();
 
-        return view('guru.materi.show', compact('materi', 'kelas'));
+        return view('guru.materi.show', compact('materi', 'kelas', 'title'));
     }
 
     public function store(Request $request)
