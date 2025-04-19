@@ -40,14 +40,7 @@
                         </button>
                     </div>
                     <div class="card-body">
-                        <div class="row mb-3">
-                            <div class="col-md-4">
-                                <select class="form-select" id="quizFilter">
-                                    <option value="">Pilih Kuis</option>
-                                    <option value="1">Kuis Matematika Bab 1</option>
-                                </select>
-                            </div>
-                        </div>
+                       
                         <div class="card">
                             <div class="card-body">
                                 <div class="row g-3">
@@ -274,7 +267,7 @@
                 </div>
                 <div class="modal-body">
                     <div class="row mb-4">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <table class="table table-sm">
                                 <tr>
                                     <th>Nama Siswa</th>
