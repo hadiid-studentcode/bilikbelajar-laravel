@@ -56,18 +56,30 @@
                             <h5 class="card-title">{{ $m->nama }}</h5>
                             <p class="card-text text-muted mb-0">Kelas: {{ $m->kelas }}</p>
                             <p class="card-text"></p>
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span class="text-muted"><i class="bx bx-time"></i>
-                                    {{ $m->created_at->diffForHumans() }}</span>
-                                <div>
-                                    <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal"
-                                        data-bs-target="#editMateriModal{{ $m->id }}">
-                                        <i class="bx bx-edit"></i>
-                                    </button>
-                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteMateriModal{{ $m->id }}">
-                                        <i class="bx bx-trash"></i>
-                                    </button>
+                            <div class="mt-3">
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-muted">
+                                        <i class="bx bx-time"></i> {{ $m->created_at->diffForHumans() }}
+                                    </span>
+                                    <div>
+                                        <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal"
+                                            data-bs-target="#editMateriModal{{ $m->id }}" title="Edit">
+                                            <i class="bx bx-edit"></i>
+                                        </button>
+                                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteMateriModal{{ $m->id }}" title="Hapus">
+                                            <i class="bx bx-trash"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                                
+                                <div class="d-flex gap-2 mt-4">
+                                    <a href="{{ route('guru.materi.kuis.index', $m->id) }}" class="btn btn-sm btn-primary w-50">
+                                        <i class="bx bx-quiz me-1"></i> Kuis
+                                    </a>
+                                    <a href="#" class="btn btn-sm btn-success w-50">
+                                        <i class="bx bx-notepad me-1"></i> Evaluasi
+                                    </a>
                                 </div>
                             </div>
                         </div>

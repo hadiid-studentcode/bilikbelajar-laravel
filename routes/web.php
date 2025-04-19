@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Guru\CapaianTujuanPembelajaranController as GuruCapaianTujuanPembelajaranController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
+use App\Http\Controllers\Guru\KuisController as GuruKuisController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
@@ -41,6 +42,13 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::post('/store', [GuruMateriController::class, 'store'])->name('store');
         Route::put('/{id}', [GuruMateriController::class, 'update'])->name('update');
         Route::delete('/{id}', [GuruMateriController::class, 'destroy'])->name('destroy');
+
+
+        Route::prefix('/kuis')->name('kuis.')->group(function () {
+            Route::get('/{materi_id}', [GuruKuisController::class, 'index'])->name('index');
+          
+        });
+
     });
 });
 
