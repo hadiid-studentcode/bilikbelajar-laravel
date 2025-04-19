@@ -21,10 +21,8 @@ class KuisController extends Controller
     public function store(Request $request, $materi_id)
     {
         try {
-            dd($request->all());
-
-            foreach ($request->soal as $soal) {
-                Kuis::create([
+            $kuisData = array_map(function ($soal) use ($materi_id) {
+                return [
                     'materi_id' => $materi_id,
                     'pertanyaan' => $soal['pertanyaan'],
                     'poin_benar' => $soal['bobot'],
@@ -32,12 +30,18 @@ class KuisController extends Controller
                     'jawaban_b' => $soal['opsi']['b'],
                     'jawaban_c' => $soal['opsi']['c'],
                     'jawaban_d' => $soal['opsi']['d'],
-                    // 'jawaban_e' => $soal['opsi']['e'],
-                    'jawaban_benar' => strtolower($soal['jawaban_benar'])
-                ]);
-            }
-        } catch (\Throwable $th) {
-            dd($th->getMessage());
+                    'jawaban_e' => $soal['opsi']['e'],
+                    'jawaban_benar' => strtolower($soal['jawaban_benar']),
+                    'created_at' => now(),
+                    'updated_at' => now()
+                ];
+            }, $request->soal);
+
+            Kuis::insert($kuisData);
+
+            return back()->with('success', 'Kuis berhasil ditambahkan');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Gagal menambahkan kuis: ' . $e->getMessage());
         }
     }
 }
