@@ -16,7 +16,7 @@
 
      <ul class="menu-inner py-1">
          <!-- Dashboard -->
-         <li class="menu-item active">
+         <li class="menu-item {{ request()->is('guru/dashboard*') ? 'active' : '' }}">
              <a href="{{ route('guru.dashboard.index') }}" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-home-circle"></i>
                  <div data-i18n="Analytics">Dashboard</div>
@@ -29,7 +29,7 @@
          <li class="menu-header small text-uppercase">
              <span class="menu-header-text">Kelola</span>
          </li>
-         <li class="menu-item">
+         <li class="menu-item {{ request()->is('guru/cptp*') ? 'active' : '' }}">
              <a href="{{ route('guru.cptp.index') }}" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-target-lock"></i>
                  <div data-i18n="Layouts">Capaian & Tujuan Pembelajaran</div>

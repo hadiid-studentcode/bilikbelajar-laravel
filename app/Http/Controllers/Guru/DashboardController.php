@@ -6,8 +6,11 @@ use App\Http\Controllers\Controller;
 
 class DashboardController extends Controller
 {
+    protected $title = 'Dashboard';
     public function index()
     {
-        return view('guru.dashboard.index');
+        $title = $this->title;
+
+        return view('guru.dashboard.index',compact('title'));
     }
 }

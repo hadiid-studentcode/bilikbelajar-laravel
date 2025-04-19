@@ -9,12 +9,18 @@ use Illuminate\Http\Request;
 
 class CapaianTujuanPembelajaranController extends Controller
 {
+
+    protected $title = 'tc/tp';
+
+
     public function index()
     {
+        $title = $this->title;
         $capaian = capaianPembelajaran::first();
         $tujuan = tujuanPembelajaran::first();
+        
 
-        return view('guru.cp_tp.index', compact('capaian', 'tujuan'));
+        return view('guru.cp_tp.index', compact('capaian', 'tujuan', 'title'));
     }
 
     public function store(Request $request)

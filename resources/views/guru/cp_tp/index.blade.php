@@ -1,70 +1,146 @@
-<!DOCTYPE html>
-<html lang="en">
+@extends('layouts.main')
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>CPTP | Guru</title>
-    <!-- Styles / Scripts -->
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @else
-    @endif
-</head>
+@push('css')
+    <style>
+        .textarea-wrapper {
+            margin-bottom: 2rem;
+        }
 
-<body>
-    <h1 class="text-center">Capaian dan Tujuan Pembelajaran</h1>
-        <a href="{{ route('guru.dashboard.index') }}">Dashboard</a> <br>
+        .textarea-counter {
+            font-size: 0.875rem;
+            color: #697a8d;
+            text-align: right;
+            margin-top: 0.25rem;
+        }
+    </style>
+@endpush
 
+@section('content')
+    <div class="container-xxl flex-grow-1 container-p-y">
+        <h4 class="fw-bold py-3 mb-4">Tujuan & Capaian Pembelajaran</h4>
 
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card mb-4">
+                    <h5 class="card-header">Input Tujuan dan Capaian Pembelajaran</h5>
+                    <div class="card-body">
+                        <form id="formTujuanCapaian"
+                            action="@if ($capaian && $tujuan) {{ route('guru.cptp.update', [$capaian->id, $tujuan->id]) }}@else{{ route('guru.cptp.store') }} @endif"
+                            method="POST">
+                            @csrf
+                            @if ($capaian && $tujuan)
+                                @method('PUT')
+                            @endif
+                            <div class="row">
+                                <div class="col-12 textarea-wrapper">
+                                    <label for="capaian_pembelajaran" class="form-label">Capaian Pembelajaran</label>
+                                    <textarea class="form-control" id="capaian_pembelajaran" name="cp" rows="8"
+                                        placeholder="Masukkan capaian pembelajaran...">{{ $capaian?->dekripsi }}</textarea>
+                                    <div class="textarea-counter">
+                                        <span id="capaian-count">0</span>/1000 karakter
+                                    </div>
+                                </div>
 
+                                <div class="col-12 textarea-wrapper">
+                                    <label for="tujuan_pembelajaran" class="form-label">Tujuan Pembelajaran</label>
+                                    <textarea class="form-control" id="tujuan_pembelajaran" name="tp" rows="8   "
+                                        placeholder="Masukkan tujuan pembelajaran...">{{ $tujuan?->dekripsi }}</textarea>
+                                    <div class="textarea-counter">
+                                        <span id="tujuan-count">0</span>/1000 karakter
+                                    </div>
+                                </div>
+                            </div>
 
-    @if ($capaian && $tujuan)
-        <form class="text-center container" action="{{ route('guru.cptp.update', [$capaian->id, $tujuan->id]) }}"
-            method="post">
-            @csrf
-            @method('PUT')
-            <div class="mb-3">
-                <label for="cp" class="form-label">Capaian Pembelajaran</label>
-                <textarea class="form-control" id="cp" name="cp" rows="7">{{ $capaian->dekripsi }}</textarea>
+                            <div class="row">
+                                <div class="col-12 d-flex gap-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        @if ($capaian && $tujuan)
+                                            Ubah
+                                        @else
+                                            Tambah
+                                        @endif (CTRL + S)
+                                    </button>
+                                    <button type="reset" class="btn btn-outline-secondary">Reset</button>
+                                    @if ($capaian && $tujuan)
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal">
+                                            Delete
+                                        </button>
+                                    @endif
+                                </div>
+                            </div>
+                        </form>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog"
+                            aria-labelledby="deleteModalLabel">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="deleteModalLabel">Konfirmasi Hapus</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                                        </button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <p>Apakah Anda yakin ingin menghapus data ini?</p>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                            Batal
+                                        </button>
+                                        @if ($capaian && $tujuan)
+                                            <form action="{{ route('guru.cptp.destroy', [$capaian->id, $tujuan->id]) }}"
+                                                method="post" class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-danger">Hapus</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="tp" class="form-label">Tujuan Pembelajaran</label>
-                <textarea class="form-control" id="tp" name="tp" rows="10">{{ $tujuan->dekripsi }}</textarea>
-            </div>
+        </div>
+    </div>
+@endsection
 
-            <button type="submit" class="btn btn-info">Ubah</button>
-        </form>
+@push('js')
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tujuanTextarea = document.getElementById('tujuan_pembelajaran');
+            const capaianTextarea = document.getElementById('capaian_pembelajaran');
+            const tujuanCount = document.getElementById('tujuan-count');
+            const capaianCount = document.getElementById('capaian-count');
 
-        <form action="{{ route('guru.cptp.destroy', [$capaian->id, $tujuan->id]) }}" method="post" class="container">
-            @csrf
-            @method('DELETE')
-            <button type="submit" class="btn btn-danger text-center">Delete</button>
+            // Initialize counters
+            updateCounter(tujuanTextarea, tujuanCount);
+            updateCounter(capaianTextarea, capaianCount);
 
-        </form>
-    @else
-        <form class="text-center container" action="{{ route('guru.cptp.store') }}" method="post">
-            @csrf
-            <div class="mb-3">
-                <label for="cp" class="form-label">Capaian Pembelajaran</label>
-                <textarea class="form-control" id="cp" name="cp" rows="7">peserta didik memiliki kemampuan untuk responsif terhadap isu-isu global dan berperan aktif dalam memberikan penyelesaian masalah. Kemampuan tersebut antara lain mengamati, mempertanyakan dan memprediksi, merencanakan dan melakukan penelitian, memproses dan menganalisis data dan informasi, mengevaluasi dan merefleksi, serta mengkomunikasikan dalam bentuk projek sederhana atau simulasi visual menggunakan aplikasi teknologi yang tersedia terkait dengan energi alternatif, pemanasan global, pencemaran lingkungan, nano teknologi, bioteknologi, kimia dalam kehidupan sehari-hari, pemanfaatan limbah dan bahan alam, pandemi akibat infeksi virus. Semua upaya tersebut diarahkan pada pencapaian tujuan pembangunan yang berkelanjutan (SDGs). Melalui keterampilan proses juga dibangun sikap ilmiah dan profil pelajar pancasila.</textarea>
-            </div>
-            <div class="mb-3">
-                <label for="tp" class="form-label">Tujuan Pembelajaran</label>
-                <textarea class="form-control" id="tp" name="tp" rows="10">Setelah mengikuti pembelajaran, peserta didik diharapkan mampu:
-1. Menjelaskan pengertian dan faktor penyebab perubahan lingkungan berdasarkan aspek alami dan aktivitas manusia.
-2. Menganalisis jenis-jenis pencemaran lingkungan serta dampaknya terhadap ekosistem.
-3. Mengidentifikasi strategi penanganan limbah sesuai jenis dan wujudnya (cair, padat, B3).
-4. Mendeskripsikan dinamika komunitas dan perubahan yang terjadi dalam suatu ekosistem.
-5. Menjelaskan bentuk adaptasi dan mitigasi terhadap perubahan lingkungan berdasarkan situasi geografis dan sosial.
-6. Mempresentasikan solusi kreatif dalam menjaga keseimbangan lingkungan dan pengelolaan limbah.</textarea>
-            </div>
+            function updateCounter(textarea, counter) {
+                if (!textarea || !counter) return;
+                counter.textContent = textarea.value.length;
+                if (textarea.value.length > 1000) {
+                    textarea.value = textarea.value.substring(0, 1000);
+                    counter.textContent = 1000;
+                }
+            }
 
-            <button type="submit" class="btn btn-primary">Simpan</button>
-        </form>
-    @endif
+            tujuanTextarea?.addEventListener('input', () => updateCounter(tujuanTextarea, tujuanCount));
+            capaianTextarea?.addEventListener('input', () => updateCounter(capaianTextarea, capaianCount));
 
-</body>
-
-</html>
+            // Modal handling
+            const deleteModal = document.getElementById('deleteModal');
+            if (deleteModal) {
+                deleteModal.addEventListener('shown.bs.modal', function() {
+                    const cancelButton = deleteModal.querySelector('.btn-outline-secondary');
+                    if (cancelButton) {
+                        cancelButton.focus();
+                    }
+                });
+            }
+        });
+    </script>
+@endpush
