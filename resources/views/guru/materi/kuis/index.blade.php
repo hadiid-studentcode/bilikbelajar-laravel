@@ -36,16 +36,29 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h5 class="mb-0">Daftar Kuis</h5>
                             <div class="d-flex flex-wrap gap-2">
-                                <button type="button" class="btn btn-primary d-flex align-items-center gap-1" data-bs-toggle="modal" data-bs-target="#createQuizModal">
+                                <a href="{{ route('guru.materi.kelas', $materi->kelas) }}" class="btn btn-secondary d-flex align-items-center gap-1">
+                                    <i class="bx bx-arrow-back"></i>
+                                    <span>Kembali</span>
+                                </a>
+
+                                <button type="button" class="btn btn-primary d-flex align-items-center gap-1"
+                                    data-bs-toggle="modal" data-bs-target="#createQuizModal">
                                     <i class="bx bx-plus"></i>
-                                    <span>@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif ({{ $materi->judul }}) Kuis</span>
+                                    <span>
+                                        @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
+                                            Edit
+                                        @else
+                                            Tambah
+                                        @endif ({{ $materi->judul }}) Kuis
+                                    </span>
                                 </button>
 
                                 @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
-                                    <form action="{{ route('guru.materi.kuis.destroy', $materi_id) }}" method="POST" id="deleteQuizForm">
+                                    <form action="{{ route('guru.materi.kuis.destroy', $materi_id) }}" method="POST"
+                                        id="deleteQuizForm">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="button" class="btn btn-danger d-flex align-items-center gap-1" 
+                                        <button type="button" class="btn btn-danger d-flex align-items-center gap-1"
                                             data-bs-toggle="modal" data-bs-target="#deleteQuizModal">
                                             <i class="bx bx-trash"></i>
                                             <span>Hapus Kuis</span>
@@ -58,14 +71,18 @@
                                             <div class="modal-content">
                                                 <div class="modal-header">
                                                     <h5 class="modal-title">Konfirmasi Hapus</h5>
-                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
                                                 </div>
                                                 <div class="modal-body">
-                                                    <p class="mb-0">Apakah Anda yakin ingin menghapus kuis ini? Tindakan ini tidak dapat dibatalkan.</p>
+                                                    <p class="mb-0">Apakah Anda yakin ingin menghapus kuis ini? Tindakan
+                                                        ini tidak dapat dibatalkan.</p>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                                                    <button type="button" class="btn btn-danger" onclick="document.getElementById('deleteQuizForm').submit()">Hapus</button>
+                                                    <button type="button" class="btn btn-secondary"
+                                                        data-bs-dismiss="modal">Batal</button>
+                                                    <button type="button" class="btn btn-danger"
+                                                        onclick="document.getElementById('deleteQuizForm').submit()">Hapus</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -76,7 +93,7 @@
                     </div>
                     <div class="card-body">
 
-                        <div class="card">
+                        {{-- <div class="card">
                             <div class="card-body">
                                 <div class="row g-3">
                                     <div class="col-md-3 col-6">
@@ -125,7 +142,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
 
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered table-hover">
@@ -133,79 +150,46 @@
                                     <tr>
                                         <th>No</th>
                                         <th>Nama Siswa</th>
-                                        <th>Status</th>
-                                        <th>Waktu Mulai</th>
-                                        <th>Waktu Selesai</th>
-                                        <th>Nilai</th>
-                                        <th>Detail</th>
+                                        <th>Total Nilai</th>
+                                        <th>Jumlah Benar</th>
+                                        <th>Jumlah Salah</th>
+                                        <th>Jumlah Tidak Dijawab</th>
+                                        <th>Catatan</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>Ahmad Rizky</td>
-                                        <td><span class="badge bg-success">Selesai</span></td>
-                                        <td>19/04/2025 08:00</td>
-                                        <td>19/04/2025 09:00</td>
-                                        <td><span class="fw-bold">85</span>/100</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-info">
-                                                <i class="bx bx-detail"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Budi Santoso</td>
-                                        <td><span class="badge bg-warning">Sedang Mengerjakan</span></td>
-                                        <td>19/04/2025 08:30</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-info">
-                                                <i class="bx bx-detail"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Citra Dewi</td>
-                                        <td><span class="badge bg-success">Selesai</span></td>
-                                        <td>19/04/2025 08:15</td>
-                                        <td>19/04/2025 09:10</td>
-                                        <td><span class="fw-bold">90</span>/100</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-info">
-                                                <i class="bx bx-detail"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>4</td>
-                                        <td>Dini Putri</td>
-                                        <td><span class="badge bg-success">Selesai</span></td>
-                                        <td>19/04/2025 08:05</td>
-                                        <td>19/04/2025 09:05</td>
-                                        <td><span class="fw-bold">95</span>/100</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-info">
-                                                <i class="bx bx-detail"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>5</td>
-                                        <td>Eko Prasetyo</td>
-                                        <td><span class="badge bg-warning">Sedang Mengerjakan</span></td>
-                                        <td>19/04/2025 08:45</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>
-                                            <a href="#" class="btn btn-sm btn-info">
-                                                <i class="bx bx-detail"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
+                                    @foreach ($nilaiKuis as $nk)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $nk->siswa->nama }}</td>
+                                            <td><span class="badge bg-success">{{ $nk->total_nilai }}/100</span></td>
+                                            <td><span class="badge bg-success">{{ $nk->jumlah_benar }}</span></td>
+                                            <td><span class="badge bg-danger">{{ $nk->jumlah_salah }}</span></td>
+                                            <td><span class="badge bg-warning">{{ $nk->jumlah_tidak_dijawab }}</span></td>
+                                            <td>{{ $nk->catatan }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                                                        data-bs-target="#editkuis{{ $nk->id }}">
+                                                        <i class="bx bx-edit"></i>
+                                                    </button>
+
+                                                    <button data-bs-toggle="modal"
+                                                        data-bs-target="#detailJawabanModal_{{ $nk->siswa_id }}"
+                                                        class="btn btn-sm btn-info">
+                                                        <i class="bx bx-detail"></i>
+                                                    </button>
+
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteJawabanModal_{{ $nk->id }}">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -215,12 +199,145 @@
         </div>
     </div>
 
+    <!-- Modal Detail Jawaban per Siswa -->
+    @foreach ($nilaiKuis as $nk)
+        <div class="modal fade" id="detailJawabanModal_{{ $nk->siswa_id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail Jawaban Kuis</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Nama Siswa</th>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ $nk->siswa->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Waktu Selesai</th>
+                                        <td>:</td>
+                                        <td>{{ $nk->created_at->format('d/m/Y H:i') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>:</td>
+                                        <td><span class="badge bg-success">Selesai</span></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Nilai Total</th>
+                                        <td>:</td>
+                                        <td><span class="fw-bold">{{ $nk->total_nilai }}</span>/100</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title mb-0">Rincian Jawaban</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="accordion" id="accordionJawaban_{{ $nk->siswa_id }}">
+                                    @foreach ($jawabanKuis->where('siswa_id', $nk->siswa_id) as $jawaban)
+                                        <div class="accordion-item">
+                                            <h2 class="accordion-header">
+                                                <button class="accordion-button {{ $loop->first ? '' : 'collapsed' }}"
+                                                    type="button" data-bs-toggle="collapse"
+                                                    data-bs-target="#soal{{ $jawaban->kuis_id }}_{{ $nk->siswa_id }}">
+                                                    <div
+                                                        class="d-flex justify-content-between align-items-center w-100 me-3">
+                                                        <span>Soal #{{ $loop->iteration }}</span>
+                                                        <span
+                                                            class="badge {{ $jawaban->poin > 0 ? 'bg-success' : 'bg-danger' }}">
+                                                            {{ $jawaban->poin > 0 ? 'Benar' : 'Salah' }}
+                                                            ({{ $jawaban->poin > 0 ? '+' : '' }}{{ $jawaban->poin }})
+                                                        </span>
+                                                    </div>
+                                                </button>
+                                            </h2>
+                                            <div id="soal{{ $jawaban->kuis_id }}_{{ $nk->siswa_id }}"
+                                                class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}">
+                                                <div class="accordion-body">
+                                                    <p class="fw-medium mb-3">{{ $jawaban->kuis->pertanyaan }}</p>
+                                                    <div class="mb-3">
+                                                        <div class="fw-medium mb-1">Pilihan Jawaban:</div>
+                                                        @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
+                                                            <div class="form-check mb-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                    {{ $jawaban->jawaban == $opsi ? 'checked' : '' }}
+                                                                    disabled>
+                                                                <label
+                                                                    class="form-check-label {{ $jawaban->kuis->jawaban_benar == $opsi ? 'text-success' : '' }}
+                                                        {{ $jawaban->jawaban == $opsi && $jawaban->jawaban != $jawaban->kuis->jawaban_benar ? 'text-danger' : '' }}">
+                                                                    @if ($jawaban->kuis->jawaban_benar == $opsi)
+                                                                        <i class="bx bx-check"></i>
+                                                                    @endif
+                                                                    @if ($jawaban->jawaban == $opsi && $jawaban->jawaban != $jawaban->kuis->jawaban_benar)
+                                                                        <i class="bx bx-x"></i>
+                                                                    @endif
+                                                                    {{ $jawaban->kuis->{'jawaban_' . $opsi} }}
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- modal edit kuis untuk menambahkan catatan --}}
+        <div class="modal fade" id="editkuis{{ $nk->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Catatan Kuis</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form action="" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="catatan" class="form-label">Catatan</label>
+                                <textarea class="form-control" id="catatan" name="catatan" rows="4">{{ $nk->catatan }}</textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    @endforeach
+
+
     <!-- Modal Tambah Kuis -->
     <div class="modal fade" id="createQuizModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif Kuis Baru</h5>
+                    <h5 class="modal-title">
+                        @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
+                            Edit
+                        @else
+                            Tambah
+                        @endif Kuis Baru
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -326,8 +443,14 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">@if(isset($kuis) && !empty($kuis) && $kuis->count() >= 1) Edit @else Tambah @endif
-                                Kuis</button>
+                            <button type="submit" class="btn btn-primary">
+                                @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
+                                    Edit
+                                @else
+                                    Tambah
+                                @endif
+                                Kuis
+                            </button>
 
                         </div>
                     </form>
@@ -336,158 +459,10 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal Detail Jawaban -->
-    <div class="modal fade" id="detailJawabanModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detail Jawaban Kuis</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-4">
-                        <div class="col-md-12">
-                            <table class="table table-sm">
-                                <tr>
-                                    <th>Nama Siswa</th>
-                                    <td>:</td>
-                                    <td class="fw-bold">Ahmad Rizky</td>
-                                </tr>
-                                <tr>
-                                    <th>Waktu Mulai</th>
-                                    <td>:</td>
-                                    <td>19/04/2025 08:00</td>
-                                </tr>
-                                <tr>
-                                    <th>Waktu Selesai</th>
-                                    <td>:</td>
-                                    <td>19/04/2025 09:00</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>:</td>
-                                    <td><span class="badge bg-success">Selesai</span></td>
-                                </tr>
-                                <tr>
-                                    <th>Nilai Total</th>
-                                    <td>:</td>
-                                    <td><span class="fw-bold">85</span>/100</td>
-                                </tr>
-                            </table>
-                        </div>
-                    </div>
-
-                    <div class="card">
-                        <div class="card-header">
-                            <h6 class="card-title mb-0">Rincian Jawaban</h6>
-                        </div>
-                        <div class="card-body">
-                            <div class="accordion" id="accordionJawaban">
-                                <!-- Soal 1 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                            data-bs-target="#soal1">
-                                            <div class="d-flex justify-content-between align-items-center w-100 me-3">
-                                                <span>Soal #1</span>
-                                                <span class="badge bg-success">Benar (+10)</span>
-                                            </div>
-                                        </button>
-                                    </h2>
-                                    <div id="soal1" class="accordion-collapse collapse show">
-                                        <div class="accordion-body">
-                                            <p class="fw-medium mb-3">Apa yang dimaksud dengan algoritma?</p>
-                                            <div class="mb-3">
-                                                <div class="fw-medium mb-1">Pilihan Jawaban:</div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" checked disabled>
-                                                    <label class="form-check-label text-success">
-                                                        <i class="bx bx-check"></i> Langkah-langkah sistematis untuk
-                                                        menyelesaikan masalah
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label">
-                                                        Kumpulan data yang terstruktur
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label">
-                                                        Program komputer
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label">
-                                                        Bahasa pemrograman
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- Soal 2 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button collapsed" type="button"
-                                            data-bs-toggle="collapse" data-bs-target="#soal2">
-                                            <div class="d-flex justify-content-between align-items-center w-100 me-3">
-                                                <span>Soal #2</span>
-                                                <span class="badge bg-danger">Salah (+0)</span>
-                                            </div>
-                                        </button>
-                                    </h2>
-                                    <div id="soal2" class="accordion-collapse collapse">
-                                        <div class="accordion-body">
-                                            <p class="fw-medium mb-3">Manakah yang bukan merupakan tipe data primitif?</p>
-                                            <div class="mb-3">
-                                                <div class="fw-medium mb-1">Pilihan Jawaban:</div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label">
-                                                        Integer
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label">
-                                                        Boolean
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" checked disabled>
-                                                    <label class="form-check-label text-danger">
-                                                        <i class="bx bx-x"></i> Float
-                                                    </label>
-                                                </div>
-                                                <div class="form-check mb-2">
-                                                    <input class="form-check-input" type="radio" disabled>
-                                                    <label class="form-check-label text-success">
-                                                        <i class="bx bx-check"></i> Array (Jawaban Benar)
-                                                    </label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @push('js')
-    <script>
+    {{-- <script>
         document.addEventListener('DOMContentLoaded', function() {
             // Handle detail button click
             const detailButtons = document.querySelectorAll('.btn-info');
@@ -499,5 +474,5 @@
                 });
             });
         });
-    </script>
+    </script> --}}
 @endpush

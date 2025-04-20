@@ -3,7 +3,10 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
+use App\Models\jawabanKuis;
 use App\Models\Kuis;
+use App\Models\Materi;
+use App\Models\nilaiKuis;
 use Illuminate\Http\Request;
 
 class KuisController extends Controller
@@ -15,8 +18,20 @@ class KuisController extends Controller
 
         $title = $this->title;
         $kuis = Kuis::where('materi_id', $materi_id)->get();
+        $nilaiKuis = nilaiKuis::with('siswa', 'materi')->where('materi_id', $materi_id)->get();
+        $jawabanKuis = jawabanKuis::with('kuis')
+            ->whereHas('kuis', function ($query) use ($materi_id) {
+                $query->where('materi_id', $materi_id);
+            })
+            ->get();
 
-        return view('guru.materi.kuis.index', compact('title', 'materi_id', 'kuis'));
+            $materi = Materi::select('kelas')->where('id', $materi_id)->first();
+           
+
+
+     
+
+        return view('guru.materi.kuis.index', compact('title', 'materi_id', 'kuis', 'nilaiKuis', 'jawabanKuis','materi'));
     }
 
     public function store(Request $request, $materi_id)
@@ -42,7 +57,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil ditambahkan');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menambahkan kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal menambahkan kuis: ' . $e->getMessage());
         }
     }
 
@@ -71,7 +86,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil diperbarui');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memperbarui kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal memperbarui kuis: ' . $e->getMessage());
         }
     }
 
@@ -82,7 +97,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil dihapus');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal menghapus kuis: ' . $e->getMessage());
         }
     }
 }
