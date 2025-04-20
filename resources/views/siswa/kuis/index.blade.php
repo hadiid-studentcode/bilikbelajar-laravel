@@ -379,15 +379,14 @@
                 kuis: @json($kuis),
                 quizId: @json($kuis[0]->id_kuis ?? null),
                 currentQuestion: 0,
-                answers: new Array(@json($kuis->count())).fill(
-                ''), // Changed from -1 to empty string
+                answers: new Array(@json($kuis->count())).fill(''),
                 quizFinished: false,
                 finalScore: 0,
                 correctAnswers: 0,
+                csrfToken: document.querySelector('meta[name="csrf-token"]')?.content || '',
 
                 init() {
                     this.startTimer(600);
-
                 },
 
                 get progress() {
@@ -395,7 +394,6 @@
                 },
 
                 get currentQuestionData() {
-
                     const question = this.kuis[this.currentQuestion];
                     return {
                         question: question.pertanyaan,
@@ -445,49 +443,38 @@
 
                 finishQuiz() {
                     this.correctAnswers = this.answers.reduce((acc, answer, index) => {
-                        return acc + (answer.toLowerCase() === this.kuis[index].jawaban_benar
-                            .toLowerCase() ? 1 : 0);
+                        return acc + (answer?.toLowerCase() === this.kuis[index].jawaban_benar.toLowerCase() ? 1 : 0);
                     }, 0);
 
-                    const totalPossiblePoints = this.kuis.reduce((acc, question) => acc + question
-                        .poin_benar, 0);
+                    const totalPossiblePoints = this.kuis.reduce((acc, question) => acc + question.poin_benar, 0);
                     const earnedPoints = this.kuis.reduce((acc, question, index) => {
-                        return acc + (this.answers[index].toLowerCase() === this.kuis[index]
-                            .jawaban_benar.toLowerCase() ? this.kuis[index].poin_benar : 0);
+                        return acc + (this.answers[index]?.toLowerCase() === question.jawaban_benar.toLowerCase() ? question.poin_benar : 0);
                     }, 0);
 
                     this.finalScore = (earnedPoints / totalPossiblePoints) * 100;
                     this.quizFinished = true;
 
+                    const formData = new FormData();
+                    formData.append('quiz_id', this.quizId);
+                    formData.append('answers', JSON.stringify(this.answers));
+                    formData.append('score', this.finalScore);
+                    formData.append('correct_answers', this.correctAnswers);
+                    formData.append('_token', this.csrfToken);
 
-                    console.log(this.quizId)
-                    console.log(this.answers)
-                    console.log(this.finalScore)
-                    console.log(this.correctAnswers)
-
-                    // Send data to controller
                     fetch('/siswa/kuis/submit', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
-                                    .content,
-                                'Accept': 'application/json'
-                            },
-                            body: JSON.stringify({
-                                quiz_id: this.quizId,
-                                answers: this.answers,
-                                score: this.finalScore,
-                                correct_answers: this.correctAnswers
-                            })
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                console.log('Quiz submitted successfully');
-                            }
-                        })
-                        .catch(error => console.error('Error:', error));
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('Quiz submitted successfully');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
                 },
 
                 startTimer(duration) {
@@ -501,28 +488,6 @@
                         }
                         timer--;
                     }, 1000);
-                },
-
-                async submitQuiz() {
-                    try {
-                        const form = document.getElementById('quizForm');
-                        const response = await fetch(form.action, {
-                            method: 'POST',
-                            body: new FormData(form),
-                            headers: {
-                                'Accept': 'application/json'
-                            }
-                        });
-
-                        if (response.ok) {
-                            const result = await response.json();
-                            if (result.success) {
-                                window.location.href = '/siswa/kuis/hasil/' + this.quizId;
-                            }
-                        }
-                    } catch (error) {
-                        console.error('Error submitting quiz:', error);
-                    }
                 }
             }));
         });
