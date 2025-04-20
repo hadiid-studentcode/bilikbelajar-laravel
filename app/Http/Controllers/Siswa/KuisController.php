@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\jawabanKuis;
 use App\Models\Kuis;
+use Illuminate\Http\Request;
 
 class KuisController extends Controller
 {
@@ -21,10 +23,19 @@ class KuisController extends Controller
         return view('siswa.kuis.index', compact('materi_id', 'title','kuis'));
     }
 
-    public function show($materi_id)
+    public function submit(Request $request)
     {
-        $title = $this->title;
 
-        return view('siswa.kuis.show', compact('materi_id', 'title'));
+        dd($request->all());
+
+        jawabanKuis::create([
+            'siswa_id' => session('siswa')->id,
+            'kuis_id' => $request->kuis_id,
+            'jawaban' => $request->jawaban,
+            'poin' => $request->poin,
+        ]);
+     
+
+
     }
 }

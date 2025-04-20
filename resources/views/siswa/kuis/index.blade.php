@@ -351,7 +351,7 @@
                         </div>
                     </div>
 
-                    <form id="quizForm" method="POST" action="/siswa/kuis/submit" @submit.prevent="submitQuiz">
+                    {{-- <form id="quizForm" method="POST" action="{{ route('siswa.kuis.submit') }}" @submit.prevent="submitQuiz">
                         @csrf
                         <input type="hidden" name="quiz_id" :value="quizId">
                         <input type="hidden" name="answers" :value="JSON.stringify(answers)">
@@ -360,7 +360,7 @@
                         <button type="submit" class="btn btn-success btn-lg mb-3">
                             <i class="fas fa-save me-2"></i>Simpan Hasil
                         </button>
-                    </form>
+                    </form> --}}
 
                     <a href="/materi" class="btn btn-primary btn-lg">
                         <i class="fas fa-book-open me-2"></i>Lanjut ke Materi
@@ -373,20 +373,22 @@
 @endsection
 
 @push('js')
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('quiz', () => ({
                 kuis: @json($kuis),
                 quizId: @json($kuis[0]->id_kuis ?? null),
+                questionIds: @json($kuis->pluck('id')->toArray()),
                 currentQuestion: 0,
                 answers: new Array(@json($kuis->count())).fill(''),
                 quizFinished: false,
                 finalScore: 0,
                 correctAnswers: 0,
-                csrfToken: document.querySelector('meta[name="csrf-token"]')?.content || '',
+                csrfToken: @json(session()->token()),
 
                 init() {
-                    this.startTimer(600);
+                    // this.startTimer(600);
                 },
 
                 get progress() {
@@ -441,54 +443,56 @@
                     }
                 },
 
-                finishQuiz() {
+                async finishQuiz() {
                     this.correctAnswers = this.answers.reduce((acc, answer, index) => {
-                        return acc + (answer?.toLowerCase() === this.kuis[index].jawaban_benar.toLowerCase() ? 1 : 0);
+                        return acc + (answer?.toLowerCase() === this.kuis[index]
+                            .jawaban_benar.toLowerCase() ? 1 : 0);
                     }, 0);
 
-                    const totalPossiblePoints = this.kuis.reduce((acc, question) => acc + question.poin_benar, 0);
+                    const totalPossiblePoints = this.kuis.reduce((acc, question) => acc + question
+                        .poin_benar, 0);
                     const earnedPoints = this.kuis.reduce((acc, question, index) => {
-                        return acc + (this.answers[index]?.toLowerCase() === question.jawaban_benar.toLowerCase() ? question.poin_benar : 0);
+                        return acc + (this.answers[index]?.toLowerCase() === question
+                            .jawaban_benar.toLowerCase() ? question.poin_benar : 0);
                     }, 0);
 
                     this.finalScore = (earnedPoints / totalPossiblePoints) * 100;
                     this.quizFinished = true;
 
                     const formData = new FormData();
-                    formData.append('quiz_id', this.quizId);
-                    formData.append('answers', JSON.stringify(this.answers));
+                    formData.append('question_ids', JSON.stringify(this.questionIds));
+                    formData.append('answers', JSON.stringify(this.answers.map((answer, index) => ({
+                        question_id: this.questionIds[index],
+                        answer: answer || ''
+                    }))));
                     formData.append('score', this.finalScore);
                     formData.append('correct_answers', this.correctAnswers);
                     formData.append('_token', this.csrfToken);
 
-                    fetch('/siswa/kuis/submit', {
-                        method: 'POST',
-                        body: formData,
-                        headers: {
-                            'Accept': 'application/json'
-                        }
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('Quiz submitted successfully');
-                        }
-                    })
-                    .catch(error => console.error('Error:', error));
+                    await axios.post('{{ route('siswa.kuis.submit') }}', formData)
+                        .then(response => {
+                            if (response.data.success) {
+                                console.log('Quiz submitted successfully');
+                                window.location.href = '/siswa/kuis/hasil/' + this.quizId;
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error submitting quiz:', error);
+                        });
                 },
 
-                startTimer(duration) {
-                    let timer = duration;
-                    const countdown = setInterval(() => {
-                        if (this.quizFinished || timer < 0) {
-                            clearInterval(countdown);
-                            if (!this.quizFinished) {
-                                this.finishQuiz();
-                            }
-                        }
-                        timer--;
-                    }, 1000);
-                }
+                // startTimer(duration) {
+                //     let timer = duration;
+                //     const countdown = setInterval(() => {
+                //         if (this.quizFinished || timer < 0) {
+                //             clearInterval(countdown);
+                //             if (!this.quizFinished) {
+                //                 this.finishQuiz();
+                //             }
+                //         }
+                //         timer--;
+                //     }, 1000);
+                // }
             }));
         });
     </script>
