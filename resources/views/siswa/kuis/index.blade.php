@@ -339,12 +339,12 @@
             <div class="container py-4">
               <div class="results-card">
                 <div class="results-header">
-                  <div class="result-circle mx-auto">
-                    <div class="score-display">
+                    <div class="result-circle mx-auto" style="width: 180px; height: 180px;">
+                    <div class="score-display" style="font-size: 3.5rem;">
                        {{ $nilaiKuis->total_nilai }}
-                      <span class="fs-6">/100</span>
+                      <span class="fs-5">/100</span>
                     </div>
-                  </div>
+                    </div>
                   <h3 class="results-title mt-4">Selamat!</h3>
                   <p class="text-muted">Kamu telah menyelesaikan kuis</p>
                 </div>
