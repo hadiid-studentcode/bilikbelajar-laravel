@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
+use App\Models\Kuis;
 
 class KuisController extends Controller
 {
@@ -15,8 +16,9 @@ class KuisController extends Controller
         if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
+        $kuis = Kuis::where('materi_id', $materi_id)->get();
 
-        return view('siswa.kuis.index', compact('materi_id', 'title'));
+        return view('siswa.kuis.index', compact('materi_id', 'title','kuis'));
     }
 
     public function show($materi_id)
