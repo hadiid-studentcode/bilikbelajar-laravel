@@ -261,7 +261,7 @@
                                                         <i class="bx bx-book-open me-1"></i>
                                                          Materi
                                                     </a>
-                                                    <a href="#" class="btn btn-info btn-sm">
+                                                    <a href="{{ route('siswa.kuis.index', $m->id) }}" class="btn btn-info btn-sm">
                                                         <i class="bx bx-task me-1"></i>
                                                         Kuis
                                                     </a>

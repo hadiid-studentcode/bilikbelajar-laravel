@@ -8,10 +8,10 @@ use App\Models\Materi;
 class MateriController extends Controller
 {
     protected $title = 'Materi';
-    public function show($id)
+    public function show($materi_id)
     {
         $title = $this->title;
-        $materi = Materi::find($id);
+        $materi = Materi::find($materi_id);
 
         return view('siswa.materi.show', compact('materi', 'title'));
     }

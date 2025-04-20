@@ -5,6 +5,7 @@ use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
+use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -59,21 +60,13 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 
     Route::prefix('/materi')->name('materi.')->group(function () {
-        Route::get('/{id}', [SiswaMateriController::class, 'show'])->name('show');
+        Route::get('/{materi_id}', [SiswaMateriController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('/kuis')->name('kuis.')->group(function () {
+        Route::get('/{materi_id}', [SiswaKuisController::class, 'index'])->name('index');
+        Route::post('/submit', [SiswaKuisController::class, 'submit'])->name('submit');
     });
 });
-
-
-Route::get('/text-editor', function () {
-    $title = 'Text Editor';
-   return view('text-editor', compact('title'));
-});
-
-Route::post('/text-editor', function (Request $request) {
-  $content = $request->content;
-    $title = 'Text Editor';
-
-    return view('show-editor', compact('content', 'title'));
-})->name('text-editor');
 
 include __DIR__ . '/auth.php';
