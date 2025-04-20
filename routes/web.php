@@ -49,7 +49,6 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
             Route::put('/{materi_id}/update', [GuruKuisController::class, 'update'])->name('update');
             Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
-            Route::put('/update-catatan/{nilai_kuis}', [GuruKuisController::class, 'updateCatatan'])->name('guru.materi.kuis.update.catatan');
         });
     });
 });

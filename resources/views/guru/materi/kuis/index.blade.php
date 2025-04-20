@@ -154,7 +154,6 @@
                                         <th>Jumlah Benar</th>
                                         <th>Jumlah Salah</th>
                                         <th>Jumlah Tidak Dijawab</th>
-                                        <th>Catatan</th>
                                         <th>Aksi</th>
                                     </tr>
                                 </thead>
@@ -167,13 +166,9 @@
                                             <td><span class="badge bg-success">{{ $nk->jumlah_benar }}</span></td>
                                             <td><span class="badge bg-danger">{{ $nk->jumlah_salah }}</span></td>
                                             <td><span class="badge bg-warning">{{ $nk->jumlah_tidak_dijawab }}</span></td>
-                                            <td>{{ $nk->catatan }}</td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                                                        data-bs-target="#editkuis{{ $nk->id }}">
-                                                        <i class="bx bx-edit"></i>
-                                                    </button>
+                                                   
 
                                                     <button data-bs-toggle="modal"
                                                         data-bs-target="#detailJawabanModal_{{ $nk->siswa_id }}"
@@ -298,31 +293,7 @@
                 </div>
             </div>
         </div>
-        {{-- modal edit kuis untuk menambahkan catatan --}}
-        <div class="modal fade" id="editkuis{{ $nk->id }}" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Catatan Kuis</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <form action="" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="modal-body">
-                            <div class="mb-3">
-                                <label for="catatan" class="form-label">Catatan</label>
-                                <textarea class="form-control" id="catatan" name="catatan" rows="4">{{ $nk->catatan }}</textarea>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
+    
     @endforeach
 
 
