@@ -277,98 +277,205 @@
             margin-bottom: 1rem;
             color: #4361ee;
         }
+
+        .results-card {
+            max-width: 600px;
+            margin: 2rem auto;
+            background: #fff;
+            border-radius: 15px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .results-header {
+            padding: 2rem 1rem;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+
+        .results-body {
+            padding: 2rem 1rem;
+        }
+
+        .score-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #4361ee;
+            margin: 1rem 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+
+        .stat-card {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 576px) {
+            .results-card {
+                margin: 1rem;
+            }
+
+            .score-display {
+                font-size: 2.5rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 @endpush
 
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y p-2>
-        <div class="quiz-container" x-data="quiz">
-        <!-- Quiz Header -->
-        <div class="quiz-header text-center mb-5" :class="{ 'hidden': quizFinished }">
-            <h2 class="mb-3">Kuis</h2>
-            <div class="progress mb-3">
-                <div class="progress-bar" id="quiz-progress" role="progressbar" :style="`width: ${progress}%`">
-                </div>
-            </div>
-            <p class="text-muted">
-                Question <span x-text="currentQuestion + 1"></span> of
-                <span x-text="kuis.length"></span>
-            </p>
-        </div>
-
-        <!-- Quiz Content -->
-        <div id="quiz-content" x-show="!quizFinished">
-            <div class="question-container">
-                <h4 class="mb-4" x-text="currentQuestionData.question"></h4>
-                <div class="options-container">
-                    <template x-for="(option, index) in currentQuestionData.options" :key="index">
-                        <div class="option mb-3">
-                            <input type="radio" :id="'option' + index" name="quiz" :value="getAnswerLetter(index)"
-                                x-model="answers[currentQuestion]">
-                            <label :for="'option' + index" class="ms-2" x-text="option"></label>
-                        </div>
-                    </template>
-                </div>
-            </div>
-        </div>
-
-        <!-- Quiz Navigation -->
-        <div class="quiz-navigation d-flex justify-content-between mt-1" :class="{ 'hidden': quizFinished }">
-            <button class="btn btn-outline-secondary" @click="previousQuestion" :disabled="currentQuestion === 0">
-                Previous
-            </button>
-            <button class="btn btn-primary" @click="nextQuestion"
-                x-text="currentQuestion === kuis.length - 1 ? 'Finish' : 'Next'">
-            </button>
-        </div>
-
-        <!-- Results -->
-        <template x-if="quizFinished == true">
-            <div class="quiz-results-container" x-show="quizFinished" x-cloak>
-                <div class="quiz-results-content">
-                    <div class="result-circle mb-4">
-                        <div>
-                            <span x-text="Math.round(finalScore)" class="score"></span>
-                            <span class="small">/ 100</span>
-                        </div>
+    <div class="container-xxl flex-grow-1 container-p-y p-2">
+        @if ($nilaiKuis)
+            <div class="container py-4">
+              <div class="results-card">
+                <div class="results-header">
+                  <div class="result-circle mx-auto">
+                    <div class="score-display">
+                       {{ $nilaiKuis->total_nilai }}
+                      <span class="fs-6">/100</span>
                     </div>
-                    <h3 class="results-title">Selamat!</h3>
-                    <p class="text-muted mb-4">Kamu telah menyelesaikan kuis dengan hasil:</p>
-                    <div class="result-stats mb-4">
-                        <div class="stat-item">
-                            <div class="stat-value text-success">
-                                <i class="fas fa-check-circle me-1"></i>
-                                <span x-text="correctAnswers"></span>
-                            </div>
-                            <div class="stat-label">Benar</div>
-                        </div>
-                        <div class="stat-item">
-                            <div class="stat-value text-danger">
-                                <i class="fas fa-times-circle me-1"></i>
-                                <span x-text="wrongAnswers"></span>
-                            </div>
-                            <div class="stat-label">Salah</div>
-                        </div>
+                  </div>
+                  <h3 class="results-title mt-4">Selamat!</h3>
+                  <p class="text-muted">Kamu telah menyelesaikan kuis</p>
+                </div>
+
+                <div class="results-body">
+                  <div class="stats-grid">
+                    <div class="stat-card">
+                      <div class="stat-value text-success fs-4">
+                        <i class="fas fa-check-circle"></i>
+                        <span>{{ $nilaiKuis->jumlah_benar }}</span>
+                      </div>
+                      <div class="stat-label mt-2">Jawaban Benar</div>
                     </div>
+                    <div class="stat-card">
+                      <div class="stat-value text-danger fs-4">
+                        <i class="fas fa-times-circle"></i>
+                        <span>{{ $nilaiKuis->jumlah_salah }}</span>
+                      </div>
+                      <div class="stat-label mt-2">Jawaban Salah</div>
+                    </div>
+                  </div>
 
-                    {{-- <form id="quizForm" method="POST" action="{{ route('siswa.kuis.submit') }}" @submit.prevent="submitQuiz">
-                        @csrf
-                        <input type="hidden" name="quiz_id" :value="quizId">
-                        <input type="hidden" name="answers" :value="JSON.stringify(answers)">
-                        <input type="hidden" name="score" :value="finalScore">
-                        <input type="hidden" name="correct_answers" :value="correctAnswers">
-                        <button type="submit" class="btn btn-success btn-lg mb-3">
-                            <i class="fas fa-save me-2"></i>Simpan Hasil
-                        </button>
-                    </form> --}}
+                  @if($nilaiKuis->catatan)
+                  <div class="mt-4 p-3 bg-light rounded">
+                    <h5 class="mb-3"><i class="fas fa-sticky-note me-2"></i>Catatan:</h5>
+                    <p class="text-muted mb-0">
+                     {{ $nilaiKuis->catatan }}
+                    </p>
+                  </div>
+                  @endif
 
-                    <a href="/materi" class="btn btn-primary btn-lg">
-                        <i class="fas fa-book-open me-2"></i>Lanjut ke Materi
+                  <div class="d-grid gap-2 mt-4">
+                    <a href="{{ route('siswa.dashboard.index') }}" 
+                       class="btn btn-primary btn-lg rounded-pill">
+                      <i class="fas fa-home me-2"></i>
+                      Kembali ke Dashboard
                     </a>
+                  </div>
                 </div>
+              </div>
             </div>
-        </template>
-    </div>
+        @else
+            <div class="quiz-container" x-data="quiz">
+                <!-- Quiz Header -->
+                <div class="quiz-header text-center mb-5" :class="{ 'hidden': quizFinished }">
+                    <h2 class="mb-3">Kuis</h2>
+                    <div class="progress mb-3">
+                        <div class="progress-bar" id="quiz-progress" role="progressbar" :style="`width: ${progress}%`">
+                        </div>
+                    </div>
+                    <p class="text-muted">
+                        Question <span x-text="currentQuestion + 1"></span> of
+                        <span x-text="kuis.length"></span>
+                    </p>
+                </div>
+
+                <!-- Quiz Content -->
+                <div id="quiz-content" x-show="!quizFinished">
+                    <div class="question-container">
+                        <h4 class="mb-4" x-text="currentQuestionData.question"></h4>
+                        <div class="options-container">
+                            <template x-for="(option, index) in currentQuestionData.options" :key="index">
+                                <div class="option mb-3">
+                                    <input type="radio" :id="'option' + index" name="quiz"
+                                        :value="getAnswerLetter(index)" x-model="answers[currentQuestion]">
+                                    <label :for="'option' + index" class="ms-2" x-text="option"></label>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quiz Navigation -->
+                <div class="quiz-navigation d-flex justify-content-between mt-1" :class="{ 'hidden': quizFinished }">
+                    <button class="btn btn-outline-secondary" @click="previousQuestion" :disabled="currentQuestion === 0">
+                        Previous
+                    </button>
+                    <button class="btn btn-primary" @click="nextQuestion"
+                        x-text="currentQuestion === kuis.length - 1 ? 'Finish' : 'Next'">
+                    </button>
+                </div>
+
+                <!-- Results -->
+                <template x-if="quizFinished == true">
+                    <div class="quiz-results-container" x-show="quizFinished" x-cloak>
+                        <div class="quiz-results-content">
+                            <div class="result-circle mb-4">
+                                <div>
+                                    <span x-text="Math.round(finalScore)" class="score"></span>
+                                    <span class="small">/ 100</span>
+                                </div>
+                            </div>
+                            <h3 class="results-title">Selamat!</h3>
+                            <p class="text-muted mb-4">Kamu telah menyelesaikan kuis dengan hasil:</p>
+                            <div class="result-stats mb-4">
+                                <div class="stat-item">
+                                    <div class="stat-value text-success">
+                                        <i class="fas fa-check-circle me-1"></i>
+                                        <span x-text="correctAnswers"></span>
+                                    </div>
+                                    <div class="stat-label">Benar</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-value text-danger">
+                                        <i class="fas fa-times-circle me-1"></i>
+                                        <span x-text="wrongAnswers"></span>
+                                    </div>
+                                    <div class="stat-label">Salah</div>
+                                </div>
+                            </div>
+
+                            {{-- <form id="quizForm" method="POST" action="{{ route('siswa.kuis.submit') }}" @submit.prevent="submitQuiz">
+                            @csrf
+                            <input type="hidden" name="quiz_id" :value="quizId">
+                            <input type="hidden" name="answers" :value="JSON.stringify(answers)">
+                            <input type="hidden" name="score" :value="finalScore">
+                            <input type="hidden" name="correct_answers" :value="correctAnswers">
+                            <button type="submit" class="btn btn-success btn-lg mb-3">
+                                <i class="fas fa-save me-2"></i>Simpan Hasil
+                            </button>
+                        </form> --}}
+
+                            <a href="{{ route('siswa.dashboard.index') }}" class="btn btn-primary btn-lg">
+                                <i class="fas fa-book-open me-2"></i>Selesai
+                            </a>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        @endif
+
     </div>
 @endsection
 
@@ -382,10 +489,13 @@
                 questionIds: @json($kuis->pluck('id')->toArray()),
                 currentQuestion: 0,
                 answers: new Array(@json($kuis->count())).fill(''),
+                answerPoints: new Array(@json($kuis->count())).fill(
+                    0), // Track points per answer
                 quizFinished: false,
                 finalScore: 0,
                 correctAnswers: 0,
                 csrfToken: @json(session()->token()),
+                materiId : @json($materi_id),
 
                 init() {
                     // this.startTimer(600);
@@ -444,41 +554,41 @@
                 },
 
                 async finishQuiz() {
-                    this.correctAnswers = this.answers.reduce((acc, answer, index) => {
-                        return acc + (answer?.toLowerCase() === this.kuis[index]
-                            .jawaban_benar.toLowerCase() ? 1 : 0);
-                    }, 0);
+                    let totalCorrect = 0;
+                    let totalPoints = 0;
 
-                    const totalPossiblePoints = this.kuis.reduce((acc, question) => acc + question
-                        .poin_benar, 0);
-                    const earnedPoints = this.kuis.reduce((acc, question, index) => {
-                        return acc + (this.answers[index]?.toLowerCase() === question
-                            .jawaban_benar.toLowerCase() ? question.poin_benar : 0);
-                    }, 0);
+                    this.answers.forEach((answer, index) => {
+                        const isCorrect = answer?.toLowerCase() === this.kuis[index]
+                            .jawaban_benar.toLowerCase();
+                        if (isCorrect) {
+                            totalCorrect++;
+                            this.answerPoints[index] = this.kuis[index].poin_benar;
+                            totalPoints += this.kuis[index].poin_benar;
+                        } else {
+                            this.answerPoints[index] = 0;
+                        }
+                    });
 
-                    this.finalScore = (earnedPoints / totalPossiblePoints) * 100;
+                    this.correctAnswers = totalCorrect;
+                    const totalPossiblePoints = this.kuis.reduce((acc, q) => acc + q.poin_benar, 0);
+                    this.finalScore = (totalPoints / totalPossiblePoints) * 100;
                     this.quizFinished = true;
 
                     const formData = new FormData();
+                    formData.append('materi_id', this.materiId);
                     formData.append('question_ids', JSON.stringify(this.questionIds));
                     formData.append('answers', JSON.stringify(this.answers.map((answer, index) => ({
                         question_id: this.questionIds[index],
-                        answer: answer || ''
+                        answer: answer || '',
+                        points: this.answerPoints[index]
                     }))));
                     formData.append('score', this.finalScore);
                     formData.append('correct_answers', this.correctAnswers);
+                    formData.append('total_points', totalPoints);
                     formData.append('_token', this.csrfToken);
 
-                    await axios.post('{{ route('siswa.kuis.submit') }}', formData)
-                        .then(response => {
-                            if (response.data.success) {
-                                console.log('Quiz submitted successfully');
-                                window.location.href = '/siswa/kuis/hasil/' + this.quizId;
-                            }
-                        })
-                        .catch(error => {
-                            console.error('Error submitting quiz:', error);
-                        });
+                    await axios.post('{{ route('siswa.kuis.store') }}', formData);
+
                 },
 
                 // startTimer(duration) {

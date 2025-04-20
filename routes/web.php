@@ -64,7 +64,7 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
 
     Route::prefix('/kuis')->name('kuis.')->group(function () {
         Route::get('/{materi_id}', [SiswaKuisController::class, 'index'])->name('index');
-        Route::post('/submit', [SiswaKuisController::class, 'submit'])->name('submit');
+        Route::post('/store', [SiswaKuisController::class, 'store'])->name('store');
     });
 });
 
