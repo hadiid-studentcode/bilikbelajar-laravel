@@ -152,140 +152,71 @@
             <div class="row justify-content-center">
               <div class="col-lg-8 col-md-10 col-12">
                 <div class="card shadow-sm">
-                  <div class="ratio ratio-16x9">
-                    <iframe
-                      src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ"
-                      title="Basic Algebra Introduction"
-                      allowfullscreen
+                  <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                    <video 
+                      class="w-100 h-100 object-fit-cover"
+                      controls
+                      controlsList="nodownload"
+                      preload="metadata"
                     >
-                    </iframe>
+                      <source src="{{ asset('storage/'.$materi->video) }}" type="video/mp4">
+                      Your browser does not support the video tag.
+                    </video>
                   </div>
-                  <div class="card-body">
-                    <h5 class="card-title">Pengenalan Aljabar Dasar</h5>
-                    <p class="card-text">
-                      Video pembelajaran mengenai konsep dasar aljabar dan
-                      penggunaannya.
-                    </p>
-                  </div>
+                
                 </div>
               </div>
             </div>
           </div>
 
           <!-- PowerPoint Slides -->
-          <div class="tab-pane fade" id="slides-content">
+        <div class="tab-pane fade" id="slides-content">
             <div class="row justify-content-center">
-              <div class="col-lg-8 col-md-10 col-12">
-                <div class="card shadow-sm">
-                  <div class="ratio ratio-16x9">
-                    <iframe
-                      src="https://view.officeapps.live.com/op/embed.aspx?src=https://math.berkeley.edu/~hutching/teach/54-2017/algebra.pptx"
-                      frameborder="0"
-                    >
-                    </iframe>
-                  </div>
-                  <div class="card-body">
-                    <div
-                      class="d-flex justify-content-between align-items-center"
-                    >
-                      <h5 class="card-title mb-0">
-                        Slide Presentasi Aljabar
-                      </h5>
-                      <a href="#" class="btn btn-sm btn-outline-primary">
-                        <i class="fas fa-download me-1"></i>Download PPT
-                      </a>
+                <div class="col-lg-8 col-md-10 col-12">
+                    <div class="card shadow-sm">
+                        <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                            <iframe
+                                src="{{ asset('storage/'.$materi->file) }}"
+                                frameborder="0"
+                                class="w-100 h-100"
+                                allowfullscreen
+                            >
+                            </iframe>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                                <h5 class="card-title mb-0 text-truncate">
+                                    {{ $materi->judul ?? 'Slide Presentasi' }}
+                                </h5>
+                                <a 
+                                    href="{{ asset('storage/'.$materi->file) }}" 
+                                    class="btn btn-primary"
+                                    download
+                                >
+                                    <i class="fas fa-download me-2"></i>
+                                    <span>Download Presentasi</span>
+                                </a>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
 
           <!-- Text Content -->
-          <div class="tab-pane fade" id="text-content">
+        <div class="tab-pane fade" id="text-content">
             <div class="row justify-content-center">
-              <div class="col-lg-8 col-md-10 col-12">
-                <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
-                  <h1 class="mb-4">Pengenalan Aljabar</h1>
-
-                  <!-- Table of Contents -->
-                  <div class="toc-container mb-5 p-3 bg-light rounded">
-                    <h5 class="mb-3">Daftar Isi</h5>
-                    <nav class="toc-nav">
-                      <ul class="list-unstyled">
-                        <li>
-                          <a href="#introduction" class="toc-link"
-                            >1. Pendahuluan</a
-                          >
-                        </li>
-                        <li>
-                          <a href="#basic-concepts" class="toc-link"
-                            >2. Konsep Dasar</a
-                          >
-                        </li>
-                        <li>
-                          <a href="#examples" class="toc-link"
-                            >3. Contoh Soal</a
-                          >
-                        </li>
-                        <li>
-                          <a href="#practice" class="toc-link">4. Latihan</a>
-                        </li>
-                      </ul>
-                    </nav>
-                  </div>
-
-                  <!-- Content Sections -->
-                  <section id="introduction" class="mb-5">
-                    <h2 class="section-title">1. Pendahuluan</h2>
-                    <p class="lead">
-                      Aljabar adalah cabang matematika yang mempelajari
-                      hubungan antara angka, huruf, dan simbol.
-                    </p>
-                    <div
-                      class="info-box my-4 p-3 border-start border-4 border-primary bg-light"
-                    >
-                      <h5>💡 Poin Penting:</h5>
-                      <ul class="mb-0">
-                        <li>Aljabar digunakan dalam kehidupan sehari-hari</li>
-                        <li>Membantu dalam pemecahan masalah kompleks</li>
-                        <li>Dasar untuk matematika tingkat lanjut</li>
-                      </ul>
+                <div class="col-lg-8 col-md-10 col-12">
+                    <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
+                        <article class="text-content">
+                            <div class="materi-content prose prose-sm sm:prose-base lg:prose-lg">
+                                {!! $materi->deskripsi ?? '<p class="text-muted text-center">Materi tertulis belum tersedia.</p>' !!}
+                            </div>
+                        </article>
                     </div>
-                  </section>
-
-                  <section id="basic-concepts" class="mb-5">
-                    <h2 class="section-title">2. Konsep Dasar</h2>
-                    <!-- Add your content here -->
-                  </section>
-
-                  <section id="examples" class="mb-5">
-                    <h2 class="section-title">3. Contoh Soal</h2>
-                    <div class="example-box p-4 bg-light rounded">
-                      <div class="example-item mb-4">
-                        <h5>Contoh 1:</h5>
-                        <p>Selesaikan persamaan: 2x + 5 = 15</p>
-                        <div class="solution p-3 bg-white rounded">
-                          <h6>Penyelesaian:</h6>
-                          <ol>
-                            <li>2x + 5 = 15</li>
-                            <li>2x = 15 - 5</li>
-                            <li>2x = 10</li>
-                            <li>x = 5</li>
-                          </ol>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-
-                  <section id="practice" class="mb-5">
-                    <h2 class="section-title">4. Latihan</h2>
-                    <!-- Add practice problems here -->
-                  </section>
                 </div>
-              </div>
             </div>
-          </div>
+        </div>
         </div>
       </div>
     </section>
