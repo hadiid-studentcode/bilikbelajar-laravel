@@ -256,10 +256,20 @@
                                             <h5 class="card-title text-primary mb-3">{{ $m->nama }}</h5>
 
                                             <div class="mt-auto">
-                                                <a href="#" class="btn btn-primary btn-sm">
-                                                    <i class="bx bx-show me-1"></i>
-                                                    Lihat Materi
-                                                </a>
+                                                <div class="btn-group" role="group">
+                                                    <a href="{{ route('siswa.materi.show', $m->id) }}" class="btn btn-primary btn-sm">
+                                                        <i class="bx bx-book-open me-1"></i>
+                                                         Materi
+                                                    </a>
+                                                    <a href="#" class="btn btn-info btn-sm">
+                                                        <i class="bx bx-task me-1"></i>
+                                                        Kuis
+                                                    </a>
+                                                    <a href="#" class="btn btn-success btn-sm">
+                                                        <i class="bx bx-file me-1"></i>
+                                                        Evaluasi
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
