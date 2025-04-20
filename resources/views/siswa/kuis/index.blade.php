@@ -1,228 +1,466 @@
 @extends('layouts.main')
 
 @push('css')
+<style>
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    height: calc(100vh - 100px); /* Adjust based on your navbar height */
+    display: flex;
+    flex-direction: column;
+}
+
+.quiz-header {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.quiz-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.progress {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    background-color: #4361ee;
+    transition: width 0.3s ease;
+}
+
+.question-container {
+    flex: 1;
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow-y: auto;
+    margin-bottom: 1rem;
+}
+
+.question-container h4 {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+}
+
+.option {
+    background: #f8f9fa;
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.option:hover {
+    background: #e9ecef;
+    border-color: #4361ee;
+}
+
+.option input[type="radio"] {
+    display: none;
+}
+
+.option label {
+    display: block;
+    width: 100%;
+    cursor: pointer;
+    margin: 0;
+    padding-left: 2rem;
+    position: relative;
+}
+
+.option label:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    border: 2px solid #4361ee;
+    border-radius: 50%;
+}
+
+.option input[type="radio"]:checked + label:after {
+    content: '';
+    position: absolute;
+    left: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #4361ee;
+    border-radius: 50%;
+}
+
+.quiz-navigation {
+    margin-top: auto;
+    padding: 0.5rem;
+}
+
+.btn {
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+#quiz-results {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem;
+}
+
+.result-circle {
+    width: min(120px, 25vw);
+    height: min(120px, 25vw);
+    border-radius: 50%;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-weight: bold;
+    color: #4361ee;
+    border: min(8px, 2vw) solid #4361ee;
+}
+
+.result-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 400px;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.stat-value {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    font-weight: bold;
+    margin-bottom: 0.25rem;
+}
+
+@media (max-height: 700px) {
+    .quiz-container {
+        padding: 1rem;
+    }
+    
+    .quiz-header {
+        padding: 0.75rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .question-container {
+        padding: 1rem;
+    }
+    
+    .option {
+        padding: 0.5rem;
+        margin-bottom: 0.25rem;
+    }
+    
+    .result-circle {
+        width: 100px;
+        height: 100px;
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .quiz-container {
+        padding: 1rem;
+    }
+    
+    .question-container {
+        padding: 1.5rem;
+    }
+    
+    .btn {
+        padding: 0.5rem 1.5rem;
+    }
+}
+
+@media (max-height: 600px) {
+    #quiz-results {
+        padding: 1rem;
+        gap: 0.5rem;
+    }
+    
+    .result-circle {
+        width: 80px;
+        height: 80px;
+        border-width: 4px;
+    }
+    
+    h3 {
+        font-size: 1.25rem;
+        margin: 0;
+    }
+    
+    p {
+        font-size: 0.9rem;
+        margin: 0;
+    }
+    
+    .stat-item {
+        padding: 0.5rem;
+    }
+}
+
+/* Quiz Results Styling */
+.quiz-results-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.98);
+    z-index: 1000;
+}
+
+.quiz-results-content {
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+    padding: 2rem;
+}
+
+.quiz-header.hidden,
+.quiz-navigation.hidden {
+    display: none !important;
+}
+
+.result-circle {
+    animation: scaleIn 0.5s ease-out;
+}
+
+@keyframes scaleIn {
+    from {
+        transform: scale(0);
+    }
+    to {
+        transform: scale(1);
+    }
+}
+
+.results-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #4361ee;
+}
+</style>
 @endpush
+
 @section('content')
-    <div class="container-xxl flex-grow-1 container-p-y">
- <main class="py-5">
-      <div class="container">
-        <div class="quiz-container bg-white rounded-4 p-4 shadow-sm">
-          <!-- Quiz Header -->
-          <div class="quiz-header text-center mb-5">
-            <h2 class="mb-3">Pre Test: Pengenalan Aljabar</h2>
-            <div class="progress mb-3" style="height: 10px">
-              <div
-                class="progress-bar"
-                id="quiz-progress"
-                role="progressbar"
-                style="width: 0%"
-              ></div>
-            </div>
-            <p class="text-muted">
-              Question <span id="current-question">1</span> of
-              <span id="total-questions">5</span>
-            </p>
-          </div>
-
-          <!-- Quiz Content -->
-          <div id="quiz-content">
-            <!-- Questions will be injected here by JavaScript -->
-          </div>
-
-          <!-- Quiz Navigation -->
-          <div class="quiz-navigation d-flex justify-content-between mt-4">
-            <button class="btn btn-outline-secondary" id="prev-btn" disabled>
-              Previous
-            </button>
-            <button class="btn btn-primary" id="next-btn">Next</button>
-          </div>
-
-          <!-- Results (initially hidden) -->
-          <div id="quiz-results" class="text-center py-5" style="display: none">
-            <div class="result-circle mb-4">
-              <span id="score">0</span>
-              <span class="small">/ 100</span>
-            </div>
-            <h3 class="mb-3">Quiz Completed!</h3>
-            <p class="text-muted mb-4">
-              You've completed the pre-test. Here's how you did:
-            </p>
-            <div class="result-stats d-flex justify-content-center gap-4 mb-4">
-              <div class="stat-item">
-                <div class="stat-value text-success">
-                  ✓ <span id="correct-answers">0</span>
+    <div class="container-xxl flex-grow-1 container-p-y p-0">
+        <div class="quiz-container" x-data="quiz">
+            <!-- Quiz Header -->
+            <div class="quiz-header text-center mb-5" :class="{ 'hidden': quizFinished }">
+                <h2 class="mb-3">Kuis</h2>
+                <div class="progress mb-3">
+                    <div class="progress-bar" 
+                         id="quiz-progress" 
+                         role="progressbar"
+                         :style="`width: ${progress}%`">
+                    </div>
                 </div>
-                <div class="stat-label">Correct</div>
-              </div>
-              <div class="stat-item">
-                <div class="stat-value text-danger">
-                  ✗ <span id="wrong-answers">0</span>
-                </div>
-                <div class="stat-label">Wrong</div>
-              </div>
+                <p class="text-muted">
+                    Question <span x-text="currentQuestion + 1"></span> of
+                    <span x-text="questions.length"></span>
+                </p>
             </div>
-            <a href="materi.html" class="btn btn-primary"
-              >Continue to Material</a
-            >
-          </div>
+
+            <!-- Quiz Content -->
+            <div id="quiz-content" x-show="!quizFinished">
+                <div class="question-container">
+                    <h4 class="mb-4" x-text="currentQuestionData.question"></h4>
+                    <div class="options-container">
+                        <template x-for="(option, index) in currentQuestionData.options" :key="index">
+                            <div class="option mb-3">
+                                <input type="radio" 
+                                       :id="'option' + index"
+                                       name="quiz"
+                                       :value="index"
+                                       x-model="answers[currentQuestion]">
+                                <label :for="'option' + index" 
+                                       class="ms-2" 
+                                       x-text="option"></label>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Navigation -->
+            <div class="quiz-navigation d-flex justify-content-between mt-4" :class="{ 'hidden': quizFinished }">
+                <button class="btn btn-outline-secondary" 
+                        @click="previousQuestion"
+                        :disabled="currentQuestion === 0">
+                    Previous
+                </button>
+                <button class="btn btn-primary" 
+                        @click="nextQuestion"
+                        x-text="currentQuestion === questions.length - 1 ? 'Finish' : 'Next'">
+                </button>
+            </div>
+
+            <!-- Results -->
+            <div class="quiz-results-container" x-show="quizFinished" x-cloak>
+                <div class="quiz-results-content">
+                    <div class="result-circle mb-4">
+                        <div>
+                            <span x-text="Math.round(finalScore)" class="score"></span>
+                            <span class="small">/ 100</span>
+                        </div>
+                    </div>
+                    <h3 class="results-title">Selamat!</h3>
+                    <p class="text-muted mb-4">Kamu telah menyelesaikan kuis dengan hasil:</p>
+                    <div class="result-stats mb-4">
+                        <div class="stat-item">
+                            <div class="stat-value text-success">
+                                <i class="fas fa-check-circle me-1"></i>
+                                <span x-text="correctAnswers"></span>
+                            </div>
+                            <div class="stat-label">Benar</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value text-danger">
+                                <i class="fas fa-times-circle me-1"></i>
+                                <span x-text="wrongAnswers"></span>
+                            </div>
+                            <div class="stat-label">Salah</div>
+                        </div>
+                    </div>
+                    <a href="/materi" class="btn btn-primary btn-lg">
+                        <i class="fas fa-book-open me-2"></i>Lanjut ke Materi
+                    </a>
+                </div>
+            </div>
         </div>
-      </div>
-    </main>
     </div>
 @endsection
 
-
 @push('js')
- <script>
-      // Quiz questions data
-      const quizData = [
-        {
-          question: "What is the value of x in the equation: x + 5 = 12?",
-          options: ["5", "7", "12", "17"],
-          correct: 1,
+<script>
+document.addEventListener('alpine:init', () => {
+    Alpine.data('quiz', () => ({
+        questions: [
+            {
+                question: "What is the value of x in the equation: x + 5 = 12?",
+                options: ["5", "7", "12", "17"],
+                correct: 1,
+            },
+            {
+                question: "Which of these is an algebraic expression?",
+                options: ["2 + 2 = 4", "x + 3", "Hello World", "12345"],
+                correct: 1,
+            },
+            {
+                question: "What is the coefficient of x in the term 3x?",
+                options: ["x", "3", "0", "None of these"],
+                correct: 1,
+            },
+            {
+                question: "Simplify: 2x + 3x",
+                options: ["5x", "6", "5", "2x3x"],
+                correct: 0,
+            },
+            {
+                question: "What is a variable in algebra?",
+                options: [
+                    "A number that never changes",
+                    "A symbol that represents a value",
+                    "A mathematical operation",
+                    "The answer to an equation",
+                ],
+                correct: 1,
+            },
+        ],
+        currentQuestion: 0,
+        answers: new Array(5).fill(-1),
+        quizFinished: false,
+        finalScore: 0,
+        correctAnswers: 0,
+        
+        init() {
+            this.startTimer(600);
         },
-        {
-          question: "Which of these is an algebraic expression?",
-          options: ["2 + 2 = 4", "x + 3", "Hello World", "12345"],
-          correct: 1,
+
+        get progress() {
+            return ((this.currentQuestion + 1) / this.questions.length) * 100;
         },
-        {
-          question: "What is the coefficient of x in the term 3x?",
-          options: ["x", "3", "0", "None of these"],
-          correct: 1,
+
+        get currentQuestionData() {
+            return this.questions[this.currentQuestion];
         },
-        {
-          question: "Simplify: 2x + 3x",
-          options: ["5x", "6", "5", "2x3x"],
-          correct: 0,
+
+        get wrongAnswers() {
+            return this.questions.length - this.correctAnswers;
         },
-        {
-          question: "What is a variable in algebra?",
-          options: [
-            "A number that never changes",
-            "A symbol that represents a value",
-            "A mathematical operation",
-            "The answer to an equation",
-          ],
-          correct: 1,
+
+        nextQuestion() {
+            if (this.currentQuestion === this.questions.length - 1) {
+                this.finishQuiz();
+            } else {
+                this.currentQuestion++;
+            }
         },
-      ];
 
-      // Quiz functionality will be implemented here
-      let currentQuestion = 0;
-      let score = 0;
-      let answers = new Array(quizData.length).fill(-1);
+        previousQuestion() {
+            if (this.currentQuestion > 0) {
+                this.currentQuestion--;
+            }
+        },
 
-      // Initialize quiz
-      function initQuiz() {
-        showQuestion(currentQuestion);
-        startTimer(600); // 10 minutes
-        updateProgress();
-      }
+        finishQuiz() {
+            this.correctAnswers = this.answers.reduce((acc, answer, index) => {
+                return acc + (answer === this.questions[index].correct ? 1 : 0);
+            }, 0);
+            
+            this.finalScore = (this.correctAnswers / this.questions.length) * 100;
+            this.quizFinished = true;
+        },
 
-      // Show question
-      function showQuestion(index) {
-        const quizContent = document.getElementById("quiz-content");
-        const question = quizData[index];
-
-        let html = `
-                <div class="question-container">
-                    <h4 class="mb-4">${question.question}</h4>
-                    <div class="options-container">
-            `;
-
-        question.options.forEach((option, i) => {
-          html += `
-                    <div class="option mb-3">
-                        <input type="radio" name="quiz" id="option${i}" value="${i}" 
-                            ${answers[index] === i ? "checked" : ""}>
-                        <label for="option${i}" class="ms-2">${option}</label>
-                    </div>
-                `;
-        });
-
-        html += `</div></div>`;
-        quizContent.innerHTML = html;
-
-        // Update navigation buttons
-        document.getElementById("prev-btn").disabled = index === 0;
-        document.getElementById("next-btn").textContent =
-          index === quizData.length - 1 ? "Finish" : "Next";
-      }
-
-      // Navigation handlers
-      document.getElementById("next-btn").addEventListener("click", () => {
-        // Save answer
-        const selected = document.querySelector('input[name="quiz"]:checked');
-        if (selected) {
-          answers[currentQuestion] = parseInt(selected.value);
+        startTimer(duration) {
+            let timer = duration;
+            const countdown = setInterval(() => {
+                if (this.quizFinished || timer < 0) {
+                    clearInterval(countdown);
+                    if (!this.quizFinished) {
+                        this.finishQuiz();
+                    }
+                }
+                timer--;
+            }, 1000);
         }
-
-        if (currentQuestion === quizData.length - 1) {
-          finishQuiz();
-        } else {
-          currentQuestion++;
-          showQuestion(currentQuestion);
-          updateProgress();
-        }
-      });
-
-      document.getElementById("prev-btn").addEventListener("click", () => {
-        currentQuestion--;
-        showQuestion(currentQuestion);
-        updateProgress();
-      });
-
-      // Update progress
-      function updateProgress() {
-        const progress = ((currentQuestion + 1) / quizData.length) * 100;
-        document.getElementById("quiz-progress").style.width = `${progress}%`;
-        document.getElementById("current-question").textContent =
-          currentQuestion + 1;
-        document.getElementById("total-questions").textContent =
-          quizData.length;
-      }
-
-      // Timer functionality
-      function startTimer(duration) {
-        let timer = duration;
-        const timerElement = document.getElementById("timer");
-
-        const countdown = setInterval(() => {
-          const minutes = Math.floor(timer / 60);
-          const seconds = timer % 60;
-
-          timerElement.textContent = `${minutes}:${seconds
-            .toString()
-            .padStart(2, "0")}`;
-
-          if (--timer < 0) {
-            clearInterval(countdown);
-            finishQuiz();
-          }
-        }, 1000);
-      }
-
-      // Finish quiz
-      function finishQuiz() {
-        // Calculate score
-        score = answers.reduce((acc, answer, index) => {
-          return acc + (answer === quizData[index].correct ? 1 : 0);
-        }, 0);
-
-        const finalScore = (score / quizData.length) * 100;
-
-        // Show results
-        document.getElementById("quiz-content").style.display = "none";
-        document.getElementById("quiz-results").style.display = "block";
-        document.querySelector(".quiz-navigation").style.display = "none";
-        document.getElementById("score").textContent = Math.round(finalScore);
-        document.getElementById("correct-answers").textContent = score;
-        document.getElementById("wrong-answers").textContent =
-          quizData.length - score;
-      }
-
-      // Initialize quiz when page loads
-      initQuiz();
-    </script>
+    }));
+});
+</script>
 @endpush
