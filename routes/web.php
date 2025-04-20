@@ -8,6 +8,7 @@ use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 
 Route::get('/', function () {
     if (Auth::check()) {
@@ -61,5 +62,18 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
         Route::get('/{id}', [SiswaMateriController::class, 'show'])->name('show');
     });
 });
+
+
+Route::get('/text-editor', function () {
+    $title = 'Text Editor';
+   return view('text-editor', compact('title'));
+});
+
+Route::post('/text-editor', function (Request $request) {
+  $content = $request->content;
+    $title = 'Text Editor';
+
+    return view('show-editor', compact('content', 'title'));
+})->name('text-editor');
 
 include __DIR__ . '/auth.php';

@@ -35,7 +35,7 @@ class MateriController extends Controller
             $request->validate([
                 'nama' => 'required',
                 'kelas' => 'required',
-                'deskripsi' => 'nullable',
+                'content' => 'nullable',
                 'file' => 'nullable',
                 'video' => 'nullable',
             ]);
@@ -53,7 +53,7 @@ class MateriController extends Controller
                 'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
                 'nama' => $request->input('nama'),
                 'kelas' => $request->input('kelas'),
-                'deskripsi' => $request->input('deskripsi'),
+                'deskripsi' => $request->input('content'),
                 'file' => $file,
                 'video' => $video,
             ]);
@@ -72,7 +72,7 @@ class MateriController extends Controller
             $request->validate([
                 'nama' => 'required',
                 'kelas' => 'required',
-                'deskripsi' => 'nullable',
+                'editContent' => 'nullable',
                 'file' => 'nullable',
                 'video' => 'nullable',
             ]);
@@ -94,7 +94,7 @@ class MateriController extends Controller
             $materi->update([
                 'nama' => $request->input('nama'),
                 'kelas' => $request->input('kelas'),
-                'deskripsi' => $request->input('deskripsi'),
+                'deskripsi' => $request->input('editContent'),
                 'file' => $file,
                 'video' => $video,
             ]);

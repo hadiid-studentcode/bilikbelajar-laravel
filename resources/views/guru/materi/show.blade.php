@@ -15,6 +15,7 @@
             object-fit: cover;
         }
     </style>
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 @endpush
 
 @section('content')
@@ -38,7 +39,7 @@
         </div> --}}
 
         <div class="row g-4">
-            @if($materi->isEmpty())
+            @if ($materi->isEmpty())
                 <div class="col-12">
                     <div class="alert alert-info d-flex align-items-center" role="alert">
                         <i class="bx bx-info-circle me-2"></i>
@@ -72,9 +73,10 @@
                                         </button>
                                     </div>
                                 </div>
-                                
+
                                 <div class="d-flex gap-2 mt-4">
-                                    <a href="{{ route('guru.materi.kuis.index', $m->id) }}" class="btn btn-sm btn-primary w-50">
+                                    <a href="{{ route('guru.materi.kuis.index', $m->id) }}"
+                                        class="btn btn-sm btn-primary w-50">
                                         <i class="bx bx-quiz me-1"></i> Kuis
                                     </a>
                                     <a href="#" class="btn btn-sm btn-success w-50">
@@ -118,7 +120,8 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Deskripsi</label>
-                            <textarea class="form-control" name="deskripsi" rows="15" placeholder="Tuliskan deskripsi materi di sini..."></textarea>
+                            <input type="hidden" name="content" id="content" />
+                            <div class="editor" data-target="content"></div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
@@ -146,7 +149,7 @@
             </div>
         </div>
     </div>
-    
+
 
     <!-- Edit Modal -->
     @foreach ($materi as $m)
@@ -179,7 +182,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Deskripsi</label>
-                                <textarea class="form-control" name="deskripsi" rows="15">{{ $m->deskripsi }}</textarea>
+                                <input type="hidden" name="editContent" id="editContent{{ $m->id }}" value="{{ $m->deskripsi }}" />
+                                <div class="editor" data-target="editContent{{ $m->id }}"></div>
                             </div>
                             <div class="row">
                                 <div class="col-md-6">
@@ -188,13 +192,13 @@
                                         <input type="file" class="form-control" name="file"
                                             accept=".pdf,.doc,.docx,.ppt,.pptx" value="{{ $m->file }}">
                                         <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX (Max. 10MB)</small>
-                                        @if($m->file != null)
-                                        <div class="mt-2">
-                                            <a target="_blank" href="{{ asset('storage/' . $m->file) }}"
-                                                class="btn btn-info">
-                                                <i class="bx bx-file me-1"></i> Materi
-                                            </a>
-                                        </div>
+                                        @if ($m->file != null)
+                                            <div class="mt-2">
+                                                <a target="_blank" href="{{ asset('storage/' . $m->file) }}"
+                                                    class="btn btn-info">
+                                                    <i class="bx bx-file me-1"></i> Materi
+                                                </a>
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -204,13 +208,13 @@
                                         <input type="file" class="form-control" name="video" accept="video/*"
                                             value="{{ $m->video }}">
                                         <small class="text-muted">Format: MP4, MKV, AVI (Max. 100MB)</small>
-                                        @if($m->video != null)
-                                        <div class="mt-2">
-                                            <a target="_blank" href="{{ asset('storage/' . $m->video) }}"
-                                                class="btn btn-info">
-                                                <i class="bx bx-video me-1"></i> Video
-                                            </a>
-                                        </div>
+                                        @if ($m->video != null)
+                                            <div class="mt-2">
+                                                <a target="_blank" href="{{ asset('storage/' . $m->video) }}"
+                                                    class="btn btn-info">
+                                                    <i class="bx bx-video me-1"></i> Video
+                                                </a>
+                                            </div>
                                         @endif
                                     </div>
                                 </div>
@@ -258,4 +262,60 @@
 @endsection
 
 @push('js')
+    <script>
+        document.querySelectorAll('.editor').forEach(editorElement => {
+            const targetId = editorElement.getAttribute('data-target');
+            
+            ClassicEditor.create(editorElement, {
+                toolbar: [
+                    "undo",
+                    "redo",
+                    "|",
+                    "heading",
+                    "|",
+                    "bold",
+                    "italic",
+                    "|",
+                    "link",
+                    "bulletedList",
+                    "numberedList",
+                    "|",
+                    "indent",
+                    "outdent",
+                    "|",
+                    "blockQuote",
+                    "insertTable",
+                    "|",
+                ],
+            })
+            .then((editor) => {
+                // Set editor height using CSS
+                editor.editing.view.change((writer) => {
+                    writer.setStyle(
+                        "height",
+                        "300px",
+                        editor.editing.view.document.getRoot()
+                    );
+                    writer.setStyle(
+                        "width",
+                        "100%",
+                        editor.editing.view.document.getRoot()
+                    );
+                });
+
+                // Set initial content from hidden input
+                const targetInput = document.querySelector(`#${targetId}`);
+                if (targetInput.value) {
+                    editor.setData(targetInput.value);
+                }
+
+                editor.model.document.on("change:data", () => {
+                    targetInput.value = editor.getData();
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+        });
+    </script>
 @endpush
