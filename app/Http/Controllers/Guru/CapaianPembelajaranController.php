@@ -24,22 +24,34 @@ class CapaianPembelajaranController extends Controller
     {
         try {
             $request->validate([
-
                 'cp' => 'required',
-                'kelas' => 'required|in:10,11,12',
-
+                'kelas' => 'required|in:10,11,12,1112',
             ]);
 
-            CapaianPembelajaran::create([
-                'deskripsi' => $request->cp,
-                'kelas' => $request->kelas,
-            ]);
+            if ($request->kelas === '1112') {
+                // Create records for both class 11 and 12
+                CapaianPembelajaran::create([
+                    'deskripsi' => $request->cp,
+                    'kelas' => '11',
+                ]);
+                CapaianPembelajaran::create([
+                    'deskripsi' => $request->cp,
+                    'kelas' => '12',
+                ]);
+            } else {
+                CapaianPembelajaran::create([
+                    'deskripsi' => $request->cp,
+                    'kelas' => $request->kelas,
+                ]);
+            }
 
             return back()->with('success', 'Berhasil menambahkan Capaian pembelajaran');
         } catch (\Throwable $th) {
+            dd($th->getMessage());
             return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
         }
     }
+
 
     public function update(Request $request, $kelas)
     {

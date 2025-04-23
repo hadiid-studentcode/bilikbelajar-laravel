@@ -87,12 +87,14 @@
                                 Capaian Pembelajaran untuk Kelas 10
                             </div>
 
+                            @if($capaianKelas10 == null)
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h6 class="mb-0">Daftar Capaian Pembelajaran</h6>
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addModal10">
                                     <i class="bx bx-plus me-1"></i>Tambah CP
                                 </button>
                             </div>
+                            @endif
 
 
 
@@ -136,7 +138,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h6 class="mb-0">Daftar Capaian Pembelajaran</h6>
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#addModal1112">
+                                    data-bs-target="#addModal_1112">
                                     <i class="bx bx-plus me-1"></i>Tambah CP
                                 </button>
                             </div>
@@ -170,6 +172,7 @@
             </div>
         </div>
 
+        @if($capaianKelas10 == null)
         <!-- Modal for Kelas 10 -->
         <div class="modal fade" id="addModal10" tabindex="-1">
             <div class="modal-dialog">
@@ -196,6 +199,7 @@
                 </div>
             </div>
         </div>
+        @endif
 
         @if($capaianKelas10 != null)
         <!-- Edit Modal for Kelas 10 -->
@@ -252,20 +256,20 @@
         @endif
 
         <!-- Modal for Kelas 11 & 12 -->
-        <div class="modal fade" id="addModal1112" tabindex="-1">
+        <div class="modal fade" id="addModal_1112" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Tambah Capaian Pembelajaran</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <form action="" method="POST">
+                    <form action="{{ route('guru.cp.store') }}" method="POST">
                         @csrf
-                        <input type="hidden" name="kelas" value="11">
+                        <input type="hidden" name="kelas" value="1112">
                         <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Capaian Pembelajaran</label>
-                                <textarea class="form-control" name="content" rows="4" placeholder="Masukkan capaian pembelajaran..." required
+                                <textarea class="form-control" name="cp" rows="4" placeholder="Masukkan capaian pembelajaran..." required
                                     maxlength="1000"></textarea>
                             </div>
                         </div>
