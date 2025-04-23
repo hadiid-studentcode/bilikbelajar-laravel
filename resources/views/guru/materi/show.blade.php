@@ -26,6 +26,7 @@
                 <i class="bx bx-plus"></i> Tambah Materi
             </button>
         </div>
+        @include('components.alertComponents')
 
         {{-- <div class="row mb-4">
             <div class="col-md-6">
@@ -63,6 +64,11 @@
                                         <i class="bx bx-time"></i> {{ $m->created_at->diffForHumans() }}
                                     </span>
                                     <div>
+                                        <button class="btn btn-sm btn-primary me-1" data-bs-toggle="modal"
+                                            data-bs-target="#tujuanPembelajaran{{ $m->id }}"
+                                            title="Tujuan Pembelajaran">
+                                            <i class="bx bx-brain"></i>
+                                        </button>
                                         <button class="btn btn-sm btn-info me-1" data-bs-toggle="modal"
                                             data-bs-target="#editMateriModal{{ $m->id }}" title="Edit">
                                             <i class="bx bx-edit"></i>
@@ -128,12 +134,12 @@
                                 <label class="form-label">File Materi</label>
                                 <input type="file" class="form-control" name="file"
                                     accept=".pdf,.doc,.docx,.ppt,.pptx">
-                                <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX (Max. 10MB)</small>
+                                <small class="text-muted">Format: PDF</small>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">Video Pembelajaran</label>
                                 <input type="file" class="form-control" name="video" accept="video/*">
-                                <small class="text-muted">Format: MP4, MKV, AVI (Max. 100MB)</small>
+                                <small class="text-muted">Format: MP4</small>
                             </div>
                         </div>
                     </form>
@@ -150,6 +156,54 @@
         </div>
     </div>
 
+
+    {{-- tujuan pembelajaran --}}
+    @foreach ($materi as $m)
+        <div class="modal fade" id="tujuanPembelajaran{{ $m->id }}" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-primary">
+                        <h5 class="modal-title text-white">
+                            <i class="bx bx-brain me-1"></i>
+                            Tujuan Pembelajaran
+                        </h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="tujuanPembelajaranForm{{ $m->id }}" action="{{ route('guru.materi.storeTp') }}"
+                            method="POST">
+                            @csrf
+                            <input type="hidden" name="materi_id" value="{{ $m->id }}">
+                            <div class="mb-3">
+                                <label class="form-label fw-semibold">
+                                    Tujuan Pembelajaran untuk Materi "{{ $m->nama }}"
+                                </label>
+
+                                @php
+                                $tujuanPembelajaran = \App\Models\TujuanPembelajaran::where('materi_id', $m->id)->first();    
+                                @endphp
+                              
+                                <div class="form-text mb-2">
+                                    <i class="bx bx-info-circle"></i>
+                                    Tuliskan tujuan pembelajaran yang ingin dicapai dalam materi ini
+                                </div>
+                                <input type="hidden" name="tujuan_pembelajaran" id="tujuan{{ $m->id }}" />
+                                <div class="editor" data-target="tujuan{{ $m->id }}">{!! $tujuanPembelajaran?->deskripsi !!}</div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                            <i class="bx bx-x me-1"></i> Tutup
+                        </button>
+                        <button type="submit" form="tujuanPembelajaranForm{{ $m->id }}" class="btn btn-primary">
+                            <i class="bx bx-check me-1"></i> Simpan
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 
     <!-- Edit Modal -->
     @foreach ($materi as $m)
@@ -182,7 +236,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Deskripsi</label>
-                                <input type="hidden" name="editContent" id="editContent{{ $m->id }}" value="{{ $m->deskripsi }}" />
+                                <input type="hidden" name="editContent" id="editContent{{ $m->id }}"
+                                    value="{{ $m->deskripsi }}" />
                                 <div class="editor" data-target="editContent{{ $m->id }}"></div>
                             </div>
                             <div class="row">
@@ -265,57 +320,57 @@
     <script>
         document.querySelectorAll('.editor').forEach(editorElement => {
             const targetId = editorElement.getAttribute('data-target');
-            
+
             ClassicEditor.create(editorElement, {
-                toolbar: [
-                    "undo",
-                    "redo",
-                    "|",
-                    "heading",
-                    "|",
-                    "bold",
-                    "italic",
-                    "|",
-                    "link",
-                    "bulletedList",
-                    "numberedList",
-                    "|",
-                    "indent",
-                    "outdent",
-                    "|",
-                    "blockQuote",
-                    "insertTable",
-                    "|",
-                ],
-            })
-            .then((editor) => {
-                // Set editor height using CSS
-                editor.editing.view.change((writer) => {
-                    writer.setStyle(
-                        "height",
-                        "300px",
-                        editor.editing.view.document.getRoot()
-                    );
-                    writer.setStyle(
-                        "width",
-                        "100%",
-                        editor.editing.view.document.getRoot()
-                    );
-                });
+                    toolbar: [
+                        "undo",
+                        "redo",
+                        "|",
+                        "heading",
+                        "|",
+                        "bold",
+                        "italic",
+                        "|",
+                        "link",
+                        "bulletedList",
+                        "numberedList",
+                        "|",
+                        "indent",
+                        "outdent",
+                        "|",
+                        "blockQuote",
+                        "insertTable",
+                        "|",
+                    ],
+                })
+                .then((editor) => {
+                    // Set editor height using CSS
+                    editor.editing.view.change((writer) => {
+                        writer.setStyle(
+                            "height",
+                            "300px",
+                            editor.editing.view.document.getRoot()
+                        );
+                        writer.setStyle(
+                            "width",
+                            "100%",
+                            editor.editing.view.document.getRoot()
+                        );
+                    });
 
-                // Set initial content from hidden input
-                const targetInput = document.querySelector(`#${targetId}`);
-                if (targetInput.value) {
-                    editor.setData(targetInput.value);
-                }
+                    // Set initial content from hidden input
+                    const targetInput = document.querySelector(`#${targetId}`);
+                    if (targetInput.value) {
+                        editor.setData(targetInput.value);
+                    }
 
-                editor.model.document.on("change:data", () => {
-                    targetInput.value = editor.getData();
+                    editor.model.document.on("change:data", () => {
+                        targetInput.value = editor.getData();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
                 });
-            })
-            .catch((error) => {
-                console.error(error);
-            });
         });
     </script>
 @endpush

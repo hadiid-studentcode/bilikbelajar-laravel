@@ -41,6 +41,8 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::get('/', [GuruMateriController::class, 'index'])->name('index');
         Route::get('/kelas/{id}', [GuruMateriController::class, 'kelas'])->name('kelas');
         Route::post('/store', [GuruMateriController::class, 'store'])->name('store');
+        Route::post('/tp', [GuruMateriController::class, 'storeTp'])->name('storeTp');
+
         Route::put('/{id}', [GuruMateriController::class, 'update'])->name('update');
         Route::delete('/{id}', [GuruMateriController::class, 'destroy'])->name('destroy');
 

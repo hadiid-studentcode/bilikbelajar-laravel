@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Guru;
 use App\Http\Controllers\Controller;
 use App\Models\Guru;
 use App\Models\Materi;
+use App\Models\tujuanPembelajaran;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -24,8 +25,9 @@ class MateriController extends Controller
     {
         $title = $this->title;
         $materi = Materi::where('kelas', $kelas)->get();
+        $tujuanPembelajaran = TujuanPembelajaran::all();
 
-        return view('guru.materi.show', compact('materi', 'kelas', 'title'));
+        return view('guru.materi.show', compact('materi', 'kelas', 'title', 'tujuanPembelajaran'));
     }
 
     public function store(Request $request)
@@ -49,7 +51,7 @@ class MateriController extends Controller
                 $video = $request->file('video')->store('materi/video');
             }
 
-            Materi::create([
+            Materi::Create([
                 'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
                 'nama' => $request->input('nama'),
                 'kelas' => $request->input('kelas'),
@@ -60,9 +62,27 @@ class MateriController extends Controller
 
             return redirect()->back()->with('success', 'Materi berhasil ditambahkan');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
 
             return redirect()->back()->with('error', 'Materi gagal ditambahkan');
+        }
+    }
+
+    public function storeTp(Request $request)
+    {
+        try {
+            $request->validate([
+                'tujuan_pembelajaran' => 'required',
+                'materi_id' => 'required',
+            ]);
+
+            TujuanPembelajaran::create([
+                'dekripsi' => $request->input('tujuan_pembelajaran'),
+                'materi_id' => $request->input('materi_id'),
+            ]);
+
+            return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil ditambahkan');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal ditambahkan');
         }
     }
 
