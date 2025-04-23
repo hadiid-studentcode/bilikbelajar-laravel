@@ -14,7 +14,6 @@ class CapaianTujuanPembelajaranController extends Controller
     public function index()
     {
 
-        
         $title = $this->title;
         $capaian = capaianPembelajaran::first();
         $tujuan = tujuanPembelajaran::first();

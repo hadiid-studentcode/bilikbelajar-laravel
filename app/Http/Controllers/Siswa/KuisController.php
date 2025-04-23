@@ -26,18 +26,16 @@ class KuisController extends Controller
             return redirect()->route('siswa.dashboard.index')->with('error', 'Kuis tidak ditemukan');
         }
 
-       $nilaiKuis = nilaiKuis::where('siswa_id', session('siswa')->id)
+        $nilaiKuis = nilaiKuis::where('siswa_id', session('siswa')->id)
             ->where('materi_id', $materi_id)
             ->first();
-
-
 
         return view('siswa.kuis.index', compact('materi_id', 'title', 'kuis', 'nilaiKuis'));
     }
 
     public function store(Request $request)
     {
-        if (!session()->has('siswa')) {
+        if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
 
@@ -45,20 +43,20 @@ class KuisController extends Controller
             $answers = json_decode($request->answers, true);
             $question_ids = json_decode($request->question_ids);
             $siswa_id = session('siswa')->id;
-            
+
             // Count not answered questions more efficiently
-            $not_answered = collect($answers)->filter(fn($answer) => empty($answer['answer']))->count();
+            $not_answered = collect($answers)->filter(fn ($answer) => empty($answer['answer']))->count();
 
             // Bulk insert answers
-            $jawaban_data = collect($answers)->map(function($answer) use ($siswa_id) {
+            $jawaban_data = collect($answers)->map(function ($answer) use ($siswa_id) {
                 return [
                     'siswa_id' => $siswa_id,
                     'kuis_id' => $answer['question_id'],
                     'jawaban' => $answer['answer'],
-                    'poin' => $answer['points']
+                    'poin' => $answer['points'],
                 ];
             })->toArray();
-            
+
             jawabanKuis::insert($jawaban_data);
 
             // Create nilai kuis
@@ -74,13 +72,13 @@ class KuisController extends Controller
             return response()->json([
                 'status' => 'success',
                 'message' => 'Jawaban berhasil disimpan',
-                'score' => $request->score
+                'score' => $request->score,
             ]);
 
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',
-                'message' => 'Jawaban gagal disimpan'
+                'message' => 'Jawaban gagal disimpan',
             ], 500);
         }
     }

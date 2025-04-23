@@ -13,16 +13,13 @@ class CapaianPembelajaranController extends Controller
     public function index()
     {
 
-
         $title = $this->title;
         $capaianKelas10 = capaianPembelajaran::where('kelas', '10')->first();
         $capaianKelas11_12 = capaianPembelajaran::where('kelas', '11')->orWhere('kelas', '12')->first();
 
-
-
-
         return view('guru.cp.index', compact('capaianKelas10', 'title'));
     }
+
     public function store(Request $request)
     {
         try {
@@ -66,6 +63,7 @@ class CapaianPembelajaranController extends Controller
             return back()->with('error', 'Gagal mengubah capaian tujuan pembelajaran');
         }
     }
+
     public function destroy($kelas)
     {
         try {
