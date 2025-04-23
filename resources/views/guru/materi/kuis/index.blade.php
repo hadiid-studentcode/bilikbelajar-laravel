@@ -168,8 +168,6 @@
                                             <td><span class="badge bg-warning">{{ $nk->jumlah_tidak_dijawab }}</span></td>
                                             <td>
                                                 <div class="btn-group" role="group">
-                                                   
-
                                                     <button data-bs-toggle="modal"
                                                         data-bs-target="#detailJawabanModal_{{ $nk->siswa_id }}"
                                                         class="btn btn-sm btn-info">
@@ -293,7 +291,29 @@
                 </div>
             </div>
         </div>
-    
+
+        <!-- Modal Hapus Jawaban -->
+        <div class="modal fade" id="deleteJawabanModal_{{ $nk->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi Hapus Jawaban</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban kuis dari siswa <strong>{{ $nk->siswa->nama }}</strong>? Tindakan ini tidak dapat dibatalkan.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ route('guru.materi.kuis.destroy.nilaiKuis', $nk->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endforeach
 
 

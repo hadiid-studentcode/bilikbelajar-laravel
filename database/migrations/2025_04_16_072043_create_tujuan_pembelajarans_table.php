@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('tujuan_pembelajarans', function (Blueprint $table) {
             $table->id();
             $table->text('dekripsi')->nullable();
+            $table->foreignId('materi_id')->references('id')->on('materis')->onDelete('cascade')->onUpdate('cascade');
+
             $table->timestamps();
         });
     }

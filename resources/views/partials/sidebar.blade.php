@@ -29,10 +29,10 @@
          <li class="menu-header small text-uppercase">
              <span class="menu-header-text">Kelola</span>
          </li>
-         <li class="menu-item {{ request()->is('guru/cptp*') ? 'active' : '' }}">
-             <a href="{{ route('guru.cptp.index') }}" class="menu-link">
+         <li class="menu-item {{ request()->is('guru/cp*') ? 'active' : '' }}">
+             <a href="{{ route('guru.cp.index') }}" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-target-lock"></i>
-                 <div data-i18n="Layouts">Capaian & Tujuan Pembelajaran</div>
+                 <div data-i18n="Layouts">Capaian Pembelajaran</div>
              </a>
 
 

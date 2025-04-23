@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class capaianPembelajaran extends Model
+class CapaianPembelajaran extends Model
 {
     /** @use HasFactory<\Database\Factories\CapaianPembelajaranFactory> */
     use HasFactory;

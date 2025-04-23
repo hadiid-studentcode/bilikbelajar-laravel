@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Guru\CapaianPembelajaranController as GuruCapaianPembelajaranController;
 use App\Http\Controllers\Guru\CapaianTujuanPembelajaranController as GuruCapaianTujuanPembelajaranController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
@@ -7,6 +8,7 @@ use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
+use App\Models\capaianPembelajaran;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -30,11 +32,11 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::get('/', [GuruDashboardController::class, 'index'])->name('index');
     });
 
-    Route::prefix('/cptp')->name('cptp.')->group(function () {
-        Route::get('/', [GuruCapaianTujuanPembelajaranController::class, 'index'])->name('index');
-        Route::post('/store', [GuruCapaianTujuanPembelajaranController::class, 'store'])->name('store');
-        Route::put('/put/{cp}/{tp}', [GuruCapaianTujuanPembelajaranController::class, 'update'])->name('update');
-        Route::delete('/destroy/{cp}/{tp}', [GuruCapaianTujuanPembelajaranController::class, 'destroy'])->name('destroy');
+    Route::prefix('/capaian-pembelajaran')->name('cp.')->group(function () {
+        Route::get('/', [GuruCapaianPembelajaranController::class, 'index'])->name('index');
+        Route::post('/store', [GuruCapaianPembelajaranController::class, 'store'])->name('store');
+        Route::put('/update/{kelas}', [GuruCapaianPembelajaranController::class, 'update'])->name('update');
+        Route::delete('/destroy/{kelas}', [GuruCapaianPembelajaranController::class, 'destroy'])->name('destroy');
     });
 
     Route::prefix('/materi')->name('materi.')->group(function () {
@@ -49,6 +51,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
             Route::put('/{materi_id}/update', [GuruKuisController::class, 'update'])->name('update');
             Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
+            Route::delete('/{nilaiKuis_id}/destroy-nilaiKuis', [GuruKuisController::class, 'destroyNilaiKuis'])->name('destroy.nilaiKuis');
         });
     });
 });

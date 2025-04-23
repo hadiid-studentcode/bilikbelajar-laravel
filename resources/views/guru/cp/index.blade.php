@@ -63,6 +63,8 @@
     <div class="container-xxl flex-grow-1 container-p-y">
         <h4 class="fw-bold py-3 mb-4">Capaian Pembelajaran</h4>
 
+        @include('components.alertComponents')
+
         <div class="nav-align-top mb-4">
             <ul class="nav nav-tabs nav-fill" role="tablist">
                 <li class="nav-item">
@@ -98,21 +100,22 @@
                             <div class="cp-item">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="badge cp-badge">CP Kelas 10</span>
+                                    @if($capaianKelas10 != null)
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" onclick="editCP(this)" data-id="1"
-                                            data-content="Siswa mampu menganalisis konsep dasar algoritma pemrograman dan menerapkannya dalam pemecahan masalah.">
+                                            data-bs-target="#editModal_{{ $capaianKelas10?->id }}">
+
                                             <i class="bx bx-edit-alt"></i>
                                         </button>
                                         <button class="btn btn-sm btn-icon btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" onclick="deleteCP(this)" data-id="1">
+                                            data-bs-target="#deleteModal_{{ $capaianKelas10?->id }}">
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="cp-text">
-                                    Siswa mampu menganalisis konsep dasar algoritma pemrograman dan menerapkannya dalam
-                                    pemecahan masalah.
+                                    {{ $capaianKelas10?->deskripsi }}
                                 </div>
                             </div>
 
@@ -160,7 +163,7 @@
                                 </div>
                             </div>
 
-                          
+
                         </div>
                     </div>
                 </div>
@@ -172,26 +175,83 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Tambah Capaian Pembelajaran</h5>
+                        <h5 class="modal-title">Tambah Capaian Pembelajaran Kelas 10</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <form>
+                    <form action="{{ route('guru.cp.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="kelas" value="10">
+                        <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Capaian Pembelajaran</label>
-                                <textarea class="form-control" rows="4" placeholder="Masukkan capaian pembelajaran..." required></textarea>
+                                <textarea class="form-control" name="cp" rows="4" placeholder="Masukkan capaian pembelajaran..." required
+                                    maxlength="1000"></textarea>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <!-- Combined Modal for Kelas 11 & 12 -->
+        @if($capaianKelas10 != null)
+        <!-- Edit Modal for Kelas 10 -->
+        <div class="modal fade" id="editModal_{{ $capaianKelas10?->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Capaian Pembelajaran Kelas {{ $capaianKelas10?->kelas }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ route('guru.cp.update', 10) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Capaian Pembelajaran</label>
+                                <textarea class="form-control" name="cp" id="editContent" rows="16" required maxlength="1000">{{ $capaianKelas10?->deskripsi }}</textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal for Kelas 10 -->
+        <div class="modal fade" id="deleteModal_{{ $capaianKelas10?->id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Capaian Pembelajaran Kelas 10</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ route('guru.cp.destroy', 10) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus capaian pembelajaran ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Modal for Kelas 11 & 12 -->
         <div class="modal fade" id="addModal1112" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -199,129 +259,25 @@
                         <h5 class="modal-title">Tambah Capaian Pembelajaran</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
-                    <div class="modal-body">
-                        <form>
+                    <form action="" method="POST">
+                        @csrf
+                        <input type="hidden" name="kelas" value="11">
+                        <div class="modal-body">
                             <div class="mb-3">
                                 <label class="form-label">Capaian Pembelajaran</label>
-                                <textarea class="form-control" rows="4" placeholder="Masukkan capaian pembelajaran..." required></textarea>
+                                <textarea class="form-control" name="content" rows="4" placeholder="Masukkan capaian pembelajaran..." required
+                                    maxlength="1000"></textarea>
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary">Simpan</button>
-                    </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
 
-        <!-- Edit Modal -->
-        <div class="modal fade" id="editModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit Capaian Pembelajaran</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form id="editForm">
-                            <input type="hidden" id="editId">
-                            <div class="mb-3">
-                                <label class="form-label">Capaian Pembelajaran</label>
-                                <textarea class="form-control" id="editContent" rows="4" required></textarea>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-primary" onclick="handleEdit()">Simpan</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Delete Modal -->
-        <div class="modal fade" id="deleteModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Hapus Capaian Pembelajaran</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body">
-                        <input type="hidden" id="deleteId">
-                        <p>Apakah Anda yakin ingin menghapus capaian pembelajaran ini?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="button" class="btn btn-danger" onclick="handleDelete()">Hapus</button>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
 @endsection
-
-@push('js')
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Setup character counters for each grade
-            [10, 11, 12].forEach(grade => {
-                const capaianTextarea = document.getElementById(`capaian_${grade}`);
-                const capaianCounter = document.getElementById(`capaian-count-${grade}`);
-
-                if (capaianTextarea && capaianCounter) {
-                    setupCounter(capaianTextarea, capaianCounter);
-                }
-            });
-
-            function setupCounter(textarea, counter) {
-                function updateCount() {
-                    const length = textarea.value.length;
-                    counter.textContent = Math.min(length, 1000);
-                    if (length > 1000) {
-                        textarea.value = textarea.value.substring(0, 1000);
-                    }
-                }
-                updateCount();
-                textarea.addEventListener('input', updateCount);
-            }
-        });
-
-        // Edit CP functions
-        function editCP(el) {
-            const id = el.dataset.id;
-            const content = el.dataset.content;
-
-            document.getElementById('editId').value = id;
-            document.getElementById('editContent').value = content;
-        }
-
-        function handleEdit() {
-            const id = document.getElementById('editId').value;
-            const content = document.getElementById('editContent').value;
-
-            // Handle edit logic here
-            console.log('Edit CP:', id, content);
-
-            // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('editModal')).hide();
-        }
-
-        // Delete CP functions
-        function deleteCP(el) {
-            const id = el.dataset.id;
-            document.getElementById('deleteId').value = id;
-        }
-
-        function handleDelete() {
-            const id = document.getElementById('deleteId').value;
-
-            // Handle delete logic here
-            console.log('Delete CP:', id);
-
-            // Close modal
-            bootstrap.Modal.getInstance(document.getElementById('deleteModal')).hide();
-        }
-    </script>
-@endpush

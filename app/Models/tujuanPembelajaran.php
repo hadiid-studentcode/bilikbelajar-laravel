@@ -13,4 +13,9 @@ class tujuanPembelajaran extends Model
     protected $table = 'tujuan_pembelajarans';
 
     protected $guarded = ['id'];
+
+    public function materi()
+    {
+        return $this->belongsTo(Materi::class, 'materi_id', 'id');
+    }
 }

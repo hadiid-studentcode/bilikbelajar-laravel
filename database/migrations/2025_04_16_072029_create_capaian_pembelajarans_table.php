@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('capaian_pembelajarans', function (Blueprint $table) {
             $table->id();
-            $table->text('dekripsi')->nullable();
+            $table->text('deskripsi')->nullable();
+            $table->enum('kelas', [10, 11, 12]);
             $table->timestamps();
         });
     }

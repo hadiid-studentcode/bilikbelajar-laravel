@@ -25,13 +25,13 @@ class KuisController extends Controller
             })
             ->get();
 
-            $materi = Materi::select('kelas')->where('id', $materi_id)->first();
-           
+        $materi = Materi::select('kelas')->where('id', $materi_id)->first();
 
 
-     
 
-        return view('guru.materi.kuis.index', compact('title', 'materi_id', 'kuis', 'nilaiKuis', 'jawabanKuis','materi'));
+
+
+        return view('guru.materi.kuis.index', compact('title', 'materi_id', 'kuis', 'nilaiKuis', 'jawabanKuis', 'materi'));
     }
 
     public function store(Request $request, $materi_id)
@@ -98,6 +98,19 @@ class KuisController extends Controller
             return back()->with('success', 'Kuis berhasil dihapus');
         } catch (\Exception $e) {
             return back()->with('error', 'Gagal menghapus kuis: ' . $e->getMessage());
+        }
+    }
+    public function destroyNilaiKuis($nilaiKuis_id)
+    {
+        dd($nilaiKuis_id);
+        try {
+            $nilaiKuis = nilaiKuis::findOrFail($nilaiKuis_id);
+            $nilaiKuis->delete();
+
+            return back()->with('success', 'Nilai kuis berhasil dihapus');
+        } catch (\Exception $e) {
+            dd($e->getMessage());
+            return back()->with('error', 'Gagal menghapus nilai kuis: ' . $e->getMessage());
         }
     }
 }

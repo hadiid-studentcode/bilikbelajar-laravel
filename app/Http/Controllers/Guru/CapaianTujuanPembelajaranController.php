@@ -13,6 +13,8 @@ class CapaianTujuanPembelajaranController extends Controller
 
     public function index()
     {
+
+        
         $title = $this->title;
         $capaian = capaianPembelajaran::first();
         $tujuan = tujuanPembelajaran::first();
@@ -36,9 +38,9 @@ class CapaianTujuanPembelajaranController extends Controller
                 'dekripsi' => $request->cp,
             ]);
 
-            return back()->with('success', 'Berhasil menambahkan capaian tujuan pembelajaran');
+            return back()->with('success', 'Berhasil menambahkan Capaian Pembelajaran');
         } catch (\Throwable $th) {
-            return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
+            return back()->with('danger', 'Gagal menambahkan capaian tujuan pembelajaran');
         }
     }
 
