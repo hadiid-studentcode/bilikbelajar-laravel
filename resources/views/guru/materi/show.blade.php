@@ -159,30 +159,39 @@
 
     {{-- tujuan pembelajaran --}}
     @foreach ($materi as $m)
+        @php
+            $tujuanPembelajaran = \App\Models\TujuanPembelajaran::where('materi_id', $m->id)->first();
+        @endphp
+
         <div class="modal fade" id="tujuanPembelajaran{{ $m->id }}" tabindex="-1">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <h5 class="modal-title text-white">
                             <i class="bx bx-brain me-1"></i>
-                            Tujuan Pembelajaran
+                            @if ($tujuanPembelajaran != null)
+                                Edit Tujuan Pembelajaran
+                            @else
+                                Tambah Tujuan Pembelajaran
+                            @endif
                         </h5>
                         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <div class="modal-body">
-                        <form id="tujuanPembelajaranForm{{ $m->id }}" action="{{ route('guru.materi.storeTp') }}"
+                        <form id="tujuanPembelajaranForm{{ $m->id }}"
+                            action="@if ($tujuanPembelajaran != null) {{ route('guru.materi.updateTp', $tujuanPembelajaran->id) }} @else {{ route('guru.materi.store') }} @endif"
                             method="POST">
                             @csrf
+                            @if ($tujuanPembelajaran != null)
+                                @method('PUT')
+                            @endif
                             <input type="hidden" name="materi_id" value="{{ $m->id }}">
                             <div class="mb-3">
                                 <label class="form-label fw-semibold">
                                     Tujuan Pembelajaran untuk Materi "{{ $m->nama }}"
                                 </label>
 
-                                @php
-                                $tujuanPembelajaran = \App\Models\TujuanPembelajaran::where('materi_id', $m->id)->first();    
-                                @endphp
-                              
+
                                 <div class="form-text mb-2">
                                     <i class="bx bx-info-circle"></i>
                                     Tuliskan tujuan pembelajaran yang ingin dicapai dalam materi ini

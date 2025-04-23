@@ -76,13 +76,30 @@ class MateriController extends Controller
             ]);
 
             TujuanPembelajaran::create([
-                'dekripsi' => $request->input('tujuan_pembelajaran'),
+                'deskripsi' => $request->input('tujuan_pembelajaran'),
                 'materi_id' => $request->input('materi_id'),
             ]);
 
             return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal ditambahkan');
+        }
+    }
+    public function updateTp(Request $request, $tp_id)
+    {
+        try {
+            $request->validate([
+                'tujuan_pembelajaran' => 'required',
+            ]);
+
+            $tujuanPembelajaran = TujuanPembelajaran::find($tp_id);
+            $tujuanPembelajaran->update([
+                'deskripsi' => $request->input('tujuan_pembelajaran'),
+            ]);
+
+            return redirect()->back()->with('success', 'Tujuan Pembelajaran berhasil diupdate');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal diupdate');
         }
     }
 
