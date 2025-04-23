@@ -29,7 +29,7 @@
          <li class="menu-header small text-uppercase">
              <span class="menu-header-text">Kelola</span>
          </li>
-         <li class="menu-item {{ request()->is('guru/cp*') ? 'active' : '' }}">
+         <li class="menu-item {{ request()->is('guru/capaian-pembelajaran*') ? 'active' : '' }}">
              <a href="{{ route('guru.cp.index') }}" class="menu-link">
                  <i class="menu-icon tf-icons bx bx-target-lock"></i>
                  <div data-i18n="Layouts">Capaian Pembelajaran</div>

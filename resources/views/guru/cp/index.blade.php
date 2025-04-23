@@ -137,31 +137,34 @@
 
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <h6 class="mb-0">Daftar Capaian Pembelajaran</h6>
+                                @if($capaianKelas11_12 == null)
                                 <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
                                     data-bs-target="#addModal_1112">
                                     <i class="bx bx-plus me-1"></i>Tambah CP
                                 </button>
+                                @endif
                             </div>
 
                             <!-- CP Items -->
                             <div class="cp-item">
                                 <div class="d-flex justify-content-between mb-2">
                                     <span class="badge cp-badge">CP Kelas 11 & 12</span>
+                                    @if($capaianKelas11_12 != null)
                                     <div class="d-flex gap-2">
                                         <button class="btn btn-sm btn-icon btn-outline-primary" data-bs-toggle="modal"
-                                            data-bs-target="#editModal" onclick="editCP(this)" data-id="3"
-                                            data-content="Siswa mampu mengembangkan aplikasi web menggunakan framework modern dan menerapkan konsep pemrograman berorientasi objek.">
+                                            data-bs-target="#editModal_1112" 
+                                          >
                                             <i class="bx bx-edit-alt"></i>
                                         </button>
                                         <button class="btn btn-sm btn-icon btn-outline-danger" data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal" onclick="deleteCP(this)" data-id="3">
+                                            data-bs-target="#deleteModal_1112">
                                             <i class="bx bx-trash"></i>
                                         </button>
                                     </div>
+                                    @endif
                                 </div>
                                 <div class="cp-text">
-                                    Siswa mampu mengembangkan aplikasi web menggunakan framework modern dan menerapkan
-                                    konsep pemrograman berorientasi objek.
+                                   {{ $capaianKelas11_12?->deskripsi }}
                                 </div>
                             </div>
 
@@ -255,6 +258,7 @@
         </div>
         @endif
 
+        @if($capaianKelas11_12 == null)
         <!-- Modal for Kelas 11 & 12 -->
         <div class="modal fade" id="addModal_1112" tabindex="-1">
             <div class="modal-dialog">
@@ -282,6 +286,61 @@
                 </div>
             </div>
         </div>
+        @endif
+
+        @if($capaianKelas11_12 != null)
+          <!-- Edit Modal for Kelas 11 & 12 -->
+        <div class="modal fade" id="editModal_1112" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit Capaian Pembelajaran Kelas 11 & 12</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ route('guru.cp.update', 1112) }}" method="POST">
+                        @csrf
+                        @method('PUT')
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label class="form-label">Capaian Pembelajaran</label>
+                                <textarea class="form-control" name="cp" id="editContent" rows="16" required maxlength="1000">{{ $capaianKelas11_12?->deskripsi }}</textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-primary">Simpan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Delete Modal for Kelas 1112 -->
+        <div class="modal fade" id="deleteModal_1112" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Hapus Capaian Pembelajaran Kelas 11 & 12</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ route('guru.cp.destroy', 1112) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+
+                        <div class="modal-body">
+                            <p>Apakah Anda yakin ingin menghapus capaian pembelajaran ini?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        @endif
 
     </div>
 @endsection

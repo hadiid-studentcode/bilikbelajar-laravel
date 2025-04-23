@@ -17,7 +17,7 @@ class CapaianPembelajaranController extends Controller
         $capaianKelas10 = capaianPembelajaran::where('kelas', '10')->first();
         $capaianKelas11_12 = capaianPembelajaran::where('kelas', '11')->orWhere('kelas', '12')->first();
 
-        return view('guru.cp.index', compact('capaianKelas10', 'title'));
+        return view('guru.cp.index', compact('capaianKelas10', 'title', 'capaianKelas11_12'));
     }
 
     public function store(Request $request)
@@ -47,11 +47,9 @@ class CapaianPembelajaranController extends Controller
 
             return back()->with('success', 'Berhasil menambahkan Capaian pembelajaran');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return back()->with('error', 'Gagal menambahkan capaian tujuan pembelajaran');
         }
     }
-
 
     public function update(Request $request, $kelas)
     {
