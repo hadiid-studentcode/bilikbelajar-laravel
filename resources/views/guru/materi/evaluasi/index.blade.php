@@ -395,7 +395,7 @@
                         menghapus semua soal dan jawaban siswa. Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
-                    <form action="#" method="POST">
+                    <form action="{{ route('guru.materi.evaluasi.destroy', $materi_id) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>

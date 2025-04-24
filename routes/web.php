@@ -60,7 +60,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::get('/{materi_id}', [GuruEvaluasiController::class, 'index'])->name('index');
             Route::post('/{materi_id}/store', [GuruEvaluasiController::class, 'store'])->name('store');
             Route::put('/{materi_id}/update', [GuruEvaluasiController::class, 'update'])->name('update');
-            // Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
+            Route::delete('/{materi_id}/destroy', [GuruEvaluasiController::class, 'destroy'])->name('destroy');
             // Route::delete('/{nilaiKuis_id}/destroy-nilaiKuis', [GuruKuisController::class, 'destroyNilaiKuis'])->name('destroy.nilaiKuis');
         });
     });

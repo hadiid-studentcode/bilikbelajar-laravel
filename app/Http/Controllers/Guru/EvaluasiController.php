@@ -63,8 +63,16 @@ class EvaluasiController extends Controller
             Evaluasi::insert($data);
             return redirect()->back()->with('success', 'Data berhasil disimpan');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
             return redirect()->back()->with('error', 'Data gagal disimpan');
+        }
+    }
+    public function destroy($materi_id)
+    {
+        try {
+            Evaluasi::where('materi_id', $materi_id)->delete();
+            return redirect()->back()->with('success', 'Data berhasil dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Data gagal dihapus');
         }
     }
 }
