@@ -22,7 +22,7 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h5 class="mb-0">Daftar Evaluasi</h5>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="#" class="btn btn-secondary d-flex align-items-center gap-1">
+                                <a href="{{ route('guru.materi.kelas', $materi->kelas) }}" class="btn btn-secondary d-flex align-items-center gap-1">
                                     <i class="bx bx-arrow-back"></i>
                                     <span>Kembali</span>
                                 </a>
