@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Guru\CapaianPembelajaranController as GuruCapaianPembelajaranController;
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
+use App\Http\Controllers\Guru\EvaluasiController as GuruEvaluasiController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
@@ -55,6 +56,14 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
             Route::delete('/{nilaiKuis_id}/destroy-nilaiKuis', [GuruKuisController::class, 'destroyNilaiKuis'])->name('destroy.nilaiKuis');
         });
+
+        Route::prefix('/evaluasi')->name('evaluasi.')->group(function () {
+            Route::get('/{materi_id}', [GuruEvaluasiController::class, 'index'])->name('index');
+            // Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
+            // Route::put('/{materi_id}/update', [GuruKuisController::class, 'update'])->name('update');
+            // Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
+            // Route::delete('/{nilaiKuis_id}/destroy-nilaiKuis', [GuruKuisController::class, 'destroyNilaiKuis'])->name('destroy.nilaiKuis');
+        });
     });
 });
 
@@ -73,4 +82,4 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 });
 
-include __DIR__.'/auth.php';
+include __DIR__ . '/auth.php';

@@ -85,7 +85,8 @@
                                         class="btn btn-sm btn-primary w-50">
                                         <i class="bx bx-quiz me-1"></i> Kuis
                                     </a>
-                                    <a href="#" class="btn btn-sm btn-success w-50">
+                                    <a href="{{ route('guru.materi.evaluasi.index', $m->id) }}"
+                                        class="btn btn-sm btn-success w-50">
                                         <i class="bx bx-notepad me-1"></i> Evaluasi
                                     </a>
                                 </div>
