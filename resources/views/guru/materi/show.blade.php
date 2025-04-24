@@ -20,11 +20,20 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h4 class="fw-bold">Daftar Materi Kelas {{ $kelas }}</h4>
-            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#createMateriModal">
-                <i class="bx bx-plus"></i> Tambah Materi
+        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+            <div>
+            <h4 class="fw-bold mb-0">Daftar Materi Kelas {{ $kelas }}</h4>
+            </div>
+            <div class="d-flex gap-2">
+            <a href="{{ route('guru.materi.index') }}" class="btn btn-secondary d-inline-flex align-items-center">
+                <i class="bx bx-arrow-back me-1"></i>
+                Kembali
+            </a>
+            <button class="btn btn-primary d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#createMateriModal">
+                <i class="bx bx-plus me-1"></i>
+                Tambah Materi
             </button>
+            </div>
         </div>
         @include('components.alertComponents')
 
