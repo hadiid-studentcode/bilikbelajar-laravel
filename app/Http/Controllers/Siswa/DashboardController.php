@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use App\Models\CapaianPembelajaran;
 use App\Models\Materi;
-use App\Models\tujuanPembelajaran;
 
 class DashboardController extends Controller
 {
@@ -21,8 +20,6 @@ class DashboardController extends Controller
 
         $materi = Materi::select('id', 'nama', 'kelas')->where('kelas', session()->get('siswa')->kelas)->get();
         $capaianPembelajaran = CapaianPembelajaran::where('kelas', session()->get('siswa')->kelas)->first();
-
-        
 
         return view('siswa.dashboard.index', compact('materi', 'capaianPembelajaran', 'title'));
     }

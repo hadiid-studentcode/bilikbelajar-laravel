@@ -85,6 +85,7 @@ class MateriController extends Controller
             return redirect()->back()->with('error', 'Tujuan Pembelajaran gagal ditambahkan');
         }
     }
+
     public function updateTp(Request $request, $tp_id)
     {
         try {

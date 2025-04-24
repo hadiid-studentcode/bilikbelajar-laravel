@@ -45,7 +45,6 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::post('/tp', [GuruMateriController::class, 'storeTp'])->name('storeTp');
         Route::put('/tp/{tp_id}', [GuruMateriController::class, 'updateTp'])->name('updateTp');
 
-
         Route::put('/{id}', [GuruMateriController::class, 'update'])->name('update');
         Route::delete('/{id}', [GuruMateriController::class, 'destroy'])->name('destroy');
 
@@ -86,4 +85,4 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     });
 });
 
-include __DIR__ . '/auth.php';
+include __DIR__.'/auth.php';
