@@ -22,7 +22,8 @@
                         <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
                             <h5 class="mb-0">Daftar Evaluasi</h5>
                             <div class="d-flex flex-wrap gap-2">
-                                <a href="{{ route('guru.materi.kelas', $materi->kelas) }}" class="btn btn-secondary d-flex align-items-center gap-1">
+                                <a href="{{ route('guru.materi.kelas', $materi->kelas) }}"
+                                    class="btn btn-secondary d-flex align-items-center gap-1">
                                     <i class="bx bx-arrow-back"></i>
                                     <span>Kembali</span>
                                 </a>
@@ -30,14 +31,22 @@
                                 <button type="button" class="btn btn-primary d-flex align-items-center gap-1"
                                     data-bs-toggle="modal" data-bs-target="#createEvaluasiModal">
                                     <i class="bx bx-plus"></i>
-                                    <span>Tambah Evaluasi</span>
+                                    <span>
+                                        @if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                                            Edit
+                                        @else
+                                            Tambah
+                                        @endif Evaluasi
+                                    </span>
                                 </button>
 
+                                @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
                                 <button type="button" class="btn btn-danger d-flex align-items-center gap-1"
                                     data-bs-toggle="modal" data-bs-target="#deleteEvaluasiModal">
                                     <i class="bx bx-trash"></i>
                                     <span>Hapus Evaluasi</span>
                                 </button>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -137,66 +146,75 @@
                         @php
                             $soalEvaluasi = [
                                 [
-                                    'pertanyaan' => 'Jelaskan proses fotosintesis pada tumbuhan dan faktor-faktor yang mempengaruhinya!',
-                                    'jawaban_siswa' => 'Fotosintesis adalah proses mengubah air dan CO2 menjadi glukosa dengan bantuan cahaya matahari...',
-                                    'contoh_jawaban' => 'Fotosintesis merupakan proses pembuatan makanan oleh tumbuhan hijau yang memerlukan cahaya matahari, air, dan karbon dioksida...',
+                                    'pertanyaan' =>
+                                        'Jelaskan proses fotosintesis pada tumbuhan dan faktor-faktor yang mempengaruhinya!',
+                                    'jawaban_siswa' =>
+                                        'Fotosintesis adalah proses mengubah air dan CO2 menjadi glukosa dengan bantuan cahaya matahari...',
+                                    'contoh_jawaban' =>
+                                        'Fotosintesis merupakan proses pembuatan makanan oleh tumbuhan hijau yang memerlukan cahaya matahari, air, dan karbon dioksida...',
                                     'bobot' => 100,
-                                    'nilai' => 85
+                                    'nilai' => 85,
                                 ],
                                 [
-                                    'pertanyaan' => 'Bagaimana dampak revolusi industri terhadap perubahan sosial masyarakat?',
-                                    'jawaban_siswa' => 'Revolusi industri membawa perubahan besar dalam cara hidup masyarakat...',
-                                    'contoh_jawaban' => 'Revolusi industri mengakibatkan urbanisasi, perubahan struktur kerja, dan munculnya kelas sosial baru...',
+                                    'pertanyaan' =>
+                                        'Bagaimana dampak revolusi industri terhadap perubahan sosial masyarakat?',
+                                    'jawaban_siswa' =>
+                                        'Revolusi industri membawa perubahan besar dalam cara hidup masyarakat...',
+                                    'contoh_jawaban' =>
+                                        'Revolusi industri mengakibatkan urbanisasi, perubahan struktur kerja, dan munculnya kelas sosial baru...',
                                     'bobot' => 100,
-                                    'nilai' => 90
+                                    'nilai' => 90,
                                 ],
                                 [
                                     'pertanyaan' => 'Jelaskan konsep pembagian kekuasaan trias politika!',
                                     'jawaban_siswa' => 'Trias politika membagi kekuasaan menjadi tiga bagian...',
-                                    'contoh_jawaban' => 'Trias politika adalah konsep pembagian kekuasaan menjadi eksekutif, legislatif, dan yudikatif...',
+                                    'contoh_jawaban' =>
+                                        'Trias politika adalah konsep pembagian kekuasaan menjadi eksekutif, legislatif, dan yudikatif...',
                                     'bobot' => 100,
-                                    'nilai' => 75
+                                    'nilai' => 75,
                                 ],
                                 // Tambah 7 soal lainnya dengan pola yang sama
                             ];
 
-                            for($i = 0; $i < 7; $i++) {
+                            for ($i = 0; $i < 7; $i++) {
                                 $soalEvaluasi[] = [
                                     'pertanyaan' => 'Soal Evaluasi #' . ($i + 4),
                                     'jawaban_siswa' => 'Jawaban siswa untuk soal #' . ($i + 4),
                                     'contoh_jawaban' => 'Contoh jawaban untuk soal #' . ($i + 4),
                                     'bobot' => 100,
-                                    'nilai' => rand(70, 100)
+                                    'nilai' => rand(70, 100),
                                 ];
                             }
                         @endphp
 
-                        @foreach($soalEvaluasi as $index => $soal)
+                        @foreach ($soalEvaluasi as $index => $soal)
                             <div class="accordion-item">
                                 <h2 class="accordion-header">
-                                    <button class="accordion-button {{ $index === 0 ? '' : 'collapsed' }}" type="button" 
-                                            data-bs-toggle="collapse" data-bs-target="#pertanyaan{{ $index + 1 }}">
+                                    <button class="accordion-button {{ $index === 0 ? '' : 'collapsed' }}" type="button"
+                                        data-bs-toggle="collapse" data-bs-target="#pertanyaan{{ $index + 1 }}">
                                         <div class="d-flex justify-content-between align-items-center w-100 me-3">
                                             <span>Soal #{{ $index + 1 }}</span>
                                         </div>
                                     </button>
                                 </h2>
-                                <div id="pertanyaan{{ $index + 1 }}" class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}">
+                                <div id="pertanyaan{{ $index + 1 }}"
+                                    class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}">
                                     <div class="accordion-body">
                                         <div class="card mb-3">
                                             <div class="card-body">
                                                 <h6 class="card-title mb-2">Pertanyaan:</h6>
                                                 <p class="mb-3">{{ $soal['pertanyaan'] }}</p>
-                                                
+
                                                 <h6 class="card-title mb-2">Jawaban Siswa:</h6>
                                                 <p class="mb-3">{{ $soal['jawaban_siswa'] }}</p>
-                                                
+
                                                 <h6 class="card-title mb-2">Contoh Jawaban:</h6>
                                                 <p class="mb-3 text-muted">{{ $soal['contoh_jawaban'] }}</p>
-                                                
+
                                                 <div class="row align-items-center">
                                                     <div class="col-md-6">
-                                                        <h6 class="card-title mb-2">Bobot Soal: <span class="text-primary">{{ $soal['bobot'] }} poin</span></h6>
+                                                        <h6 class="card-title mb-2">Bobot Soal: <span
+                                                                class="text-primary">{{ $soal['bobot'] }} poin</span></h6>
                                                     </div>
                                                 </div>
                                             </div>
@@ -205,8 +223,8 @@
                                         <form>
                                             <div class="mb-3">
                                                 <label class="form-label">Nilai (0-100)</label>
-                                                <input type="number" class="form-control" name="nilai[]" min="0" max="100" 
-                                                       value="{{ $soal['nilai'] }}">
+                                                <input type="number" class="form-control" name="nilai[]" min="0"
+                                                    max="100" value="{{ $soal['nilai'] }}">
                                             </div>
                                             <div class="mb-3">
                                                 <label class="form-label">Catatan Guru (Opsional)</label>
@@ -236,7 +254,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa <strong>John Doe</strong>? Tindakan ini akan menghapus semua jawaban dan nilai siswa. Tindakan ini tidak dapat dibatalkan.</p>
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa <strong>John
+                            Doe</strong>? Tindakan ini akan menghapus semua jawaban dan nilai siswa. Tindakan ini tidak
+                        dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
                     <form action="#" method="POST">
@@ -259,7 +279,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa <strong>Jane Smith</strong>? Tindakan ini akan menghapus semua jawaban dan nilai siswa. Tindakan ini tidak dapat dibatalkan.</p>
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa <strong>Jane
+                            Smith</strong>? Tindakan ini akan menghapus semua jawaban dan nilai siswa. Tindakan ini tidak
+                        dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
                     <form action="#" method="POST">
@@ -278,37 +300,70 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tambah Evaluasi</h5>
+                    <h5 class="modal-title">@if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1) Edit @else Tambah @endif Evaluasi</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form action="@if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1) {{ route('guru.materi.evaluasi.update', $materi_id) }} @else  {{ route('guru.materi.evaluasi.store', $materi_id) }} @endif" method="POST">
+                        @csrf
+                        @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                            @method('PUT')
+                        @endif
                         <div id="soalContainer">
-                            <!-- Template untuk soal -->
-                            <div class="soal-item card mb-3">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <h6 class="card-title mb-0">Soal #1</h6>
-                                        <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
-                                            <i class="bx bx-trash"></i>
-                                        </button>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Pertanyaan</label>
-                                        <textarea class="form-control" name="soal[]" rows="4" required></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
-                                        <textarea class="form-control" name="jawaban_contoh[]" rows="4" required></textarea>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Bobot Nilai</label>
-                                        <input type="number" class="form-control" name="bobot[]" min="0"
-                                            max="100" value="100" required>
-                                        <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
+                            @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                                @foreach($evaluasi as $index => $soal)
+                                <div class="soal-item card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="card-title mb-0">Soal #{{$index + 1}}</h6>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Pertanyaan</label>
+                                            <textarea class="form-control" name="soal[]" rows="4" required>{{ $soal['soal'] }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
+                                            <textarea class="form-control" name="jawaban_contoh[]" rows="4" required>{{ $soal['jawaban'] }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Bobot Nilai</label>
+                                            <input type="number" class="form-control" name="bobot[]" min="0"
+                                                max="100" value="{{ $soal['poin'] }}" required>
+                                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
+                                        </div>
+                                        <input type="hidden" name="soal_id[]" value="{{ $soal['id'] }}">
                                     </div>
                                 </div>
-                            </div>
+                                @endforeach
+                            @else
+                                <div class="soal-item card mb-3">
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between align-items-center mb-3">
+                                            <h6 class="card-title mb-0">Soal #1</h6>
+                                            <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
+                                                <i class="bx bx-trash"></i>
+                                            </button>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Pertanyaan</label>
+                                            <textarea class="form-control" name="soal[]" rows="4" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
+                                            <textarea class="form-control" name="jawaban_contoh[]" rows="4" required></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Bobot Nilai</label>
+                                            <input type="number" class="form-control" name="bobot[]" min="0"
+                                                max="100" value="100" required>
+                                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
 
                         <div class="text-center mb-3">
@@ -336,7 +391,8 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <p class="mb-0">Apakah Anda yakin ingin menghapus seluruh evaluasi pada materi ini? Tindakan ini akan menghapus semua soal dan jawaban siswa. Tindakan ini tidak dapat dibatalkan.</p>
+                    <p class="mb-0">Apakah Anda yakin ingin menghapus seluruh evaluasi pada materi ini? Tindakan ini akan
+                        menghapus semua soal dan jawaban siswa. Tindakan ini tidak dapat dibatalkan.</p>
                 </div>
                 <div class="modal-footer">
                     <form action="#" method="POST">

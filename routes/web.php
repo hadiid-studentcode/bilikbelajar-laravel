@@ -58,8 +58,8 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
 
         Route::prefix('/evaluasi')->name('evaluasi.')->group(function () {
             Route::get('/{materi_id}', [GuruEvaluasiController::class, 'index'])->name('index');
-            // Route::post('/{materi_id}/store', [GuruKuisController::class, 'store'])->name('store');
-            // Route::put('/{materi_id}/update', [GuruKuisController::class, 'update'])->name('update');
+            Route::post('/{materi_id}/store', [GuruEvaluasiController::class, 'store'])->name('store');
+            Route::put('/{materi_id}/update', [GuruEvaluasiController::class, 'update'])->name('update');
             // Route::delete('/{materi_id}/destroy', [GuruKuisController::class, 'destroy'])->name('destroy');
             // Route::delete('/{nilaiKuis_id}/destroy-nilaiKuis', [GuruKuisController::class, 'destroyNilaiKuis'])->name('destroy.nilaiKuis');
         });
