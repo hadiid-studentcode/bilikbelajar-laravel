@@ -150,7 +150,7 @@
           <!-- Video Content -->
           <div class="tab-pane fade show active" id="video-content">
             <div class="row justify-content-center">
-              <div class="col-lg-8 col-md-10 col-12">
+              <div class="col-lg-12 col-md-12 col-12">
                 <div class="card shadow-sm">
                   <div class="ratio ratio-16x9 rounded-top overflow-hidden">
                     <video 
@@ -172,13 +172,13 @@
           <!-- PowerPoint Slides -->
         <div class="tab-pane fade" id="slides-content">
             <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-12">
+                <div class="col-lg-12 col-md-12 col-12">
                     <div class="card shadow-sm">
                         <div class="ratio ratio-16x9 rounded-top overflow-hidden">
                             <iframe
                                 src="{{ asset('storage/'.$materi->file) }}"
                                 frameborder="0"
-                                class="w-100 h-100"
+                                class="w-200 h-200"
                                 allowfullscreen
                             >
                             </iframe>
@@ -206,7 +206,7 @@
           <!-- Text Content -->
         <div class="tab-pane fade" id="text-content">
             <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 col-12">
+                <div class="col-lg-12 col-md-12 col-12">
                     <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
                         <article class="text-content">
                             <div class="materi-content prose prose-sm sm:prose-base lg:prose-lg">
