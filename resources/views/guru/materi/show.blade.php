@@ -179,7 +179,7 @@
                     </div>
                     <div class="modal-body">
                         <form id="tujuanPembelajaranForm{{ $m->id }}"
-                            action="@if ($tujuanPembelajaran != null) {{ route('guru.materi.updateTp', $tujuanPembelajaran->id) }} @else {{ route('guru.materi.store') }} @endif"
+                            action="@if ($tujuanPembelajaran != null) {{ route('guru.materi.updateTp', $tujuanPembelajaran->id) }} @else {{ route('guru.materi.storeTp') }} @endif"
                             method="POST">
                             @csrf
                             @if ($tujuanPembelajaran != null)
