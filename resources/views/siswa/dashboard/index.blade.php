@@ -164,7 +164,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                  
+
                                 </div>
 
 
@@ -219,7 +219,8 @@
                                     <div>
                                         <h6 class="alert-heading mb-1">Hai {{ session('siswa')->nama }}!</h6>
                                         <p class="mb-0">
-                                            Maaf, belum ada materi pembelajaran yang tersedia untuk kelas {{ session('siswa')->kelas }} saat ini.
+                                            Maaf, belum ada materi pembelajaran yang tersedia untuk kelas
+                                            {{ session('siswa')->kelas }} saat ini.
                                             Silakan cek kembali beberapa saat lagi.
                                         </p>
                                     </div>
@@ -240,11 +241,18 @@
 
                                             <div class="mt-auto">
                                                 <div class="btn-group" role="group">
-                                                    <a href="{{ route('siswa.materi.show', $m->id) }}" class="btn btn-primary btn-sm">
-                                                        <i class="bx bx-book-open me-1"></i>
-                                                         Materi
+                                                    <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                                        data-bs-target="#tujuanPembelajaran{{ $m->id }}">
+                                                        <i class="bx bx-target-lock me-1"></i>
+                                                        Tujuan
                                                     </a>
-                                                    <a href="{{ route('siswa.kuis.index', $m->id) }}" class="btn btn-info btn-sm">
+                                                    <a href="{{ route('siswa.materi.show', $m->id) }}"
+                                                        class="btn btn-primary btn-sm">
+                                                        <i class="bx bx-book-open me-1"></i>
+                                                        Materi
+                                                    </a>
+                                                    <a href="{{ route('siswa.kuis.index', $m->id) }}"
+                                                        class="btn btn-info btn-sm">
                                                         <i class="bx bx-task me-1"></i>
                                                         Kuis
                                                     </a>
@@ -253,6 +261,8 @@
                                                         Evaluasi
                                                     </a>
                                                 </div>
+
+
                                             </div>
                                         </div>
                                     </div>
@@ -268,6 +278,25 @@
 
         </div>
     </div>
+    @foreach ($materi as $m)
+        @php
+            $tujuanPembelajaran = \App\Models\TujuanPembelajaran::where('materi_id', $m->id)->first();
+        @endphp
+        <!-- Modal Tujuan Pembelajaran -->
+        <div class="modal fade" id="tujuanPembelajaran{{ $m->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Tujuan Pembelajaran</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {!! $tujuanPembelajaran->deskripsi ?? 'Belum ada tujuan pembelajaran' !!}
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
 @endsection
 
 @push('js')
