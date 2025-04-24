@@ -332,8 +332,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form
-                        action="@if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1) {{ route('guru.materi.kuis.update', $materi_id) }}@else {{ route('guru.materi.kuis.store', $materi_id) }} @endif"
+                    <form action="@if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1) {{ route('guru.materi.kuis.update', $materi_id) }}@else {{ route('guru.materi.kuis.store', $materi_id) }} @endif"
                         method="POST" id="createQuizForm">
                         @csrf
                         @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
@@ -343,63 +342,73 @@
                         <div class="card mb-3">
                             <div class="card-body">
                                 <h6 class="card-subtitle mb-3">Daftar Soal</h6>
-                                @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
-                                    @foreach ($kuis as $k)
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h6 class="mb-3">Soal {{ $loop->iteration }}</h6>
-                                                <div class="mb-3">
-                                                    <label class="form-label">Pertanyaan</label>
-                                                    <textarea class="form-control" name="soal[{{ $loop->iteration }}][pertanyaan]" rows="2" required>{{ $k->pertanyaan }}</textarea>
-                                                </div>
-                                                <div class="row mb-3">
-                                                    <div class="col-md-6">
-                                                        <label class="form-label">Bobot Nilai</label>
-                                                        <input type="number" class="form-control"
-                                                            name="soal[{{ $loop->iteration }}][bobot]" required
-                                                            min="1" max="100" value="{{ $k->poin_benar }}">
+                                <div id="questionContainer">
+                                    @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
+                                        @foreach ($kuis as $k)
+                                            <div class="card mb-3 question-card">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                                        <h6 class="soal-number mb-0">Soal {{ $loop->iteration }}</h6>
+                                                        <button type="button" class="btn btn-danger btn-sm remove-question" @if($loop->iteration == 1) style="display:none" @endif>
+                                                            <i class="bx bx-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label">Pertanyaan</label>
+                                                        <textarea class="form-control" name="soal[{{ $loop->iteration }}][pertanyaan]" rows="2" required>{{ $k->pertanyaan }}</textarea>
+                                                    </div>
+                                                    <div class="row mb-3">
+                                                        <div class="col-md-6">
+                                                            <label class="form-label">Bobot Nilai</label>
+                                                            <input type="number" class="form-control"
+                                                                name="soal[{{ $loop->iteration }}][bobot]" required
+                                                                min="1" max="100" value="{{ $k->poin_benar }}">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3">
+                                                        <label class="form-label d-block">Pilihan Jawaban</label>
+                                                        @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
+                                                            <div class="form-check mb-2">
+                                                                <input class="form-check-input" type="radio"
+                                                                    name="soal[{{ $loop->parent->iteration }}][jawaban_benar]"
+                                                                    value="{{ $opsi }}"
+                                                                    id="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}"
+                                                                    {{ $opsi == $k->jawaban_benar ? 'checked' : '' }}
+                                                                    {{ $opsi == 'a' ? 'required' : '' }}>
+                                                                <label class="form-check-label w-100"
+                                                                    for="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}">
+                                                                    <div class="input-group">
+                                                                        <span
+                                                                            class="input-group-text">{{ strtoupper($opsi) }}</span>
+                                                                        <input type="text" class="form-control"
+                                                                            name="soal[{{ $loop->parent->iteration }}][opsi][{{ $opsi }}]"
+                                                                            value="{{ $k->{'jawaban_' . $opsi} }}" required>
+                                                                    </div>
+                                                                </label>
+                                                            </div>
+                                                        @endforeach
                                                     </div>
                                                 </div>
-                                                <div class="mb-3">
-                                                    <label class="form-label d-block">Pilihan Jawaban</label>
-                                                    @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
-                                                        <div class="form-check mb-2">
-                                                            <input class="form-check-input" type="radio"
-                                                                name="soal[{{ $loop->parent->iteration }}][jawaban_benar]"
-                                                                value="{{ $opsi }}"
-                                                                id="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}"
-                                                                {{ $opsi == $k->jawaban_benar ? 'checked' : '' }}
-                                                                {{ $opsi == 'a' ? 'required' : '' }}>
-                                                            <label class="form-check-label w-100"
-                                                                for="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}">
-                                                                <div class="input-group">
-                                                                    <span
-                                                                        class="input-group-text">{{ strtoupper($opsi) }}</span>
-                                                                    <input type="text" class="form-control"
-                                                                        name="soal[{{ $loop->parent->iteration }}][opsi][{{ $opsi }}]"
-                                                                        value="{{ $k->{'jawaban_' . $opsi} }}" required>
-                                                                </div>
-                                                            </label>
-                                                        </div>
-                                                    @endforeach
-                                                </div>
                                             </div>
-                                        </div>
-                                    @endforeach
-                                @else
-                                    @for ($i = 1; $i <= 10; $i++)
-                                        <div class="card mb-3">
+                                        @endforeach
+                                    @else
+                                        <div class="card mb-3 question-card">
                                             <div class="card-body">
-                                                <h6 class="mb-3">Soal {{ $i }}</h6>
+                                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                                    <h6 class="soal-number mb-0">Soal 1</h6>
+                                                    <button type="button" class="btn btn-danger btn-sm remove-question" style="display:none">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
+                                                </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Pertanyaan</label>
-                                                    <textarea class="form-control" name="soal[{{ $i }}][pertanyaan]" rows="2" required></textarea>
+                                                    <textarea class="form-control" name="soal[1][pertanyaan]" rows="2" required></textarea>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
                                                         <label class="form-label">Bobot Nilai</label>
                                                         <input type="number" class="form-control"
-                                                            name="soal[{{ $i }}][bobot]" required
+                                                            name="soal[1][bobot]" required
                                                             min="1" max="100" value="10">
                                                     </div>
                                                 </div>
@@ -408,17 +417,17 @@
                                                     @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
                                                         <div class="form-check mb-2">
                                                             <input class="form-check-input" type="radio"
-                                                                name="soal[{{ $i }}][jawaban_benar]"
+                                                                name="soal[1][jawaban_benar]"
                                                                 value="{{ $opsi }}"
-                                                                id="soal{{ $i }}Opsi{{ $opsi }}"
+                                                                id="soal1Opsi{{ $opsi }}"
                                                                 {{ $opsi == 'a' ? 'required' : '' }}>
                                                             <label class="form-check-label w-100"
-                                                                for="soal{{ $i }}Opsi{{ $opsi }}">
+                                                                for="soal1Opsi{{ $opsi }}">
                                                                 <div class="input-group">
                                                                     <span
                                                                         class="input-group-text">{{ strtoupper($opsi) }}</span>
                                                                     <input type="text" class="form-control"
-                                                                        name="soal[{{ $i }}][opsi][{{ $opsi }}]"
+                                                                        name="soal[1][opsi][{{ $opsi }}]"
                                                                         required>
                                                                 </div>
                                                             </label>
@@ -427,8 +436,13 @@
                                                 </div>
                                             </div>
                                         </div>
-                                    @endfor
-                                @endif
+                                    @endif
+                                </div>
+                                <div class="text-center mt-3">
+                                    <button type="button" class="btn btn-primary" id="addQuestion">
+                                        <i class="bx bx-plus"></i> Tambah Soal
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -445,7 +459,6 @@
 
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>
@@ -453,17 +466,66 @@
 @endsection
 
 @push('js')
-    {{-- <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            // Handle detail button click
-            const detailButtons = document.querySelectorAll('.btn-info');
-            detailButtons.forEach(button => {
-                button.addEventListener('click', function() {
-                    const modal = new bootstrap.Modal(document.getElementById(
-                        'detailJawabanModal'));
-                    modal.show();
-                });
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const questionContainer = document.getElementById('questionContainer');
+        const addQuestionBtn = document.getElementById('addQuestion');
+
+        addQuestionBtn.addEventListener('click', function() {
+            const questionCards = document.querySelectorAll('.question-card');
+            const newIndex = questionCards.length + 1;
+            
+            const template = questionCards[0].cloneNode(true);
+            template.querySelector('.soal-number').textContent = `Soal ${newIndex}`;
+            
+            // Reset form values
+            template.querySelectorAll('input[type="text"], textarea').forEach(input => {
+                input.value = '';
             });
+            template.querySelectorAll('input[type="radio"]').forEach(radio => {
+                radio.checked = false;
+            });
+            
+            // Update name attributes
+            template.querySelectorAll('[name]').forEach(el => {
+                el.name = el.name.replace(/\[\d+\]/, `[${newIndex}]`);
+            });
+            
+            // Show remove button
+            template.querySelector('.remove-question').style.display = 'block';
+            
+            questionContainer.appendChild(template);
+            updateSoalNumbers();
         });
-    </script> --}}
+
+        questionContainer.addEventListener('click', function(e) {
+            if (e.target.closest('.remove-question')) {
+                e.preventDefault();
+                const card = e.target.closest('.question-card');
+                card.remove();
+                updateSoalNumbers();
+            }
+        });
+
+        function updateSoalNumbers() {
+            const questionCards = document.querySelectorAll('.question-card');
+            questionCards.forEach((card, index) => {
+                card.querySelector('.soal-number').textContent = `Soal ${index + 1}`;
+                
+                // Update all input names in the card
+                card.querySelectorAll('[name]').forEach(el => {
+                    el.name = el.name.replace(/\[\d+\]/, `[${index + 1}]`);
+                });
+                
+                // Hide remove button on first question
+                const removeBtn = card.querySelector('.remove-question');
+                if (index === 0) {
+                    removeBtn.style.display = 'none';
+                } else {
+                    removeBtn.style.display = 'block';
+                }
+            });
+        }
+    });
+</script>
 @endpush
