@@ -143,7 +143,9 @@
                                 </div>
                             </div>
                         </div> --}}
+                           @include('components.alertComponents')
 
+                       
                         <div class="table-responsive mt-3">
                             <table class="table table-bordered table-hover">
                                 <thead class="table-light">
