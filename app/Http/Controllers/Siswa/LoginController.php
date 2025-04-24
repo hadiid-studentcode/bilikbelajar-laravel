@@ -62,7 +62,7 @@ class LoginController extends Controller
             session()->forget('siswa');
             session()->flush();
 
-            return redirect()->route('siswa.login')->with('success', 'Logout Berhasil');
+            return redirect('/');
         } catch (\Throwable $th) {
             dd($th->getMessage());
         }
