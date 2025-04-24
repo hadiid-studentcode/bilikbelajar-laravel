@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
-use App\Models\capaianPembelajaran;
+use App\Models\CapaianPembelajaran;
 use App\Models\Materi;
 use App\Models\tujuanPembelajaran;
 
@@ -20,10 +20,11 @@ class DashboardController extends Controller
         }
 
         $materi = Materi::select('id', 'nama', 'kelas')->where('kelas', session()->get('siswa')->kelas)->get();
-        $tujuanPembelajaran = tujuanPembelajaran::first();
-        $capaianPembelajaran = capaianPembelajaran::first();
+        $capaianPembelajaran = CapaianPembelajaran::where('kelas', session()->get('siswa')->kelas)->first();
 
-        return view('siswa.dashboard.index', compact('materi', 'tujuanPembelajaran', 'capaianPembelajaran', 'title'));
+        
+
+        return view('siswa.dashboard.index', compact('materi', 'capaianPembelajaran', 'title'));
     }
 
     public function show() {}

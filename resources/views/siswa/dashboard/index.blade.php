@@ -106,13 +106,13 @@
                         </p>
                     </div>
                     <div class="search-container mb-4">
-                        <div class="input-group input-group-lg">
+                        {{-- <div class="input-group input-group-lg">
                             <input type="text" class="form-control border-0 shadow-sm"
                                 placeholder="Cari materi pembelajaran..." />
                             <button class="btn btn-light shadow-sm" type="button">
                                 <i class="bx bx-search"></i>
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                     <div class="hero-buttons d-flex flex-wrap gap-2">
                         <a href="#kursus" class="btn btn-light btn-lg">
@@ -159,29 +159,12 @@
                                             <div id="cp" class="accordion-collapse collapse" data-bs-parent="#cp"
                                                 style="">
                                                 <div class="accordion-body">
-                                                    {{ $capaianPembelajaran?->dekripsi }}
+                                                    {{ $capaianPembelajaran?->deskripsi }}
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col">
-                                        <div class="card accordion-item">
-                                            <h2 class="accordion-header" id="headingOne">
-                                                <button type="button" class="accordion-button collapsed"
-                                                    data-bs-toggle="collapse" data-bs-target="#tp" aria-expanded="false"
-                                                    aria-controls="accordionOne">
-                                                    Tujuan Pembelajaran
-                                                </button>
-                                            </h2>
-
-                                            <div id="tp" class="accordion-collapse collapse" data-bs-parent="#tp"
-                                                style="">
-                                                <div class="accordion-body">
-                                                    {{ $tujuanPembelajaran?->dekripsi }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                  
                                 </div>
 
 
