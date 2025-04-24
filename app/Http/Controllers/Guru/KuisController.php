@@ -99,7 +99,6 @@ class KuisController extends Controller
 
     public function destroyNilaiKuis($nilaiKuis_id)
     {
-        dd($nilaiKuis_id);
         try {
             $nilaiKuis = nilaiKuis::findOrFail($nilaiKuis_id);
             $nilaiKuis->delete();
