@@ -80,6 +80,10 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
         Route::get('/{materi_id}', [SiswaKuisController::class, 'index'])->name('index');
         Route::post('/store', [SiswaKuisController::class, 'store'])->name('store');
     });
+    Route::prefix('/evaluasi')->name('evaluasi.')->group(function () {
+        Route::get('/{materi_id}', [SiswaKuisController::class, 'index'])->name('index');
+        Route::post('/store', [SiswaKuisController::class, 'store'])->name('store');
+    });
 });
 
 include __DIR__ . '/auth.php';
