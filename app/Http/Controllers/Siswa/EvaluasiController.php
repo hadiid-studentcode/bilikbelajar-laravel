@@ -14,7 +14,6 @@ class EvaluasiController extends Controller
 
     public function index($materi_id)
     {
-    
 
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
@@ -28,15 +27,12 @@ class EvaluasiController extends Controller
         $nilaiEvaluasi = nilaiEvaluasi::where('siswa_id', session('siswa')->id)
             ->where('materi_id', $materi_id)
             ->first();
-            
 
         return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi'));
     }
 
     public function store(Request $request)
     {
-
-
 
         try {
             $request->validate([
@@ -60,7 +56,6 @@ class EvaluasiController extends Controller
                 'materi_id' => $request->materi_id,
                 'siswa_id' => session('siswa')->id,
             ]);
-
 
             return response()->json(['message' => 'Evaluasi berhasil disimpan']);
         } catch (\Throwable $th) {
