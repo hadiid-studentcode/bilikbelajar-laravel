@@ -19,7 +19,18 @@ class EvaluasiController extends Controller
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
 
-        return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi'));
+        if (! session()->has('siswa')) {
+            return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
+        }
+        if ($evaluasi->count() == 0) {
+            return redirect()->route('siswa.dashboard.index')->with('error', 'Evaluasi tidak ditemukan');
+        }
+        $nilaiEvaluasi = nilaiEvaluasi::where('siswa_id', session('siswa')->id)
+            ->where('materi_id', $materi_id)
+            ->first();
+            
+
+        return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi'));
     }
 
     public function store(Request $request)
