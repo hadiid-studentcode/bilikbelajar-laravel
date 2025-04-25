@@ -16,8 +16,8 @@ return new class extends Migration
             $table->foreignId('evaluasi_id')->references('id')->on('evaluasis')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('siswa_id')->references('id')->on('siswas')->onDelete('cascade')->onUpdate('cascade');
             $table->text('jawaban')->nullable();
-            $table->integer('nilai')->default(0);
-            $table->enum('status', ['benar', 'salah'])->default('salah');
+            $table->integer('nilai')->default(0)->nullable();
+            $table->enum('status', ['benar', 'salah'])->default('salah')->nullable();
             $table->text('catatan')->nullable();
             $table->timestamps();
         });

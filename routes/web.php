@@ -6,6 +6,7 @@ use App\Http\Controllers\Guru\EvaluasiController as GuruEvaluasiController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
+use App\Http\Controllers\Siswa\EvaluasiController as SiswaEvaluasiController;
 use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
 use Illuminate\Support\Facades\Auth;
@@ -80,8 +81,8 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
         Route::post('/store', [SiswaKuisController::class, 'store'])->name('store');
     });
     Route::prefix('/evaluasi')->name('evaluasi.')->group(function () {
-        Route::get('/{materi_id}', [SiswaKuisController::class, 'index'])->name('index');
-        Route::post('/store', [SiswaKuisController::class, 'store'])->name('store');
+        Route::get('/{materi_id}', [SiswaEvaluasiController::class, 'index'])->name('index');
+        Route::post('/store', [SiswaEvaluasiController::class, 'store'])->name('store');
     });
 });
 

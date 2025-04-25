@@ -256,7 +256,7 @@
                                                         <i class="bx bx-task me-1"></i>
                                                         Kuis
                                                     </a>
-                                                    <a href="#" class="btn btn-success btn-sm">
+                                                    <a href="{{ route('siswa.evaluasi.index', $m->id) }}" class="btn btn-success btn-sm">
                                                         <i class="bx bx-file me-1"></i>
                                                         Evaluasi
                                                     </a>
