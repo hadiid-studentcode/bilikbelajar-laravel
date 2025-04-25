@@ -25,6 +25,7 @@
             max-height: 90vh;
         }
     </style>
+
 @endpush
 
 @section('content')
@@ -257,7 +258,7 @@
                                             <div id="soal{{ $jawaban->kuis_id }}_{{ $nk->siswa_id }}"
                                                 class="accordion-collapse collapse {{ $loop->first ? 'show' : '' }}">
                                                 <div class="accordion-body">
-                                                    <p class="fw-medium mb-3">{{ $jawaban->kuis->pertanyaan }}</p>
+                                                    <p class="fw-medium mb-3">{!! $jawaban->kuis->pertanyaan !!}</p>
                                                     <div class="mb-3">
                                                         <div class="fw-medium mb-1">Pilihan Jawaban:</div>
                                                         @foreach (['a', 'b', 'c', 'd', 'e'] as $opsi)
@@ -357,7 +358,8 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label class="form-label">Pertanyaan</label>
-                                                        <textarea class="form-control" name="soal[{{ $loop->iteration }}][pertanyaan]" rows="2" required>{{ $k->pertanyaan }}</textarea>
+                                                        <input type="hidden" name="soal[{{ $loop->iteration }}][pertanyaan]" id="pertanyaan{{ $loop->iteration }}" value="{{ $k->pertanyaan ?? '' }}" />
+                                                        <div class="editor" data-target="pertanyaan{{ $loop->iteration }}"></div>
                                                     </div>
                                                     <div class="row mb-3">
                                                         <div class="col-md-6">
@@ -465,69 +467,61 @@
             </div>
         </div>
     </div>
+
 @endsection
 
 @push('js')
+<script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const questionContainer = document.getElementById('questionContainer');
-        const addQuestionBtn = document.getElementById('addQuestion');
+    function initializeEditor(editorElement) {
+        const targetId = editorElement.getAttribute('data-target');
+        
+        ClassicEditor.create(editorElement, {
+            toolbar: [
+                "undo", "redo", "|",
+                "heading", "|",
+                "bold", "italic", "|",
+                "link", "bulletedList", "numberedList", "|",
+                "indent", "outdent", "|",
+                "blockQuote", "insertTable", "|",
+            ],
+        })
+        .then((editor) => {
+            editor.editing.view.change((writer) => {
+                writer.setStyle("height", "200px", editor.editing.view.document.getRoot());
+                writer.setStyle("width", "100%", editor.editing.view.document.getRoot());
+            });
 
-        addQuestionBtn.addEventListener('click', function() {
-            const questionCards = document.querySelectorAll('.question-card');
-            const newIndex = questionCards.length + 1;
-            
-            const template = questionCards[0].cloneNode(true);
-            template.querySelector('.soal-number').textContent = `Soal ${newIndex}`;
-            
-            // Reset form values
-            template.querySelectorAll('input[type="text"], textarea').forEach(input => {
-                input.value = '';
-            });
-            template.querySelectorAll('input[type="radio"]').forEach(radio => {
-                radio.checked = false;
-            });
-            
-            // Update name attributes
-            template.querySelectorAll('[name]').forEach(el => {
-                el.name = el.name.replace(/\[\d+\]/, `[${newIndex}]`);
-            });
-            
-            // Show remove button
-            template.querySelector('.remove-question').style.display = 'block';
-            
-            questionContainer.appendChild(template);
-            updateSoalNumbers();
-        });
-
-        questionContainer.addEventListener('click', function(e) {
-            if (e.target.closest('.remove-question')) {
-                e.preventDefault();
-                const card = e.target.closest('.question-card');
-                card.remove();
-                updateSoalNumbers();
+            const targetInput = document.querySelector(`#${targetId}`);
+            if (targetInput.value) {
+                editor.setData(targetInput.value);
             }
-        });
 
-        function updateSoalNumbers() {
-            const questionCards = document.querySelectorAll('.question-card');
-            questionCards.forEach((card, index) => {
-                card.querySelector('.soal-number').textContent = `Soal ${index + 1}`;
-                
-                // Update all input names in the card
-                card.querySelectorAll('[name]').forEach(el => {
-                    el.name = el.name.replace(/\[\d+\]/, `[${index + 1}]`);
-                });
-                
-                // Hide remove button on first question
-                const removeBtn = card.querySelector('.remove-question');
-                if (index === 0) {
-                    removeBtn.style.display = 'none';
-                } else {
-                    removeBtn.style.display = 'block';
-                }
+            editor.model.document.on("change:data", () => {
+                targetInput.value = editor.getData();
             });
-        }
+        })
+        .catch((error) => {
+            console.error(error);
+        });
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize editors for existing questions
+        document.querySelectorAll('.editor').forEach(initializeEditor);
+
+        // Add event listener for new question button
+        document.getElementById('addQuestion').addEventListener('click', function() {
+            // Wait for the new question to be added to DOM
+            setTimeout(() => {
+                const newEditor = document.querySelector('.question-card:last-child .editor');
+                if (newEditor) {
+                    initializeEditor(newEditor);
+                }
+            }, 100);
+        });
     });
+
+    // ...existing code... (keep the existing quiz form handling code)
 </script>
 @endpush

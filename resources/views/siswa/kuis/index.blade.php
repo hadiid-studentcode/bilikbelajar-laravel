@@ -404,7 +404,7 @@
                 <!-- Quiz Content -->
                 <div id="quiz-content" x-show="!quizFinished">
                     <div class="question-container">
-                        <h4 class="mb-4" x-text="currentQuestionData.question"></h4>
+                        <h4 class="mb-4" x-html="currentQuestionData.question"></h4>
                         <div class="options-container">
                             <template x-for="(option, index) in currentQuestionData.options" :key="index">
                                 <div class="option mb-3">
