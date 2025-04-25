@@ -99,7 +99,7 @@
                 <template x-if="!evaluasiSubmitted">
                     <div>
                         <h4 class="mb-4">Pertanyaan Evaluasi:</h4>
-                        <div class="mb-4 question-text" id="question" x-text="currentQuestionData.soal"></div>
+                        <div class="mb-4 question-text" id="question" x-html="currentQuestionData.soal"></div>
                         <div class="mb-3">
                             <label for="answer" class="form-label">Jawaban Anda:</label>
                             <textarea class="answer-textarea" id="answer" x-model="answers[currentQuestion].answer"
