@@ -567,7 +567,7 @@
                         } else {
                             this.answerPoints[index] = 0;
                         }
-                    });
+                    });         
 
                     this.correctAnswers = totalCorrect;
                     const totalPossiblePoints = this.kuis.reduce((acc, q) => acc + q.poin_benar, 0);
