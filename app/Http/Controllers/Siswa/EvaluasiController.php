@@ -13,6 +13,8 @@ class EvaluasiController extends Controller
 
     public function index($materi_id)
     {
+
+        
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
 

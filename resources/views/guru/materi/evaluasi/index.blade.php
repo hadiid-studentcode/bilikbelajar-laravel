@@ -40,12 +40,12 @@
                                     </span>
                                 </button>
 
-                                @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
-                                <button type="button" class="btn btn-danger d-flex align-items-center gap-1"
-                                    data-bs-toggle="modal" data-bs-target="#deleteEvaluasiModal">
-                                    <i class="bx bx-trash"></i>
-                                    <span>Hapus Evaluasi</span>
-                                </button>
+                                @if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                                    <button type="button" class="btn btn-danger d-flex align-items-center gap-1"
+                                        data-bs-toggle="modal" data-bs-target="#deleteEvaluasiModal">
+                                        <i class="bx bx-trash"></i>
+                                        <span>Hapus Evaluasi</span>
+                                    </button>
                                 @endif
                             </div>
                         </div>
@@ -300,66 +300,85 @@
         <div class="modal-dialog modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">@if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1) Edit @else Tambah @endif Evaluasi</h5>
+                    <h5 class="modal-title">
+                        @if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                            Edit
+                        @else
+                            Tambah
+                        @endif Evaluasi
+                    </h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="@if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1) {{ route('guru.materi.evaluasi.update', $materi_id) }} @else  {{ route('guru.materi.evaluasi.store', $materi_id) }} @endif" method="POST">
+                    <form
+                        action="@if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1) {{ route('guru.materi.evaluasi.update', $materi_id) }} @else  {{ route('guru.materi.evaluasi.store', $materi_id) }} @endif"
+                        method="POST">
                         @csrf
-                        @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                        @if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
                             @method('PUT')
                         @endif
                         <div id="soalContainer">
-                            @if(isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
-                                @foreach($evaluasi as $index => $soal)
-                                <div class="soal-item card mb-3">
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between align-items-center mb-3">
-                                            <h6 class="card-title mb-0">Soal #{{$index + 1}}</h6>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
-                                                <i class="bx bx-trash"></i>
-                                            </button>
+                            @if (isset($evaluasi) && !empty($evaluasi) && $evaluasi->count() >= 1)
+                                @foreach ($evaluasi as $index => $soal)
+                                    <div class="soal-item card mb-3">
+                                        <div class="card-body">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <h6 class="card-title mb-0">Soal #{{ $index + 1 }}</h6>
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="hapusSoal(this)">
+                                                    <i class="bx bx-trash"></i>
+                                                </button>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Pertanyaan</label>
+                                                <input type="hidden" name="soal[]" id="soal{{ $index + 1 ?? 1 }}"
+                                                    value="{{ $soal['soal'] ?? '' }}">
+                                                <div class="editor" data-target="soal{{ $index + 1 ?? 1 }}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
+                                                <input type="hidden" name="jawaban_contoh[]"
+                                                    id="jawaban{{ $index + 1 ?? 1 }}"
+                                                    value="{{ $soal['jawaban'] ?? '' }}">
+                                                <div class="editor" data-target="jawaban{{ $index + 1 ?? 1 }}"></div>
+                                            </div>
+                                            <div class="mb-3">
+                                                <label class="form-label">Bobot Nilai</label>
+                                                <input type="number" class="form-control" name="bobot[]" min="0"
+                                                    max="100" value="{{ $soal['poin'] }}" required>
+                                                <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal
+                                                    ini</small>
+                                            </div>
+                                            <input type="hidden" name="soal_id[]" value="{{ $soal['id'] }}">
                                         </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Pertanyaan</label>
-                                            <textarea class="form-control" name="soal[]" rows="4" required>{{ $soal['soal'] }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
-                                            <textarea class="form-control" name="jawaban_contoh[]" rows="4" required>{{ $soal['jawaban'] }}</textarea>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Bobot Nilai</label>
-                                            <input type="number" class="form-control" name="bobot[]" min="0"
-                                                max="100" value="{{ $soal['poin'] }}" required>
-                                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
-                                        </div>
-                                        <input type="hidden" name="soal_id[]" value="{{ $soal['id'] }}">
                                     </div>
-                                </div>
                                 @endforeach
                             @else
                                 <div class="soal-item card mb-3">
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between align-items-center mb-3">
                                             <h6 class="card-title mb-0">Soal #1</h6>
-                                            <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
+                                            <button type="button" class="btn btn-danger btn-sm"
+                                                onclick="hapusSoal(this)">
                                                 <i class="bx bx-trash"></i>
                                             </button>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Pertanyaan</label>
-                                            <textarea class="form-control" name="soal[]" rows="4" required></textarea>
+                                            <input type="hidden" name="soal[]" id="soal1">
+                                            <div class="editor" data-target="soal1"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
-                                            <textarea class="form-control" name="jawaban_contoh[]" rows="4" required></textarea>
+                                            <input type="hidden" name="jawaban_contoh[]" id="jawaban1">
+                                            <div class="editor" data-target="jawaban1"></div>
                                         </div>
                                         <div class="mb-3">
                                             <label class="form-label">Bobot Nilai</label>
                                             <input type="number" class="form-control" name="bobot[]" min="0"
                                                 max="100" value="100" required>
-                                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
+                                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal
+                                                ini</small>
                                         </div>
                                     </div>
                                 </div>
@@ -408,42 +427,99 @@
 @endsection
 
 @push('js')
+    <script src="https://cdn.ckeditor.com/ckeditor5/39.0.1/classic/ckeditor.js"></script>
     <script>
+        function initializeEditor(editorElement) {
+            const targetId = editorElement.getAttribute('data-target');
+
+            ClassicEditor.create(editorElement, {
+                    toolbar: [
+                        "undo", "redo", "|",
+                        "heading", "|",
+                        "bold", "italic", "|",
+                        "link", "bulletedList", "numberedList", "|",
+                        "indent", "outdent", "|",
+                        "blockQuote", "insertTable", "|",
+                    ],
+                })
+                .then((editor) => {
+                    editor.editing.view.change((writer) => {
+                        writer.setStyle("height", "200px", editor.editing.view.document.getRoot());
+                        writer.setStyle("width", "100%", editor.editing.view.document.getRoot());
+                    });
+
+                    const targetInput = document.querySelector(`#${targetId}`);
+                    if (targetInput.value) {
+                        editor.setData(targetInput.value);
+                    }
+
+                    editor.model.document.on("change:data", () => {
+                        targetInput.value = editor.getData();
+                    });
+                })
+                .catch((error) => {
+                    console.error(error);
+                });
+        }
+
+        // Existing script content...
         let soalCounter = 1;
 
         function tambahSoal() {
             soalCounter++;
             const template = `
-                <div class="soal-item card mb-3">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <h6 class="card-title mb-0">Soal #${soalCounter}</h6>
-                            <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
-                                <i class="bx bx-trash"></i>
-                            </button>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Pertanyaan</label>
-                            <textarea class="form-control" name="soal[]" rows="4" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
-                            <textarea class="form-control" name="jawaban_contoh[]" rows="4" required></textarea>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Bobot Nilai</label>
-                            <input type="number" class="form-control" name="bobot[]" min="0" max="100" value="100" required>
-                            <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
-                        </div>
+            <div class="soal-item card mb-3">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="card-title mb-0">Soal #${soalCounter}</h6>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="hapusSoal(this)">
+                            <i class="bx bx-trash"></i>
+                        </button>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Pertanyaan</label>
+                        <input type="hidden" name="soal[]" id="soal${soalCounter}">
+                        <div class="editor" data-target="soal${soalCounter}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Contoh Jawaban (Untuk Panduan Penilaian)</label>
+                        <input type="hidden" name="jawaban_contoh[]" id="jawaban${soalCounter}">
+                        <div class="editor" data-target="jawaban${soalCounter}"></div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Bobot Nilai</label>
+                        <input type="number" class="form-control" name="bobot[]" min="0" max="100" value="100" required>
+                        <small class="text-muted">Nilai maksimal yang bisa diberikan untuk soal ini</small>
                     </div>
                 </div>
-            `;
+            </div>
+        `;
             document.getElementById('soalContainer').insertAdjacentHTML('beforeend', template);
+
+            // Initialize CKEditor for both question and answer fields
+            const newSoalItem = document.querySelector('.soal-item:last-child');
+            const editors = newSoalItem.querySelectorAll('.editor');
+            editors.forEach(editor => {
+                initializeEditor(editor);
+            });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize all editors
+            document.querySelectorAll('.editor').forEach(initializeEditor);
+        });
 
         function hapusSoal(button) {
             if (document.getElementsByClassName('soal-item').length > 1) {
-                button.closest('.soal-item').remove();
+                // Destroy CKEditor instances before removing the element
+                const soalItem = button.closest('.soal-item');
+                const editors = soalItem.querySelectorAll('.editor');
+                editors.forEach(editor => {
+                    if (editor.ckeditorInstance) {
+                        editor.ckeditorInstance.destroy();
+                    }
+                });
+                soalItem.remove();
                 updateSoalNumbers();
             } else {
                 alert('Minimal harus ada 1 soal!');
