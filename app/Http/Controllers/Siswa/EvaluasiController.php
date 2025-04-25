@@ -14,7 +14,6 @@ class EvaluasiController extends Controller
     public function index($materi_id)
     {
 
-        
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
 
@@ -27,7 +26,7 @@ class EvaluasiController extends Controller
             $request->validate([
                 'materi_id' => 'required|exists:materis,id',
                 'answers' => 'required|string',
-                'question_ids' => 'required|string'
+                'question_ids' => 'required|string',
             ]);
 
             $answers = json_decode($request->answers, true);
@@ -37,13 +36,13 @@ class EvaluasiController extends Controller
                 JawabanEvaluasi::create([
                     'evaluasi_id' => $answer['question_id'],
                     'siswa_id' => session('siswa')->id,
-                    'jawaban' => $answer['answer']
+                    'jawaban' => $answer['answer'],
                 ]);
             }
 
             return response()->json(['message' => 'Evaluasi berhasil disimpan']);
         } catch (\Throwable $th) {
-            return response()->json(['message' => 'Evaluasi gagal disimpan: ' . $th->getMessage()], 500);
+            return response()->json(['message' => 'Evaluasi gagal disimpan: '.$th->getMessage()], 500);
         }
     }
 }

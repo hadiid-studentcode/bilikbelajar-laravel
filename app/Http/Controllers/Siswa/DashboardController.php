@@ -13,7 +13,6 @@ class DashboardController extends Controller
     public function index()
     {
 
-        
         $title = $this->title;
 
         if (! session()->has('siswa')) {
