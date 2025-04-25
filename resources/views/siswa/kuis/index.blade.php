@@ -104,7 +104,7 @@
 
         .quiz-navigation {
             margin-top: auto;
-            padding: 0.5rem;
+            padding: 1.5rem;
         }
 
         .btn {
@@ -418,7 +418,7 @@
                 </div>
 
                 <!-- Quiz Navigation -->
-                <div class="quiz-navigation d-flex justify-content-between mt-1" :class="{ 'hidden': quizFinished }">
+                <div class="quiz-navigation d-flex justify-content-between mt-2" :class="{ 'hidden': quizFinished }">
                     <button class="btn btn-outline-secondary" @click="previousQuestion" :disabled="currentQuestion === 0">
                         Previous
                     </button>
