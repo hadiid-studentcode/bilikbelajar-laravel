@@ -344,7 +344,6 @@
 
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h6 class="card-subtitle mb-3">Daftar Soal</h6>
                                 <div id="questionContainer">
                                     @if (isset($kuis) && !empty($kuis) && $kuis->count() >= 1)
                                         @foreach ($kuis as $k)
@@ -379,12 +378,10 @@
                                                                     id="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}"
                                                                     {{ $opsi == $k->jawaban_benar ? 'checked' : '' }}
                                                                     {{ $opsi == 'a' ? 'required' : '' }}>
-                                                                <label class="form-check-label w-100"
-                                                                    for="soal{{ $loop->parent->iteration }}Opsi{{ $opsi }}">
+                                                                <label class="form-check-label w-100">
                                                                     <div class="input-group">
-                                                                        <span
-                                                                            class="input-group-text">{{ strtoupper($opsi) }}</span>
-                                                                        <input type="text" class="form-control"
+                                                                        <span class="input-group-text">{{ strtoupper($opsi) }}</span>
+                                                                        <input type="text" class="form-control" 
                                                                             name="soal[{{ $loop->parent->iteration }}][opsi][{{ $opsi }}]"
                                                                             value="{{ $k->{'jawaban_' . $opsi} }}" required>
                                                                     </div>
@@ -406,7 +403,8 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label class="form-label">Pertanyaan</label>
-                                                    <textarea class="form-control" name="soal[1][pertanyaan]" rows="2" required></textarea>
+                                                    <input type="hidden" name="soal[1][pertanyaan]" id="pertanyaan1" />
+                                                    <div class="editor" data-target="pertanyaan1"></div>
                                                 </div>
                                                 <div class="row mb-3">
                                                     <div class="col-md-6">
@@ -510,18 +508,76 @@
         // Initialize editors for existing questions
         document.querySelectorAll('.editor').forEach(initializeEditor);
 
-        // Add event listener for new question button
+        // Handle add question button
+        let questionCounter = document.querySelectorAll('.question-card').length;
+        
         document.getElementById('addQuestion').addEventListener('click', function() {
-            // Wait for the new question to be added to DOM
-            setTimeout(() => {
-                const newEditor = document.querySelector('.question-card:last-child .editor');
-                if (newEditor) {
-                    initializeEditor(newEditor);
+            questionCounter++;
+            const newQuestionHtml = `
+                <div class="card mb-3 question-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="soal-number mb-0">Soal ${questionCounter}</h6>
+                            <button type="button" class="btn btn-danger btn-sm remove-question">
+                                <i class="bx bx-trash"></i>
+                            </button>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pertanyaan</label>
+                            <input type="hidden" name="soal[${questionCounter}][pertanyaan]" id="pertanyaan${questionCounter}" />
+                            <div class="editor" data-target="pertanyaan${questionCounter}"></div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label class="form-label">Bobot Nilai</label>
+                                <input type="number" class="form-control" name="soal[${questionCounter}][bobot]" required min="1" max="100" value="10">
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label d-block">Pilihan Jawaban</label>
+                            ${['a', 'b', 'c', 'd', 'e'].map(opsi => `
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="radio"
+                                        name="soal[${questionCounter}][jawaban_benar]"
+                                        value="${opsi}"
+                                        id="soal${questionCounter}Opsi${opsi}"
+                                        ${opsi === 'a' ? 'required' : ''}>
+                                    <label class="form-check-label w-100">
+                                        <div class="input-group">
+                                            <span class="input-group-text">${opsi.toUpperCase()}</span>
+                                            <input type="text" class="form-control" 
+                                                name="soal[${questionCounter}][opsi][${opsi}]" required>
+                                        </div>
+                                    </label>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('questionContainer').insertAdjacentHTML('beforeend', newQuestionHtml);
+            
+            // Initialize CKEditor for new question
+            const newEditor = document.querySelector(`.question-card:last-child .editor`);
+            initializeEditor(newEditor);
+        });
+
+        // Handle remove question buttons
+        document.getElementById('questionContainer').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-question')) {
+                const questionCard = e.target.closest('.question-card');
+                const totalQuestions = document.querySelectorAll('.question-card').length;
+                
+                if (totalQuestions > 1) {
+                    questionCard.remove();
+                    // Update question numbers
+                    document.querySelectorAll('.soal-number').forEach((el, idx) => {
+                        el.textContent = `Soal ${idx + 1}`;
+                    });
                 }
-            }, 100);
+            }
         });
     });
-
-    // ...existing code... (keep the existing quiz form handling code)
 </script>
 @endpush

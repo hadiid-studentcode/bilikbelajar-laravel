@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
 use App\Models\Evaluasi;
+use App\Models\jawabanEvaluasi;
 use App\Models\Materi;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,14 @@ class EvaluasiController extends Controller
     {
 
         $title = $this->title;
-        $materi = Materi::select('kelas')->where('id', $materi_id)->first();
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
-
+        $jawabanEvaluasi = jawabanEvaluasi::with('evaluasi')
+            ->whereHas('evaluasi', function ($query) use ($materi_id) {
+                $query->where('materi_id', $materi_id);
+            })
+            ->get();
+        
+        $materi = Materi::select('kelas')->where('id', $materi_id)->first();
         return view('guru.materi.evaluasi.index', compact('title', 'materi_id', 'materi', 'evaluasi'));
     }
 
