@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class nilaiEvaluasi extends Model
+class NilaiEvaluasi extends Model
 {
     /** @use HasFactory<\Database\Factories\NilaiEvaluasiFactory> */
     use HasFactory;
@@ -23,4 +23,5 @@ class nilaiEvaluasi extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+    
 }

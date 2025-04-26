@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Evaluasi;
 use App\Models\jawabanEvaluasi;
 use App\Models\Materi;
+use App\Models\NilaiEvaluasi;
 use Illuminate\Http\Request;
 
 class EvaluasiController extends Controller
@@ -14,17 +15,28 @@ class EvaluasiController extends Controller
 
     public function index($materi_id)
     {
-
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
-        $jawabanEvaluasi = jawabanEvaluasi::with('evaluasi')
+        $nilaiEvaluasi = nilaiEvaluasi::with(['siswa', 'materi'])
+            ->where('materi_id', $materi_id)
+            ->get();
+        $jawabanEvaluasi = jawabanEvaluasi::with(['evaluasi'])
             ->whereHas('evaluasi', function ($query) use ($materi_id) {
                 $query->where('materi_id', $materi_id);
             })
             ->get();
-        
-        $materi = Materi::select('kelas')->where('id', $materi_id)->first();
-        return view('guru.materi.evaluasi.index', compact('title', 'materi_id', 'materi', 'evaluasi'));
+
+        $materi = Materi::findOrFail($materi_id);
+
+
+        return view('guru.materi.evaluasi.index', compact(
+            'title',
+            'materi_id',
+            'materi',
+            'evaluasi',
+            'nilaiEvaluasi',
+            'jawabanEvaluasi'
+        ));
     }
 
     public function store(Request $request, $materi_id)
@@ -85,6 +97,48 @@ class EvaluasiController extends Controller
             return redirect()->back()->with('success', 'Data berhasil dihapus');
         } catch (\Throwable $th) {
             return redirect()->back()->with('error', 'Data gagal dihapus');
+        }
+    }
+
+    public function destroyJawaban($nilai_id)
+    {
+        try {
+            $nilai = nilaiEvaluasi::findOrFail($nilai_id);
+
+            // Delete related answers first
+            jawabanEvaluasi::where('nilai_evaluasi_id', $nilai_id)->delete();
+
+            // Then delete the nilai record
+            $nilai->delete();
+
+            return redirect()->back()->with('success', 'Jawaban evaluasi berhasil dihapus');
+        } catch (\Throwable $th) {
+            return redirect()->back()->with('error', 'Gagal menghapus jawaban evaluasi');
+        }
+    }
+
+    public function updateNilaiEvaluasi(Request $request, $nilaiEvaluasi_id)
+    {
+
+        try {
+            $total_nilai = 0;
+            foreach ($request->jawaban_id as $key => $id) {
+                jawabanEvaluasi::where('id', $id)->update([
+                    'nilai' => $request->nilai[$key],
+                ]);
+                $total_nilai += $request->nilai[$key];
+            }
+
+            NilaiEvaluasi::where('id', $nilaiEvaluasi_id)->update([
+                'total_nilai' => $total_nilai,
+                'catatan' => $request->catatan,
+            ]);
+
+
+
+            return back()->with('success', 'Nilai evaluasi berhasil diperbarui');
+        } catch (\Throwable $th) {
+            return back()->with('error', 'Gagal memperbarui nilai evaluasi');
         }
     }
 }

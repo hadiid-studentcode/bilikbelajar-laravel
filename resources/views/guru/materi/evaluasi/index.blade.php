@@ -64,44 +64,35 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>John Doe</td>
-                                        <td><span class="badge bg-success">Sudah Dinilai</span></td>
-                                        <td><span class="badge bg-success">85/100</span></td>
-                                        <td>01/03/2024 10:30</td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <button data-bs-toggle="modal" data-bs-target="#detailJawabanModal_1"
-                                                    class="btn btn-sm btn-info">
-                                                    <i class="bx bx-detail"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteJawabanModal_1">
-                                                    <i class="bx bx-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jane Smith</td>
-                                        <td><span class="badge bg-warning">Belum Dinilai</span></td>
-                                        <td><span class="badge bg-secondary">-</span></td>
-                                        <td>01/03/2024 09:15</td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <button data-bs-toggle="modal" data-bs-target="#detailJawabanModal_2"
-                                                    class="btn btn-sm btn-info">
-                                                    <i class="bx bx-detail"></i>
-                                                </button>
-                                                <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                    data-bs-target="#deleteJawabanModal_2">
-                                                    <i class="bx bx-trash"></i>
-                                                </button>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    @foreach ($nilaiEvaluasi as $ne)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $ne->siswa->nama }}</td>
+                                            <td>
+                                                @if ($ne->total_nilai == 0)
+                                                    <span class="badge bg-danger">Belum Dinilai</span>
+                                                @else
+                                                    <span class="badge bg-success">Sudah Dinilai</span>
+                                                @endif
+                                            </td>
+                                            <td><span class="badge bg-success">{{ $ne->total_nilai }}/100</span></td>
+                                            <td>{{ $ne->created_at->format('d F Y H:i') }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button data-bs-toggle="modal"
+                                                        data-bs-target="#detailJawabanModal_{{ $ne->id }}"
+                                                        class="btn btn-sm btn-info">
+                                                        <i class="bx bx-detail"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
+                                                        data-bs-target="#deleteJawabanModal_1">
+                                                        <i class="bx bx-trash"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
                                 </tbody>
                             </table>
                         </div>
@@ -110,140 +101,118 @@
             </div>
         </div>
     </div>
-
-    <!-- Modal Detail Jawaban -->
-    <div class="modal fade" id="detailJawabanModal_1" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Detail Jawaban Evaluasi</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mb-4">
-                        <div class="col-md-12">
-                            <table class="table table-sm">
-                                <tr>
-                                    <th width="150">Nama Siswa</th>
-                                    <td>:</td>
-                                    <td class="fw-bold">John Doe</td>
-                                </tr>
-                                <tr>
-                                    <th>Waktu Pengumpulan</th>
-                                    <td>:</td>
-                                    <td>01/03/2024 10:30</td>
-                                </tr>
-                                <tr>
-                                    <th>Status</th>
-                                    <td>:</td>
-                                    <td><span class="badge bg-success">Sudah Dinilai</span></td>
-                                </tr>
-                            </table>
-                        </div>
+    @foreach ($nilaiEvaluasi as $ne)
+        <!-- Modal Detail Jawaban -->
+        <div class="modal fade" id="detailJawabanModal_{{ $ne->id }}" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Detail Jawaban Evaluasi</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
+                    <div class="modal-body">
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th width="150">Nama Siswa</th>
+                                        <td>:</td>
+                                        <td class="fw-bold">{{ $ne->siswa->nama }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Waktu Pengumpulan</th>
+                                        <td>:</td>
+                                        <td>{{ $ne->created_at->format('d/m/Y H:i') }}</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Status</th>
+                                        <td>:</td>
+                                        <td>
+                                            @if ($ne->total_nilai == 0)
+                                                <span class="badge bg-danger">Belum Dinilai</span>
+                                            @else
+                                                <span class="badge bg-success">Sudah Dinilai</span>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
 
-                    <div class="accordion" id="accordionJawaban">
-                        @php
-                            $soalEvaluasi = [
-                                [
-                                    'pertanyaan' =>
-                                        'Jelaskan proses fotosintesis pada tumbuhan dan faktor-faktor yang mempengaruhinya!',
-                                    'jawaban_siswa' =>
-                                        'Fotosintesis adalah proses mengubah air dan CO2 menjadi glukosa dengan bantuan cahaya matahari...',
-                                    'contoh_jawaban' =>
-                                        'Fotosintesis merupakan proses pembuatan makanan oleh tumbuhan hijau yang memerlukan cahaya matahari, air, dan karbon dioksida...',
-                                    'bobot' => 100,
-                                    'nilai' => 85,
-                                ],
-                                [
-                                    'pertanyaan' =>
-                                        'Bagaimana dampak revolusi industri terhadap perubahan sosial masyarakat?',
-                                    'jawaban_siswa' =>
-                                        'Revolusi industri membawa perubahan besar dalam cara hidup masyarakat...',
-                                    'contoh_jawaban' =>
-                                        'Revolusi industri mengakibatkan urbanisasi, perubahan struktur kerja, dan munculnya kelas sosial baru...',
-                                    'bobot' => 100,
-                                    'nilai' => 90,
-                                ],
-                                [
-                                    'pertanyaan' => 'Jelaskan konsep pembagian kekuasaan trias politika!',
-                                    'jawaban_siswa' => 'Trias politika membagi kekuasaan menjadi tiga bagian...',
-                                    'contoh_jawaban' =>
-                                        'Trias politika adalah konsep pembagian kekuasaan menjadi eksekutif, legislatif, dan yudikatif...',
-                                    'bobot' => 100,
-                                    'nilai' => 75,
-                                ],
-                                // Tambah 7 soal lainnya dengan pola yang sama
-                            ];
+                        <form action="{{ route('guru.materi.evaluasi.update.nilaiEvaluasi', $ne->id) }}" method="POST"
+                            class="nilai-form">
+                            @csrf
+                            @method('PUT')
+                            <div class="accordion" id="accordionJawaban">
+                                @foreach ($jawabanEvaluasi as $index => $jawaban)
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header">
+                                            <button class="accordion-button {{ $index === 0 ? '' : 'collapsed' }}"
+                                                type="button" data-bs-toggle="collapse"
+                                                data-bs-target="#pertanyaan{{ $index + 1 }}">
+                                                <div class="d-flex justify-content-between align-items-center w-100 me-3">
+                                                    <span>Soal #{{ $index + 1 }}</span>
+                                                </div>
+                                            </button>
+                                        </h2>
+                                        <div id="pertanyaan{{ $index + 1 }}"
+                                            class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}">
+                                            <div class="accordion-body">
+                                                <div class="card mb-3">
+                                                    <div class="card-body">
+                                                        <h6 class="card-title mb-2">Pertanyaan:</h6>
+                                                        <div class="mb-3">{!! $jawaban->evaluasi->soal !!}</div>
 
-                            for ($i = 0; $i < 7; $i++) {
-                                $soalEvaluasi[] = [
-                                    'pertanyaan' => 'Soal Evaluasi #' . ($i + 4),
-                                    'jawaban_siswa' => 'Jawaban siswa untuk soal #' . ($i + 4),
-                                    'contoh_jawaban' => 'Contoh jawaban untuk soal #' . ($i + 4),
-                                    'bobot' => 100,
-                                    'nilai' => rand(70, 100),
-                                ];
-                            }
-                        @endphp
+                                                        <h6 class="card-title mb-2">Jawaban Siswa:</h6>
+                                                        <div class="mb-3">{!! $jawaban->jawaban !!}</div>
 
-                        @foreach ($soalEvaluasi as $index => $soal)
-                            <div class="accordion-item">
-                                <h2 class="accordion-header">
-                                    <button class="accordion-button {{ $index === 0 ? '' : 'collapsed' }}" type="button"
-                                        data-bs-toggle="collapse" data-bs-target="#pertanyaan{{ $index + 1 }}">
-                                        <div class="d-flex justify-content-between align-items-center w-100 me-3">
-                                            <span>Soal #{{ $index + 1 }}</span>
-                                        </div>
-                                    </button>
-                                </h2>
-                                <div id="pertanyaan{{ $index + 1 }}"
-                                    class="accordion-collapse collapse {{ $index === 0 ? 'show' : '' }}">
-                                    <div class="accordion-body">
-                                        <div class="card mb-3">
-                                            <div class="card-body">
-                                                <h6 class="card-title mb-2">Pertanyaan:</h6>
-                                                <p class="mb-3">{{ $soal['pertanyaan'] }}</p>
+                                                        <h6 class="card-title mb-2">Contoh Jawaban:</h6>
+                                                        <div class="mb-3 text-muted">{!! $jawaban->evaluasi->jawaban !!}</div>
 
-                                                <h6 class="card-title mb-2">Jawaban Siswa:</h6>
-                                                <p class="mb-3">{{ $soal['jawaban_siswa'] }}</p>
-
-                                                <h6 class="card-title mb-2">Contoh Jawaban:</h6>
-                                                <p class="mb-3 text-muted">{{ $soal['contoh_jawaban'] }}</p>
-
-                                                <div class="row align-items-center">
-                                                    <div class="col-md-6">
-                                                        <h6 class="card-title mb-2">Bobot Soal: <span
-                                                                class="text-primary">{{ $soal['bobot'] }} poin</span></h6>
+                                                        <div class="row align-items-center">
+                                                            <div class="col-md-6">
+                                                                <h6 class="card-title mb-2">Bobot Soal: <span
+                                                                        class="text-primary">{{ $jawaban->evaluasi->poin }}
+                                                                        poin</span></h6>
+                                                            </div>
+                                                        </div>
                                                     </div>
+                                                </div>
+
+                                                <div class="mb-3">
+                                                    <label class="form-label">Nilai
+                                                        (0-{{ $jawaban->evaluasi->poin }})</label>
+                                                    <input type="number" class="form-control" name="nilai[]" min="0"
+                                                        max="{{ $jawaban->evaluasi->poin }}"
+                                                        value="{{ $jawaban->nilai }}">
+                                                    <input type="hidden" name="jawaban_id[]" value="{{ $jawaban->id }}">
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <form>
-                                            <div class="mb-3">
-                                                <label class="form-label">Nilai (0-100)</label>
-                                                <input type="number" class="form-control" name="nilai[]" min="0"
-                                                    max="100" value="{{ $soal['nilai'] }}">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label class="form-label">Catatan Guru (Opsional)</label>
-                                                <textarea class="form-control" name="catatan[]" rows="3"></textarea>
-                                            </div>
-                                            <button type="button" class="btn btn-primary">Simpan Nilai</button>
-                                        </form>
                                     </div>
-                                </div>
+                                @endforeach
                             </div>
-                        @endforeach
+
+                            <div class="mb-3">
+                                <label class="form-label">Catatan Guru (Opsional)</label>
+                                <textarea class="form-control" name="catatan" rows="3">{{ $ne->catatan }}</textarea>
+                            </div>
+
+                            <div class="d-flex justify-content-end mt-3">
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="bx bx-check me-1"></i>
+                                    Simpan Semua Nilai
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
 
     <!-- Modal Hapus Jawaban Evaluasi -->
     <div class="modal fade" id="deleteJawabanModal_1" tabindex="-1" aria-hidden="true">

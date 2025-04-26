@@ -17,8 +17,8 @@ return new class extends Migration
             $table->foreignId('siswa_id')->references('id')->on('siswas')->onDelete('cascade')->onUpdate('cascade');
             $table->text('jawaban')->nullable();
             $table->integer('nilai')->default(0)->nullable();
-            $table->enum('status', ['benar', 'salah'])->nullable();
-            $table->text('catatan')->nullable();
+            // $table->enum('status', ['benar', 'salah'])->nullable();
+            // $table->text('catatan')->nullable();
             $table->timestamps();
         });
     }

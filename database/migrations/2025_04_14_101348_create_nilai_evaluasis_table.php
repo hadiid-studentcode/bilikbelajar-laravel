@@ -16,9 +16,9 @@ return new class extends Migration
             $table->foreignId('materi_id')->references('id')->on('materis')->onDelete('cascade')->onUpdate('cascade');
             $table->foreignId('siswa_id')->references('id')->on('siswas')->onDelete('cascade')->onUpdate('cascade');
             $table->float('total_nilai')->default(0);
-            $table->integer('jumlah_benar')->default(0);
-            $table->integer('jumlah_salah')->default(0);
-            $table->integer('jumlah_tidak_dijawab')->default(0);
+            // $table->integer('jumlah_benar')->default(0);
+            // $table->integer('jumlah_salah')->default(0);
+            // $table->integer('jumlah_tidak_dijawab')->default(0);
             $table->text('catatan')->nullable();
             $table->timestamps();
         });
