@@ -14,14 +14,12 @@ class KuisController extends Controller
 
     public function index($materi_id)
     {
-
         $title = $this->title;
-
-        if (! session()->has('siswa')) {
+        if (!session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
-        $kuis = Kuis::where('materi_id', $materi_id)->get();
 
+        $kuis = Kuis::where('materi_id', $materi_id)->get();
         if ($kuis->count() == 0) {
             return redirect()->route('siswa.dashboard.index')->with('error', 'Kuis tidak ditemukan');
         }
@@ -29,6 +27,15 @@ class KuisController extends Controller
         $nilaiKuis = nilaiKuis::where('siswa_id', session('siswa')->id)
             ->where('materi_id', $materi_id)
             ->first();
+
+        if ($nilaiKuis) {
+            $jawabanKuis = jawabanKuis::with('kuis')
+                ->where('siswa_id', session('siswa')->id)
+                ->whereIn('kuis_id', $kuis->pluck('id'))
+                ->get();
+
+            $nilaiKuis->jawaban_kuis = $jawabanKuis;
+        }
 
         return view('siswa.kuis.index', compact('materi_id', 'title', 'kuis', 'nilaiKuis'));
     }
@@ -45,7 +52,7 @@ class KuisController extends Controller
             $siswa_id = session('siswa')->id;
 
             // Count not answered questions more efficiently
-            $not_answered = collect($answers)->filter(fn ($answer) => empty($answer['answer']))->count();
+            $not_answered = collect($answers)->filter(fn($answer) => empty($answer['answer']))->count();
 
             // Bulk insert answers
             $jawaban_data = collect($answers)->map(function ($answer) use ($siswa_id) {
@@ -74,7 +81,6 @@ class KuisController extends Controller
                 'message' => 'Jawaban berhasil disimpan',
                 'score' => $request->score,
             ]);
-
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 'error',

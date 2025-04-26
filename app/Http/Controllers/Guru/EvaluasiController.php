@@ -15,6 +15,7 @@ class EvaluasiController extends Controller
 
     public function index($materi_id)
     {
+
         $title = $this->title;
         $evaluasi = Evaluasi::where('materi_id', $materi_id)->get();
         $nilaiEvaluasi = nilaiEvaluasi::with(['siswa', 'materi'])
@@ -25,6 +26,7 @@ class EvaluasiController extends Controller
                 $query->where('materi_id', $materi_id);
             })
             ->get();
+
 
         $materi = Materi::findOrFail($materi_id);
 
@@ -93,6 +95,7 @@ class EvaluasiController extends Controller
     {
         try {
             Evaluasi::where('materi_id', $materi_id)->delete();
+            NilaiEvaluasi::where('materi_id', $materi_id)->delete();
 
             return redirect()->back()->with('success', 'Data berhasil dihapus');
         } catch (\Throwable $th) {
@@ -100,13 +103,17 @@ class EvaluasiController extends Controller
         }
     }
 
-    public function destroyJawaban($nilai_id)
+    public function destroyNilaiEvaluasi($nilaiEvaluasi_id)
     {
         try {
-            $nilai = nilaiEvaluasi::findOrFail($nilai_id);
+            $nilai = NilaiEvaluasi::findOrFail($nilaiEvaluasi_id);
 
             // Delete related answers first
-            jawabanEvaluasi::where('nilai_evaluasi_id', $nilai_id)->delete();
+            JawabanEvaluasi::where('siswa_id', $nilai->siswa_id)
+                ->whereHas('evaluasi', function ($query) use ($nilai) {
+                    $query->where('materi_id', $nilai->materi_id);
+                })
+                ->delete();
 
             // Then delete the nilai record
             $nilai->delete();

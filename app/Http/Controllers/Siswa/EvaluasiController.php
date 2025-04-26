@@ -28,6 +28,7 @@ class EvaluasiController extends Controller
             ->where('materi_id', $materi_id)
             ->first();
 
+
         return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi'));
     }
 

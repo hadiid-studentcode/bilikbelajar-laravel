@@ -23,5 +23,9 @@ class jawabanEvaluasi extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
-    
+
+    public function nilaiEvaluasi()
+    {
+        return $this->belongsTo(NilaiEvaluasi::class);
+    }
 }

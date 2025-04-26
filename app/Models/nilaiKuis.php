@@ -23,4 +23,12 @@ class nilaiKuis extends Model
     {
         return $this->belongsTo(Siswa::class);
     }
+
+    public function jawaban_kuis()
+    {
+        return $this->hasMany(jawabanKuis::class, 'siswa_id', 'siswa_id')
+            ->whereHas('kuis', function ($query) {
+                $query->where('materi_id', $this->materi_id);
+            });
+    }
 }

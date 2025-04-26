@@ -53,7 +53,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil ditambahkan');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menambahkan kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal menambahkan kuis: ' . $e->getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil diperbarui');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memperbarui kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal memperbarui kuis: ' . $e->getMessage());
         }
     }
 
@@ -90,10 +90,10 @@ class KuisController extends Controller
     {
         try {
             Kuis::where('materi_id', $materi_id)->delete();
-
+            nilaiKuis::where('materi_id', $materi_id)->delete();
             return back()->with('success', 'Kuis berhasil dihapus');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal menghapus kuis: ' . $e->getMessage());
         }
     }
 
@@ -101,13 +101,20 @@ class KuisController extends Controller
     {
         try {
             $nilaiKuis = nilaiKuis::findOrFail($nilaiKuis_id);
+
+            // Delete related jawabanKuis records
+            jawabanKuis::where('siswa_id', $nilaiKuis->siswa_id)
+                ->whereHas('kuis', function ($query) use ($nilaiKuis) {
+                    $query->where('materi_id', $nilaiKuis->materi_id);
+                })
+                ->delete();
+
+            // Delete nilaiKuis record
             $nilaiKuis->delete();
 
-            return back()->with('success', 'Nilai kuis berhasil dihapus');
+            return back()->with('success', 'Data kuis siswa berhasil dihapus');
         } catch (\Exception $e) {
-            dd($e->getMessage());
-
-            return back()->with('error', 'Gagal menghapus nilai kuis: '.$e->getMessage());
+            return back()->with('error', 'Gagal menghapus data kuis: ' . $e->getMessage());
         }
     }
 }

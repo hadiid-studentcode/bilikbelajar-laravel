@@ -85,82 +85,116 @@
 
         @if ($nilaiEvaluasi)
             <div class="container py-4">
-            <div class="results-card">
-                <div class="results-header">
-                <div class="result-circle mx-auto d-flex align-items-center justify-content-center" 
-                     style="width: 200px; height: 200px; border: 8px solid #4361ee; border-radius: 50%;">
-                    @if($nilaiEvaluasi->total_nilai > 0)
-                    <div class="text-center">
-                        <div class="score-display mb-2">
-                        {{ $nilaiEvaluasi->total_nilai }}
+                <div class="results-card">
+                    <div class="results-header">
+                        <div class="result-circle mx-auto d-flex align-items-center justify-content-center"
+                            style="width: 200px; height: 200px; border: 8px solid #4361ee; border-radius: 50%;">
+                            @if ($nilaiEvaluasi->total_nilai > 0)
+                                <div class="text-center">
+                                    <div class="score-display mb-2">
+                                        {{ $nilaiEvaluasi->total_nilai }}
+                                    </div>
+                                    <div class="text-muted">dari 100</div>
+                                </div>
+                            @else
+                                <div class="text-center">
+                                    <div class="spinner-border text-primary mb-2" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                    <div class="text-muted">Sedang dinilai...</div>
+                                </div>
+                            @endif
                         </div>
-                        <div class="text-muted">dari 100</div>
-                    </div>
-                    @else
-                    <div class="text-center">
-                        <div class="spinner-border text-primary mb-2" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                        </div>
-                        <div class="text-muted">Sedang dinilai...</div>
-                    </div>
-                    @endif
-                </div>
-                <h3 class="results-title mt-4">
-                    @if($nilaiEvaluasi->total_nilai > 0)
-                    Selamat! 
-                    @else
-                    Mohon Tunggu
-                    @endif
-                </h3>
-                <p class="text-muted">
-                    @if($nilaiEvaluasi->total_nilai > 0)
-                    Kamu telah menyelesaikan kuis
-                    @else
-                    Evaluasi Anda sedang dalam proses penilaian
-                    @endif
-                </p>
-                </div>
-
-                <div class="results-body">
-                @if($nilaiEvaluasi->total_nilai > 0)
-                    <div class="stats-grid d-flex justify-content-center gap-4 mb-4">
-                    <div class="stat-card text-center p-3 bg-light rounded">
-                        <div class="stat-value text-success fs-4">
-                        <i class="fas fa-check-circle"></i>
-                        <span>{{ $nilaiEvaluasi->jumlah_benar }}</span>
-                        </div>
-                        <div class="stat-label mt-2">Jawaban Benar</div>
-                    </div>
-                    <div class="stat-card text-center p-3 bg-light rounded">
-                        <div class="stat-value text-danger fs-4">
-                        <i class="fas fa-times-circle"></i>
-                        <span>{{ $nilaiEvaluasi->jumlah_salah }}</span>
-                        </div>
-                        <div class="stat-label mt-2">Jawaban Salah</div>
-                    </div>
-                    </div>
-
-                    @if ($nilaiEvaluasi->catatan)
-                    <div class="mt-4 p-3 bg-light rounded">
-                        <h5 class="mb-3">
-                        <i class="fas fa-sticky-note me-2"></i>Catatan:
-                        </h5>
-                        <p class="text-muted mb-0">
-                        {{ $nilaiEvaluasi->catatan }}
+                        <h3 class="results-title mt-4">
+                            @if ($nilaiEvaluasi->total_nilai > 0)
+                                Selamat!
+                            @else
+                                Mohon Tunggu
+                            @endif
+                        </h3>
+                        <p class="text-muted">
+                            @if ($nilaiEvaluasi->total_nilai > 0)
+                                Kamu telah menyelesaikan kuis
+                            @else
+                                Evaluasi Anda sedang dalam proses penilaian
+                            @endif
                         </p>
                     </div>
-                    @endif
-                @endif
 
-                <div class="d-grid gap-2 mt-4">
-                    <a href="{{ route('siswa.dashboard.index') }}" 
-                       class="btn btn-primary btn-lg rounded-pill">
-                    <i class="fas fa-home me-2"></i>
-                    Kembali ke Dashboard
-                    </a>
+                    <div class="results-body">
+                        @if ($nilaiEvaluasi->total_nilai > 0)
+                            <!-- Review Button -->
+                            <button type="button" class="btn btn-info btn-lg w-100 mb-4" data-bs-toggle="modal"
+                                data-bs-target="#reviewModal">
+                                <i class="fas fa-search me-2"></i>Review Jawaban
+                            </button>
+
+                            <!-- Review Modal -->
+                            <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog modal-lg modal-dialog-scrollable">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="reviewModalLabel">Review Jawaban</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            @foreach ($nilaiEvaluasi->detailNilai as $index => $detail)
+                                                <div class="review-item mb-4 p-3 border rounded">
+                                                    <h6 class="fw-bold">Pertanyaan {{ $index + 1 }}</h6>
+                                                    <div class="question-text mb-3">{!! $detail->evaluasi->soal !!}</div>
+
+                                                    <div class="answer-section">
+                                                        <p class="mb-2"><strong>Jawaban Anda:</strong></p>
+                                                        <p class="border-start border-3 ps-3 {{ $detail->nilai > 0 ? 'border-success' : 'border-danger' }}">
+                                                            {{ $detail->jawaban }}
+                                                        </p>
+                                                        
+                                                        <div class="d-flex align-items-center mt-2">
+                                                            <span class="badge {{ $detail->nilai > 0 ? 'bg-success' : 'bg-danger' }} me-2">
+                                                                Nilai: {{ $detail->nilai }} poin
+                                                            </span>
+                                                        </div>
+                                                    </div>
+
+                                                     <div class="answer-section mt-4">
+                                                        <p class="mb-2"><strong>Jawaban Sebenarnya:</strong></p>
+                                                        <p class="border-start border-3 ps-3 border-success">
+                                                            {!! $detail->evaluasi->jawaban !!}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Tutup</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @if ($nilaiEvaluasi->catatan)
+                                <div class="mt-4 p-3 bg-light rounded">
+                                    <h5 class="mb-3">
+                                        <i class="fas fa-sticky-note me-2"></i>Catatan:
+                                    </h5>
+                                    <p class="text-muted mb-0">
+                                        {{ $nilaiEvaluasi->catatan }}
+                                    </p>
+                                </div>
+                            @endif
+                        @endif
+
+                        <div class="d-grid gap-2 mt-4">
+                            <a href="{{ route('siswa.dashboard.index') }}" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="fas fa-home me-2"></i>
+                                Kembali ke Dashboard
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                </div>
-            </div>
             </div>
         @else
             <div class="evaluasi-container" x-data="evaluasi">

@@ -85,7 +85,7 @@
                                                         <i class="bx bx-detail"></i>
                                                     </button>
                                                     <button class="btn btn-sm btn-danger" data-bs-toggle="modal"
-                                                        data-bs-target="#deleteJawabanModal_1">
+                                                        data-bs-target="#deleteJawabanModal_{{ $ne->id }}">
                                                         <i class="bx bx-trash"></i>
                                                     </button>
                                                 </div>
@@ -181,7 +181,8 @@
 
                                                 <div class="mb-3">
                                                     <label class="form-label">Nilai
-                                                        (0-{{ $jawaban->evaluasi->poin }})</label>
+                                                        (0-{{ $jawaban->evaluasi->poin }})
+                                                    </label>
                                                     <input type="number" class="form-control" name="nilai[]" min="0"
                                                         max="{{ $jawaban->evaluasi->poin }}"
                                                         value="{{ $jawaban->nilai }}">
@@ -214,32 +215,36 @@
         </div>
     @endforeach
 
-    <!-- Modal Hapus Jawaban Evaluasi -->
-    <div class="modal fade" id="deleteJawabanModal_1" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Konfirmasi Hapus Jawaban</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa <strong>John
-                            Doe</strong>? Tindakan ini akan menghapus semua jawaban dan nilai siswa. Tindakan ini tidak
-                        dapat dibatalkan.</p>
-                </div>
-                <div class="modal-footer">
-                    <form action="#" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                        <button type="submit" class="btn btn-danger">Hapus Jawaban</button>
-                    </form>
+    @foreach ($nilaiEvaluasi as $ne)
+        
+        <!-- Modal Hapus Jawaban Evaluasi -->
+        <div class="modal fade" id="deleteJawabanModal_{{ $ne->id }}" tabindex="-1" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Konfirmasi Hapus Jawaban</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="mb-0">Apakah Anda yakin ingin menghapus jawaban evaluasi dari siswa
+                            <strong>{{ $ne->siswa->nama }}</strong>? Tindakan ini akan menghapus semua jawaban dan nilai
+                            siswa. Tindakan ini tidak
+                            dapat dibatalkan.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <form action="{{ route('guru.materi.evaluasi.destroy.nilaiEvaluasi', $ne->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                            <button type="submit" class="btn btn-danger">Hapus Jawaban</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    @endforeach
 
-    <!-- Modal Hapus Jawaban Evaluasi -->
+    {{-- <!-- Modal Hapus Jawaban Evaluasi -->
     <div class="modal fade" id="deleteJawabanModal_2" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -262,7 +267,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Modal Tambah Evaluasi -->
     <div class="modal fade" id="createEvaluasiModal" tabindex="-1">

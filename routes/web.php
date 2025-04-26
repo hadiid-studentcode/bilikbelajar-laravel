@@ -63,6 +63,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::put('/{materi_id}/update', [GuruEvaluasiController::class, 'update'])->name('update');
             Route::delete('/{materi_id}/destroy', [GuruEvaluasiController::class, 'destroy'])->name('destroy');
             Route::put('/{nilaiEvaluasi_id}/updateNilaiEvaluasi', [GuruEvaluasiController::class, 'updateNilaiEvaluasi'])->name('update.nilaiEvaluasi');
+            Route::delete('/{nilaiEvaluasi_id}/destroy-nilaiEvaluasi', [GuruEvaluasiController::class, 'destroyNilaiEvaluasi'])->name('destroy.nilaiEvaluasi');
         });
     });
 });

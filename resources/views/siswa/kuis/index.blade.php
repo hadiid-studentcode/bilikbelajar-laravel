@@ -330,6 +330,28 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        .review-question {
+            background: #fff;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .answer-option {
+            transition: all 0.2s ease;
+        }
+
+        .answer-option.bg-success {
+            opacity: 0.9;
+        }
+
+        .answer-option.bg-danger {
+            opacity: 0.9;
+        }
+
+        .modal-dialog-scrollable {
+            max-height: 90vh;
+        }
     </style>
 @endpush
 
@@ -337,54 +359,56 @@
     <div class="container-xxl flex-grow-1 container-p-y p-2">
         @if ($nilaiKuis)
             <div class="container py-4">
-              <div class="results-card">
-                <div class="results-header">
-                    <div class="result-circle mx-auto" style="width: 180px; height: 180px;">
-                    <div class="score-display" style="font-size: 3.5rem;">
-                       {{ $nilaiKuis->total_nilai }}
-                      <span class="fs-5">/100</span>
+                <div class="results-card">
+                    <div class="results-header">
+                        <div class="result-circle mx-auto" style="width: 180px; height: 180px;">
+                            <div class="score-display" style="font-size: 3.5rem;">
+                                {{ $nilaiKuis->total_nilai }}
+                                <span class="fs-5">/100</span>
+                            </div>
+                        </div>
+                        <h3 class="results-title mt-4">Selamat!</h3>
+                        <p class="text-muted">Kamu telah menyelesaikan kuis</p>
                     </div>
+
+                    <div class="results-body">
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <div class="stat-value text-success fs-4">
+                                    <i class="fas fa-check-circle"></i>
+                                    <span>{{ $nilaiKuis->jumlah_benar }}</span>
+                                </div>
+                                <div class="stat-label mt-2">Jawaban Benar</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value text-danger fs-4">
+                                    <i class="fas fa-times-circle"></i>
+                                    <span>{{ $nilaiKuis->jumlah_salah }}</span>
+                                </div>
+                                <div class="stat-label mt-2">Jawaban Salah</div>
+                            </div>
+                        </div>
+
+                        @if ($nilaiKuis->catatan)
+                            <div class="mt-4 p-3 bg-light rounded">
+                                <h5 class="mb-3"><i class="fas fa-sticky-note me-2"></i>Catatan:</h5>
+                                <p class="text-muted mb-0">
+                                    {{ $nilaiKuis->catatan }}
+                                </p>
+                            </div>
+                        @endif
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="button" class="btn btn-info btn-lg rounded-pill mb-3" data-bs-toggle="modal"
+                                data-bs-target="#reviewModal">
+                                <i class="fas fa-list-check me-2"></i>Review Jawaban
+                            </button>
+                            <a href="{{ route('siswa.dashboard.index') }}" class="btn btn-primary btn-lg rounded-pill">
+                                <i class="fas fa-home me-2"></i>Kembali ke Dashboard
+                            </a>
+                        </div>
                     </div>
-                  <h3 class="results-title mt-4">Selamat!</h3>
-                  <p class="text-muted">Kamu telah menyelesaikan kuis</p>
                 </div>
-
-                <div class="results-body">
-                  <div class="stats-grid">
-                    <div class="stat-card">
-                      <div class="stat-value text-success fs-4">
-                        <i class="fas fa-check-circle"></i>
-                        <span>{{ $nilaiKuis->jumlah_benar }}</span>
-                      </div>
-                      <div class="stat-label mt-2">Jawaban Benar</div>
-                    </div>
-                    <div class="stat-card">
-                      <div class="stat-value text-danger fs-4">
-                        <i class="fas fa-times-circle"></i>
-                        <span>{{ $nilaiKuis->jumlah_salah }}</span>
-                      </div>
-                      <div class="stat-label mt-2">Jawaban Salah</div>
-                    </div>
-                  </div>
-
-                  @if($nilaiKuis->catatan)
-                  <div class="mt-4 p-3 bg-light rounded">
-                    <h5 class="mb-3"><i class="fas fa-sticky-note me-2"></i>Catatan:</h5>
-                    <p class="text-muted mb-0">
-                     {{ $nilaiKuis->catatan }}
-                    </p>
-                  </div>
-                  @endif
-
-                  <div class="d-grid gap-2 mt-4">
-                    <a href="{{ route('siswa.dashboard.index') }}" 
-                       class="btn btn-primary btn-lg rounded-pill">
-                      <i class="fas fa-home me-2"></i>
-                      Kembali ke Dashboard
-                    </a>
-                  </div>
-                </div>
-              </div>
             </div>
         @else
             <div class="quiz-container" x-data="quiz">
@@ -477,6 +501,74 @@
         @endif
 
     </div>
+
+    <!-- Review Modal -->
+    <div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="reviewModalLabel">Review Jawaban</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    @if (isset($nilaiKuis->jawaban_kuis) && $nilaiKuis->jawaban_kuis->count() > 0)
+                        @foreach ($nilaiKuis->jawaban_kuis as $index => $jawaban)
+                            <div class="review-question mb-4">
+                                <div class="d-flex align-items-center mb-2">
+                                    <span
+                                        class="badge {{ strtolower($jawaban->jawaban) === strtolower($jawaban->kuis->jawaban_benar) ? 'bg-success' : 'bg-danger' }} me-2">
+                                        <i
+                                            class="fas fa-{{ strtolower($jawaban->jawaban) === strtolower($jawaban->kuis->jawaban_benar) ? 'check' : 'times' }}"></i>
+                                    </span>
+                                    <h6 class="mb-0">Pertanyaan {{ $index + 1 }}</h6>
+                                </div>
+
+                                <div class="question-text mb-3">
+                                    {!! $jawaban->kuis->pertanyaan !!}
+                                </div>
+
+                                <div class="answers">
+                                    @php
+                                        $options = [
+                                            'a' => $jawaban->kuis->jawaban_a,
+                                            'b' => $jawaban->kuis->jawaban_b,
+                                            'c' => $jawaban->kuis->jawaban_c,
+                                            'd' => $jawaban->kuis->jawaban_d,
+                                            'e' => $jawaban->kuis->jawaban_e,
+                                        ];
+                                    @endphp
+
+                                    @foreach ($options as $key => $option)
+                                        <div
+                                            class="answer-option p-2 rounded mb-2 
+                                            {{ strtolower($key) === strtolower($jawaban->jawaban)
+                                                ? (strtolower($jawaban->jawaban) === strtolower($jawaban->kuis->jawaban_benar)
+                                                    ? 'bg-success text-white'
+                                                    : 'bg-danger text-white')
+                                                : (strtolower($key) === strtolower($jawaban->kuis->jawaban_benar)
+                                                    ? 'bg-success text-white'
+                                                    : 'bg-light') }}">
+                                            <span class="fw-bold">{{ strtoupper($key) }}.</span> {{ $option }}
+                                        </div>
+                                    @endforeach
+                                </div>
+                            </div>
+                            @if (!$loop->last)
+                                <hr>
+                            @endif
+                        @endforeach
+                    @else
+                        <div class="alert alert-info">
+                            Tidak ada data jawaban yang tersedia.
+                        </div>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('js')
@@ -495,7 +587,7 @@
                 finalScore: 0,
                 correctAnswers: 0,
                 csrfToken: @json(session()->token()),
-                materiId : @json($materi_id),
+                materiId: @json($materi_id),
 
                 init() {
                     // this.startTimer(600);
@@ -567,7 +659,7 @@
                         } else {
                             this.answerPoints[index] = 0;
                         }
-                    });         
+                    });
 
                     this.correctAnswers = totalCorrect;
                     const totalPossiblePoints = this.kuis.reduce((acc, q) => acc + q.poin_benar, 0);
