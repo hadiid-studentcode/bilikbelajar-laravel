@@ -4,6 +4,7 @@ use App\Http\Controllers\Guru\CapaianPembelajaranController as GuruCapaianPembel
 use App\Http\Controllers\Guru\DashboardController as GuruDashboardController;
 use App\Http\Controllers\Guru\EvaluasiController as GuruEvaluasiController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
+use App\Http\Controllers\Guru\ManajemenSiswaController as GuruManajemenSiswaController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\EvaluasiController as SiswaEvaluasiController;
@@ -38,6 +39,14 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
         Route::put('/update/{kelas}', [GuruCapaianPembelajaranController::class, 'update'])->name('update');
         Route::delete('/destroy/{kelas}', [GuruCapaianPembelajaranController::class, 'destroy'])->name('destroy');
     });
+
+    Route::prefix('/manajemen-siswa')->name('manajemen-siswa.')->group(function () {
+        Route::get('/', [GuruManajemenSiswaController::class, 'index'])->name('index');
+        Route::post('/store', [GuruManajemenSiswaController::class, 'store'])->name('store');
+        Route::put('/update/{id}', [GuruManajemenSiswaController::class, 'update'])->name('update');
+        Route::delete('/destroy/{id}', [GuruManajemenSiswaController::class, 'destroy'])->name('destroy');
+    });
+
 
     Route::prefix('/materi')->name('materi.')->group(function () {
         Route::get('/', [GuruMateriController::class, 'index'])->name('index');

@@ -37,6 +37,14 @@
 
 
          </li>
+            <li class="menu-item {{ request()->is('guru/manajemen-siswa*') ? 'active' : '' }}">
+             <a href="{{ route('guru.manajemen-siswa.index') }}" class="menu-link">
+                <i class="menu-icon tf-icons bx bx-group"></i>
+                 <div data-i18n="Layouts">Manajemen Siswa</div>
+             </a>
+
+
+         </li>
          <li class="menu-header small text-uppercase">
              <span class="menu-header-text">Kursus</span>
          </li>

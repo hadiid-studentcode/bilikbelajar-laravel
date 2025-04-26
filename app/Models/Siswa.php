@@ -12,5 +12,5 @@ class Siswa extends Model
 
     protected $table = 'siswas';
 
-    protected $guarded = ['id'];
+    protected $fillable = ['nama', 'asal_sekolah', 'kelas'];
 }
