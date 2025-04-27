@@ -284,16 +284,16 @@
         @endphp
         <!-- Modal Tujuan Pembelajaran -->
         <div class="modal fade" id="tujuanPembelajaran{{ $m->id }}" tabindex="-1" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Tujuan Pembelajaran</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {!! $tujuanPembelajaran->deskripsi ?? 'Belum ada tujuan pembelajaran' !!}
-                    </div>
+            <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title">Tujuan Pembelajaran</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+                <div class="modal-body">
+                {!! $tujuanPembelajaran->deskripsi ?? 'Belum ada tujuan pembelajaran' !!}
+                </div>
+            </div>
             </div>
         </div>
     @endforeach

@@ -114,84 +114,93 @@
             <section class="resource-tabs">
                 <div class="container">
                     <ul class="nav nav-pills mb-4 justify-content-center flex-wrap" id="resourceTabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#video-content">
-                                <i class="fas fa-play-circle me-2"></i>Video Pembelajaran
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#slides-content">
-                                <i class="fas fa-file-powerpoint me-2"></i>Slide Presentasi
-                            </button>
-                        </li>
-                        <li class="nav-item" role="presentation">
-                            <button class="nav-link" data-bs-toggle="pill" data-bs-target="#text-content">
-                                <i class="fas fa-book me-2"></i>Materi Tertulis
-                            </button>
-                        </li>
+                        @if ($materi->video)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#video-content">
+                                    <i class="fas fa-play-circle me-2"></i>Video Pembelajaran
+                                </button>
+                            </li>
+                        @endif
+                        @if ($materi->file)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ !$materi->video ? 'active' : '' }}" data-bs-toggle="pill" data-bs-target="#slides-content">
+                                    <i class="fas fa-file-powerpoint me-2"></i>Slide Presentasi
+                                </button>
+                            </li>
+                        @endif
+                        @if ($materi->deskripsi)
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link {{ (!$materi->video && !$materi->file) ? 'active' : '' }}" data-bs-toggle="pill" data-bs-target="#text-content">
+                                    <i class="fas fa-book me-2"></i>Materi Tertulis
+                                </button>
+                            </li>
+                        @endif
                     </ul>
 
                     <div class="tab-content" id="resourceTabContent">
-                        <!-- Video Content -->
-                        <div class="tab-pane fade show active" id="video-content">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-12 col-md-12 col-12">
-                                    <div class="card shadow-sm">
-                                        <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                            <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload"
-                                                preload="metadata">
-                                                <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
-                                                Your browser does not support the video tag.
-                                            </video>
-                                        </div>
+                        @if ($materi->video)
+                            <div class="tab-pane fade show active" id="video-content">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="card shadow-sm">
+                                            <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                                <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload"
+                                                    preload="metadata">
+                                                    <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
+                                                    Your browser does not support the video tag.
+                                                </video>
+                                            </div>
 
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <!-- PowerPoint Slides -->
-                        <div class="tab-pane fade" id="slides-content">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-12 col-md-12 col-12">
-                                    <div class="card shadow-sm">
-                                        <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                            <iframe src="{{ asset('storage/' . $materi->file) }}" frameborder="0"
-                                                class="w-200 h-200" allowfullscreen>
-                                            </iframe>
-                                        </div>
-                                        <div class="card-body">
-                                            <div
-                                                class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
-                                                <h5 class="card-title mb-0 text-truncate">
-                                                    {{ $materi->judul ?? 'Slide Presentasi' }}
-                                                </h5>
-                                                <a href="{{ asset('storage/' . $materi->file) }}" class="btn btn-primary"
-                                                    download>
-                                                    <i class="fas fa-download me-2"></i>
-                                                    <span>Download Presentasi</span>
-                                                </a>
+                        @if ($materi->file)
+                            <div class="tab-pane fade {{ !$materi->video ? 'show active' : '' }}" id="slides-content">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="card shadow-sm">
+                                            <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                                <iframe src="{{ asset('storage/' . $materi->file) }}" frameborder="0"
+                                                    class="w-200 h-200" allowfullscreen>
+                                                </iframe>
+                                            </div>
+                                            <div class="card-body">
+                                                <div
+                                                    class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                                                    <h5 class="card-title mb-0 text-truncate">
+                                                        {{ $materi->judul ?? 'Slide Presentasi' }}
+                                                    </h5>
+                                                    <a href="{{ asset('storage/' . $materi->file) }}" class="btn btn-primary"
+                                                        download>
+                                                        <i class="fas fa-download me-2"></i>
+                                                        <span>Download Presentasi</span>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
 
-                        <!-- Text Content -->
-                        <div class="tab-pane fade" id="text-content">
-                            <div class="row justify-content-center">
-                                <div class="col-lg-12 col-md-12 col-12">
-                                    <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
-                                        <article class="text-content">
-                                            <div class="materi-content prose prose-sm sm:prose-base lg:prose-lg">
-                                                {!! $materi->deskripsi ?? '<p class="text-muted text-center">Materi tertulis belum tersedia.</p>' !!}
-                                            </div>
-                                        </article>
+                        @if ($materi->deskripsi)
+                            <div class="tab-pane fade {{ (!$materi->video && !$materi->file) ? 'show active' : '' }}" id="text-content">
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-12 col-md-12 col-12">
+                                        <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
+                                            <article class="text-content">
+                                                <div class="materi-content prose prose-sm sm:prose-base lg:prose-lg">
+                                                    {!! $materi->deskripsi ?? '<p class="text-muted text-center">Materi tertulis belum tersedia.</p>' !!}
+                                                </div>
+                                            </article>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
             </section>
@@ -291,23 +300,36 @@
         const toggleMusicBtn = document.getElementById('toggleMusic');
         let isMusicPlaying = false;
 
+        // Handle initial music state based on active tab
+        document.addEventListener('DOMContentLoaded', function() {
+            const activeTab = document.querySelector('.nav-link.active');
+            if (activeTab) {
+                const target = activeTab.getAttribute('data-bs-target');
+                if (target === '#text-content' || target === '#slides-content') {
+                    bgMusic.play().catch(e => console.log("Auto-play prevented"));
+                    isMusicPlaying = true;
+                    toggleMusicBtn.classList.remove('d-none');
+                    updateMusicIcon();
+                }
+            }
+        });
+
         // Handle tab changes
         document.querySelectorAll('button[data-bs-toggle="pill"]').forEach(button => {
             button.addEventListener('shown.bs.tab', function(event) {
                 const toggleMusicBtn = document.getElementById('toggleMusic');
-                
-                if (event.target.getAttribute('data-bs-target') === '#text-content' || 
-                    event.target.getAttribute('data-bs-target') === '#slides-content') {
-                    bgMusic.play();
+                const target = event.target.getAttribute('data-bs-target');
+
+                if (target === '#text-content' || target === '#slides-content') {
+                    bgMusic.play().catch(e => console.log("Auto-play prevented"));
                     isMusicPlaying = true;
                     toggleMusicBtn.classList.remove('d-none');
-                    updateMusicIcon();
                 } else {
                     bgMusic.pause();
                     isMusicPlaying = false;
                     toggleMusicBtn.classList.add('d-none');
-                    updateMusicIcon();
                 }
+                updateMusicIcon();
             });
         });
 
