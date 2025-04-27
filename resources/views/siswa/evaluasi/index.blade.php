@@ -68,6 +68,39 @@
             resize: vertical;
         }
 
+        /* Floating Navigation Styles */
+        .floating-nav {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 1050;
+        }
+
+        .floating-nav .btn {
+            width: 45px;
+            height: 45px;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            box-shadow: 0 2px 6px rgba(105, 108, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .floating-nav .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(105, 108, 255, 0.6);
+        }
+
+        .floating-nav .btn i {
+            font-size: 1.25rem;
+        }
+
         @media (max-width: 768px) {
             .evaluasi-container {
                 padding: 1rem;
@@ -76,12 +109,54 @@
             .evaluasi-content {
                 padding: 1rem;
             }
+
+            .floating-nav {
+                bottom: 1.5rem;
+                right: 1.5rem;
+                gap: 0.5rem;
+            }
+
+            .floating-nav .btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .floating-nav .btn i {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .floating-nav {
+                bottom: 1rem;
+                right: 1rem;
+            }
+
+            .floating-nav .btn {
+                width: 35px;
+                height: 35px;
+            }
         }
     </style>
 @endpush
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y p-2">
+        <!-- Quick Navigation -->
+        <div class="floating-nav">
+            <button class="btn btn-primary" id="toggleMusic" title="Toggle Music">
+                <i class='bx bx-volume-full'></i>
+            </button>
+            <a href="{{ route('siswa.dashboard.index') }}" class="btn btn-primary" title="Kembali ke Dashboard">
+                <i class='bx bx-home-alt'></i>
+            </a>
+        </div>
+
+        <!-- Background Music -->
+        <audio id="bgMusic" loop>
+            <source src="{{ asset('assets/bilikbelajar/music/QuizizzSoundtrack-kuis.mp3') }}" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
 
         @if ($nilaiEvaluasi)
             <div class="container py-4">
@@ -322,5 +397,39 @@
                 }
             }));
         });
+
+        // Background Music Control
+        const bgMusic = document.getElementById('bgMusic');
+        const toggleMusicBtn = document.getElementById('toggleMusic');
+        let isMusicPlaying = false;
+
+        // Auto-play music when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            bgMusic.play().catch(e => console.log("Auto-play prevented"));
+            isMusicPlaying = true;
+            updateMusicIcon();
+        });
+
+        // Handle manual music toggle
+        toggleMusicBtn.addEventListener('click', () => {
+            if (isMusicPlaying) {
+                bgMusic.pause();
+                isMusicPlaying = false;
+            } else {
+                bgMusic.play();
+                isMusicPlaying = true;
+            }
+            updateMusicIcon();
+        });
+
+        function updateMusicIcon() {
+            toggleMusicBtn.innerHTML = isMusicPlaying ?
+                '<i class="bx bx-volume-full"></i>' :
+                '<i class="bx bx-volume-mute"></i>';
+            toggleMusicBtn.title = isMusicPlaying ? "Mute Music" : "Unmute Music";
+        }
+
+        // Initialize music state
+        updateMusicIcon();
     </script>
 @endpush
