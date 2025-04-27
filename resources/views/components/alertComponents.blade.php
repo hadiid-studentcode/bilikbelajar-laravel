@@ -22,7 +22,7 @@
     <div class="alert alert-danger alert-dismissible mb-4 d-flex align-items-center" role="alert">
         <i class="fas fa-times-circle me-2"></i>
         <div class="fw-semibold">
-            {{ session('danger') }}
+            {{ session('error') }}
         </div>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>

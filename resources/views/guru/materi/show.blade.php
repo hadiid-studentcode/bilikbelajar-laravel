@@ -136,7 +136,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Deskripsi</label>
-                            <input type="hidden" name="content" id="content" />
+                            <input type="hidden" name="content" id="content" required />
                             <div class="editor" data-target="content"></div>
                         </div>
                         <div class="row">
@@ -360,6 +360,7 @@
                         "blockQuote",
                         "insertTable",
                         "|",
+                        
                     ],
                 })
                 .then((editor) => {

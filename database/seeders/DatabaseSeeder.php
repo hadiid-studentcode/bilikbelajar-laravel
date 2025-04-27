@@ -26,5 +26,17 @@ class DatabaseSeeder extends Seeder
             'nama' => 'Guru',
             'mapel' => 'Biologi',
         ]);
+
+
+        $path_file = storage_path('app/public/materi/file');
+        $path_video = storage_path('app/public/materi/video');
+
+        if (is_dir($path_file)) {
+            array_map('unlink', glob("$path_file/*.*"));
+        }
+
+        if (is_dir($path_video)) {
+            array_map('unlink', glob("$path_video/*.*"));
+        }
     }
 }

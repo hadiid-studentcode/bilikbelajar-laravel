@@ -32,37 +32,28 @@ class MateriController extends Controller
 
     public function store(Request $request)
     {
-
         try {
-            $request->validate([
+            $validated = $request->validate([
                 'nama' => 'required',
                 'kelas' => 'required',
-                'content' => 'nullable',
-                'file' => 'nullable',
-                'video' => 'nullable',
+                'content' => 'required',
+                'file' => 'nullable|file',
+                'video' => 'nullable|file',
             ]);
-            $file = null;
-            $video = null;
 
-            if ($request->file('file')) {
-                $file = $request->file('file')->store('materi/file');
-            }
-            if ($request->file('video')) {
-                $video = $request->file('video')->store('materi/video');
-            }
+            $data = [
+                'guru_id' => Guru::where('user_id', Auth::id())->value('id'),
+                'nama' => $validated['nama'],
+                'kelas' => $validated['kelas'],
+                'deskripsi' => $validated['content'],
+                'file' => $request->hasFile('file') ? $request->file('file')->store('materi/file') : null,
+                'video' => $request->hasFile('video') ? $request->file('video')->store('materi/video') : null,
+            ];
 
-            Materi::Create([
-                'guru_id' => Guru::where('user_id', Auth::user()->id)->first()->id,
-                'nama' => $request->input('nama'),
-                'kelas' => $request->input('kelas'),
-                'deskripsi' => $request->input('content'),
-                'file' => $file,
-                'video' => $video,
-            ]);
+            Materi::create($data);
 
             return redirect()->back()->with('success', 'Materi berhasil ditambahkan');
-        } catch (\Throwable $th) {
-
+        } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Materi gagal ditambahkan');
         }
     }

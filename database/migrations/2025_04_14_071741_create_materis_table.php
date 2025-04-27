@@ -16,7 +16,7 @@ return new class extends Migration
             $table->foreignId('guru_id')->references('id')->on('gurus')->onDelete('cascade')->onUpdate('cascade');
             $table->enum('kelas', [10, 11, 12]);
             $table->string('nama');
-            $table->text('deskripsi')->nullable();
+            $table->text('deskripsi');
             $table->string('file')->nullable();
             $table->string('video')->nullable();
             $table->timestamps();
