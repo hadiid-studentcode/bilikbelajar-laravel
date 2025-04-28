@@ -3,13 +3,15 @@
     <style>
         .profile-card {
             border-radius: 15px;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
+
         .profile-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
         }
+
         .avatar-wrapper {
             position: relative;
             transition: all 0.3s ease;
@@ -18,6 +20,7 @@
             align-items: center;
             padding: 1rem 0;
         }
+
         .avatar-circle {
             width: 150px;
             height: 150px;
@@ -32,13 +35,16 @@
             box-shadow: 0 4px 15px rgba(105, 108, 255, 0.3);
             margin: 0 auto;
         }
+
         .form-control:focus {
             border-color: #696cff;
             box-shadow: 0 0 0 0.2rem rgba(105, 108, 255, 0.25);
         }
+
         .btn-primary {
             transition: all 0.3s ease;
         }
+
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 4px 15px rgba(105, 108, 255, 0.3);
@@ -73,24 +79,28 @@
             </div>
 
             <div class="col-12 col-md-8">
+                  @include('components.alertComponents')
                 <div class="card profile-card">
                     <div class="card-header border-bottom">
                         <h5 class="card-title mb-0">
                             <i class="bx bx-cog me-2"></i>
                             Pengaturan Akun
                         </h5>
+                     
                     </div>
                     <div class="card-body">
-                        <form action="" method="POST">
+                         
+                        <form action="{{ route('guru.profile.update', auth()->user()->id) }}" method="POST">
                             @csrf
                             @method('PUT')
-                            
+
                             <div class="row mb-4">
                                 <div class="col-12">
                                     <label for="username" class="form-label">Username</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bx bx-user"></i></span>
-                                        <input class="form-control" type="text" id="username" name="username" value="{{ auth()->user()->username }}" />
+                                        <input class="form-control" type="text" id="username" name="username"
+                                            value="{{ auth()->user()->username }}" />
                                     </div>
                                 </div>
                             </div>
@@ -107,7 +117,8 @@
                                     <label for="password_confirmation" class="form-label">Konfirmasi Password</label>
                                     <div class="input-group">
                                         <span class="input-group-text"><i class="bx bx-lock-alt"></i></span>
-                                        <input class="form-control" type="password" id="password_confirmation" name="password_confirmation" />
+                                        <input class="form-control" type="password" id="password_confirmation"
+                                            name="password_confirmation" />
                                     </div>
                                 </div>
                             </div>

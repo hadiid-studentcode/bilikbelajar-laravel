@@ -79,8 +79,8 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     });
     Route::prefix('/profile')->name('profile.')->group(function () {
         Route::get('/', [GuruProfileController::class, 'index'])->name('index');
+        Route::put('/update/{id}', [GuruProfileController::class, 'update'])->name('update');
         // Route::post('/{materi_id}/store', [GuruEvaluasiController::class, 'store'])->name('store');
-        // Route::put('/{materi_id}/update', [GuruEvaluasiController::class, 'update'])->name('update');
         // Route::delete('/{materi_id}/destroy', [GuruEvaluasiController::class, 'destroy'])->name('destroy');
         // Route::put('/{nilaiEvaluasi_id}/updateNilaiEvaluasi', [GuruEvaluasiController::class, 'updateNilaiEvaluasi'])->name('update.nilaiEvaluasi');
         // Route::delete('/{nilaiEvaluasi_id}/destroy-nilaiEvaluasi', [GuruEvaluasiController::class, 'destroyNilaiEvaluasi'])->name('destroy.nilaiEvaluasi');
