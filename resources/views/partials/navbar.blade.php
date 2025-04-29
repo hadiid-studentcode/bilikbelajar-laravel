@@ -20,9 +20,9 @@
                           <span class="fw-semibold ms-1">{{ env('APP_NAME') }} </span>
                       </a>
                   @else
-                      <i class="bx bx-search fs-4 lh-0"></i>
+                      {{-- <i class="bx bx-search fs-4 lh-0"></i>
                       <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
-                          aria-label="Search..." />
+                          aria-label="Search..." /> --}}
                   @endif
               </div>
           </div>
