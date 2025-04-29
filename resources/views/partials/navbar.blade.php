@@ -14,9 +14,11 @@
               <div class="nav-item d-flex align-items-center">
                   @if (session()->has('siswa'))
                       {{-- image dan name --}}
-                      <img src="{{ asset('assets/bilikbelajar/icon/icon.png') }}" alt="" class="w-px-40 h-auto"
-                          width="70">
-                      <span class="fw-semibold  ms-1">{{ env('APP_NAME') }} </span>
+                      <a href="{{ route('siswa.dashboard.index') }}" class="text-decoration-none text-body">
+                          <img src="{{ asset('assets/bilikbelajar/icon/icon.png') }}" alt=""
+                              class="w-px-40 h-auto" width="70">
+                          <span class="fw-semibold ms-1">{{ env('APP_NAME') }} </span>
+                      </a>
                   @else
                       <i class="bx bx-search fs-4 lh-0"></i>
                       <input type="text" class="form-control border-0 shadow-none" placeholder="Search..."
@@ -88,7 +90,7 @@
                       </li>
                       <li>
                           <a class="dropdown-item"
-                              href="{{ session()->has('siswa') ? '#' : route('guru.profile.index') }}">
+                              href="{{ session()->has('siswa') ? route('siswa.profile.index') : route('guru.profile.index') }}">
                               <i class="bx bx-user me-2"></i>
                               <span class="align-middle">My Profile</span>
                           </a>

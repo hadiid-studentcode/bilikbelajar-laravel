@@ -11,6 +11,7 @@ use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\EvaluasiController as SiswaEvaluasiController;
 use App\Http\Controllers\Siswa\KuisController as SiswaKuisController;
 use App\Http\Controllers\Siswa\MateriController as SiswaMateriController;
+use App\Http\Controllers\Siswa\ProfileController as SiswaProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -80,10 +81,7 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     Route::prefix('/profile')->name('profile.')->group(function () {
         Route::get('/', [GuruProfileController::class, 'index'])->name('index');
         Route::put('/update/{id}', [GuruProfileController::class, 'update'])->name('update');
-        // Route::post('/{materi_id}/store', [GuruEvaluasiController::class, 'store'])->name('store');
-        // Route::delete('/{materi_id}/destroy', [GuruEvaluasiController::class, 'destroy'])->name('destroy');
-        // Route::put('/{nilaiEvaluasi_id}/updateNilaiEvaluasi', [GuruEvaluasiController::class, 'updateNilaiEvaluasi'])->name('update.nilaiEvaluasi');
-        // Route::delete('/{nilaiEvaluasi_id}/destroy-nilaiEvaluasi', [GuruEvaluasiController::class, 'destroyNilaiEvaluasi'])->name('destroy.nilaiEvaluasi');
+       
     });
 });
 
@@ -103,6 +101,10 @@ Route::prefix('/siswa')->name('siswa.')->group(function () {
     Route::prefix('/evaluasi')->name('evaluasi.')->group(function () {
         Route::get('/{materi_id}', [SiswaEvaluasiController::class, 'index'])->name('index');
         Route::post('/store', [SiswaEvaluasiController::class, 'store'])->name('store');
+    });
+    Route::prefix('/profile')->name('profile.')->group(function () {
+        Route::get('/', [SiswaProfileController::class, 'index'])->name('index');
+        Route::put('/update/{id}', [SiswaProfileController::class, 'update'])->name('update');
     });
 });
 
