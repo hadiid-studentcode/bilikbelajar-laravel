@@ -36,6 +36,7 @@ class MateriController extends Controller
             $validated = $request->validate([
                 'nama' => 'required',
                 'kelas' => 'required',
+                'image' => 'nullable|image',
                 'content' => 'required',
                 'file' => 'nullable|file',
                 'video' => 'nullable|file',
@@ -45,6 +46,7 @@ class MateriController extends Controller
                 'guru_id' => Guru::where('user_id', Auth::id())->value('id'),
                 'nama' => $validated['nama'],
                 'kelas' => $validated['kelas'],
+                'image' => $request->hasFile('image') ? $request->file('image')->store('materi/image') : null,
                 'deskripsi' => $validated['content'],
                 'file' => $request->hasFile('file') ? $request->file('file')->store('materi/file') : null,
                 'video' => $request->hasFile('video') ? $request->file('video')->store('materi/video') : null,

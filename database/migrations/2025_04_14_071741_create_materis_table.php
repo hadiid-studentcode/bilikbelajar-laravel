@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('kelas', [10, 11, 12]);
             $table->string('nama');
             $table->text('deskripsi');
+            $table->string('image')->nullable();
             $table->string('file')->nullable();
             $table->string('video')->nullable();
             $table->timestamps();

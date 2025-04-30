@@ -20,19 +20,21 @@
 
 @section('content')
     <div class="container-xxl flex-grow-1 container-p-y">
-        <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
+        <div
+            class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3 mb-4">
             <div>
-            <h4 class="fw-bold mb-0">Daftar Materi Kelas {{ $kelas }}</h4>
+                <h4 class="fw-bold mb-0">Daftar Materi Kelas {{ $kelas }}</h4>
             </div>
             <div class="d-flex gap-2">
-            <a href="{{ route('guru.materi.index') }}" class="btn btn-secondary d-inline-flex align-items-center">
-                <i class="bx bx-arrow-back me-1"></i>
-                Kembali
-            </a>
-            <button class="btn btn-primary d-inline-flex align-items-center" data-bs-toggle="modal" data-bs-target="#createMateriModal">
-                <i class="bx bx-plus me-1"></i>
-                Tambah Materi
-            </button>
+                <a href="{{ route('guru.materi.index') }}" class="btn btn-secondary d-inline-flex align-items-center">
+                    <i class="bx bx-arrow-back me-1"></i>
+                    Kembali
+                </a>
+                <button class="btn btn-primary d-inline-flex align-items-center" data-bs-toggle="modal"
+                    data-bs-target="#createMateriModal">
+                    <i class="bx bx-plus me-1"></i>
+                    Tambah Materi
+                </button>
             </div>
         </div>
         @include('components.alertComponents')
@@ -62,7 +64,9 @@
             @foreach ($materi as $m)
                 <div class="col-12 col-sm-6 col-lg-4">
                     <div class="card materi-card h-100">
-                        <img src="{{ asset('assets/img/kursus/1.jpg') }}" class="card-img-top" alt="Materi Image">
+
+                        <img src="{{ $m->image ? asset('storage/' . $m->image) : asset('assets/img/kursus/1.jpg') }}"
+                            class="card-img-top" alt="{{ $m->nama ?? 'Materi Image' }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ $m->nama }}</h5>
                             <p class="card-text text-muted mb-0">Kelas: {{ $m->kelas }}</p>
@@ -120,12 +124,12 @@
                         method="POST">
                         @csrf
                         <div class="row">
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Nama Materi <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" name="nama" required>
                                 <div class="invalid-feedback">Nama materi harus diisi</div>
                             </div>
-                            <div class="col-md-6 mb-3">
+                            <div class="col-md-4 mb-3">
                                 <label class="form-label">Kelas <span class="text-danger">*</span></label>
                                 <select class="form-select" name="kelas" required>
                                     <option selected value="{{ $kelas }}">{{ $kelas }}</option>
@@ -133,9 +137,15 @@
                                 </select>
                                 <div class="invalid-feedback">Pilih kelas</div>
                             </div>
+                            <div class="col-md-4 mb-3">
+                                <label class="form-label">Upload Gambar Materi </label>
+                                <input type="file" class="form-control" name="image">
+                                <small class="text-muted">Format: JPEG, JPG, PNG</small>
+                                <div class="invalid-feedback">Nama materi harus diisi</div>
+                            </div>
                         </div>
                         <div class="mb-3">
-                            <label class="form-label">Deskripsi</label>
+                            <label class="form-label">Deskripsi <span class="text-danger">*</span></label>
                             <input type="hidden" name="content" id="content" required />
                             <div class="editor" data-target="content"></div>
                         </div>
@@ -360,7 +370,7 @@
                         "blockQuote",
                         "insertTable",
                         "|",
-                        
+
                     ],
                 })
                 .then((editor) => {
