@@ -38,21 +38,17 @@
                                             <td>{{ $item->asal_sekolah }}</td>
                                             <td>{{ $item->kelas }}</td>
                                             <td>
-                                                <div class="dropdown">
-                                                    <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                                        data-bs-toggle="dropdown">
-                                                        <i class="bx bx-dots-vertical-rounded"></i>
+                                                <div class="btn-group" role="group" aria-label="Action buttons">
+                                                    <button type="button" class="btn btn-primary"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#editModal{{ $item->id }}">
+                                                        <i class="bx bx-edit-alt me-1"></i> Edit
                                                     </button>
-                                                    <div class="dropdown-menu">
-                                                        <button class="dropdown-item" data-bs-toggle="modal"
-                                                            data-bs-target="#editModal{{ $item->id }}">
-                                                            <i class="bx bx-edit-alt me-1"></i> Edit
-                                                        </button>
-                                                        <button class="dropdown-item" data-bs-toggle="modal"
-                                                            data-bs-target="#deleteModal{{ $item->id }}">
-                                                            <i class="bx bx-trash me-1"></i> Delete
-                                                        </button>
-                                                    </div>
+                                                    <button type="button" class="btn btn-danger"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#deleteModal{{ $item->id }}">
+                                                        <i class="bx bx-trash me-1"></i> Delete
+                                                    </button>
                                                 </div>
                                             </td>
                                         </tr>

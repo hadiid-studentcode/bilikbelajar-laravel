@@ -11,6 +11,7 @@ class ManajemenSiswaController extends Controller
     protected $title = 'Manajemen Siswa';
     public function index()
     {
+        
         $title = $this->title;
         $siswa = Siswa::all();
         return view('guru.siswa.index', compact('title', 'siswa'));
