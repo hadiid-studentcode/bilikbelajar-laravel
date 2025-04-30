@@ -228,48 +228,44 @@
                             </div>
                         @endif
 
-                        <div class="row row-cols-1 row-cols-md-4 g-3 mb-5">
+                      <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3 mb-5">
+    @foreach ($materi as $m)
+        <div class="col">
+            <div class="card h-100 shadow-sm hover-elevate-up">
+                <img class="card-img-top" src="{{ asset('assets/img/kursus/1.jpg') }}"
+                    alt="{{ $m->nama }}" style="height: 200px; object-fit: cover;" />
 
-                            @foreach ($materi as $m)
-                                <div class="col">
-                                    <div class="card h-100 shadow-sm hover-elevate-up">
-                                        <img class="card-img-top" src="{{ asset('assets/img/kursus/1.jpg') }}"
-                                            alt="{{ $m->nama }}" style="height: 200px; object-fit: cover;" />
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-primary mb-3">{{ $m->nama }}</h5>
 
-                                        <div class="card-body d-flex flex-column">
-                                            <h5 class="card-title text-primary mb-3">{{ $m->nama }}</h5>
-
-                                            <div class="mt-auto">
-                                                <div class="btn-group" role="group">
-                                                    <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
-                                                        data-bs-target="#tujuanPembelajaran{{ $m->id }}">
-                                                        <i class="bx bx-target-lock me-1"></i>
-                                                        Tujuan
-                                                    </a>
-                                                    <a href="{{ route('siswa.materi.show', $m->id) }}"
-                                                        class="btn btn-primary btn-sm">
-                                                        <i class="bx bx-book-open me-1"></i>
-                                                        Materi
-                                                    </a>
-                                                    <a href="{{ route('siswa.kuis.index', $m->id) }}"
-                                                        class="btn btn-info btn-sm">
-                                                        <i class="bx bx-task me-1"></i>
-                                                        Kuis
-                                                    </a>
-                                                    <a href="{{ route('siswa.evaluasi.index', $m->id) }}" class="btn btn-success btn-sm">
-                                                        <i class="bx bx-file me-1"></i>
-                                                        Evaluasi
-                                                    </a>
-                                                </div>
-
-
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            @endforeach
-
+                    <div class="mt-auto">
+                        <div class="d-flex flex-wrap gap-2">
+                            <a href="#" class="btn btn-warning btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#tujuanPembelajaran{{ $m->id }}">
+                                <i class="bx bx-target-lock me-1"></i>
+                                Tujuan
+                            </a>
+                            <a href="{{ route('siswa.materi.show', $m->id) }}"
+                                class="btn btn-primary btn-sm">
+                                <i class="bx bx-book-open me-1"></i>
+                                Materi
+                            </a>
+                            <a href="{{ route('siswa.kuis.index', $m->id) }}"
+                                class="btn btn-info btn-sm">
+                                <i class="bx bx-task me-1"></i>
+                                Kuis
+                            </a>
+                            <a href="{{ route('siswa.evaluasi.index', $m->id) }}" class="btn btn-success btn-sm">
+                                <i class="bx bx-file me-1"></i>
+                                Evaluasi
+                            </a>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endforeach
+</div>
                     </div>
                 </div>
             </div>
