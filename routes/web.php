@@ -15,6 +15,7 @@ use App\Http\Controllers\Siswa\ProfileController as SiswaProfileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
+
 Route::get('/', function () {
     if (Auth::check()) {
         return redirect()->route('guru.dashboard.index');
@@ -76,12 +77,10 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
             Route::put('/{nilaiEvaluasi_id}/updateNilaiEvaluasi', [GuruEvaluasiController::class, 'updateNilaiEvaluasi'])->name('update.nilaiEvaluasi');
             Route::delete('/{nilaiEvaluasi_id}/destroy-nilaiEvaluasi', [GuruEvaluasiController::class, 'destroyNilaiEvaluasi'])->name('destroy.nilaiEvaluasi');
         });
-      
     });
     Route::prefix('/profile')->name('profile.')->group(function () {
         Route::get('/', [GuruProfileController::class, 'index'])->name('index');
         Route::put('/update/{id}', [GuruProfileController::class, 'update'])->name('update');
-       
     });
 });
 
