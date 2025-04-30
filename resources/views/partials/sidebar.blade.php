@@ -46,7 +46,7 @@
 
          </li>
          <li class="menu-header small text-uppercase">
-             <span class="menu-header-text">Kursus</span>
+             <span class="menu-header-text">Kelas</span>
          </li>
          <li class="menu-item {{ request()->is('guru/materi*') ? 'active' : '' }}">
              <a href="{{ route('guru.materi.index') }}" class="menu-link">
