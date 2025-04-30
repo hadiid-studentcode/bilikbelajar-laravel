@@ -184,11 +184,15 @@
                             <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Manajemen Profil</p>
                         </div>
                     </div>
-                    <div class="text-start">
-                        <a href="{{ route('login') }}" class="btn btn-primary me-2" type="button">Masuk sebagai
-                            Guru</a>
-                        <a href="{{ route('siswa') }}" class="btn btn-primary" type="button">Masuk sebagai
-                            Siswa</a>
+                    <div class="text-center text-sm-start">
+                        <div class="d-flex flex-column flex-sm-row gap-2">
+                            <a href="{{ route('login') }}" class="btn btn-primary w-100 w-sm-auto" type="button">
+                                <i class="bx bx-user-circle me-1"></i> Masuk sebagai Guru
+                            </a>
+                            <a href="{{ route('siswa') }}" class="btn btn-primary w-100 w-sm-auto" type="button">
+                                <i class="bx bx-user me-1"></i> Masuk sebagai Siswa
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
