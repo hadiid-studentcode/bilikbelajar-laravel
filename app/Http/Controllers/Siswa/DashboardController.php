@@ -12,7 +12,7 @@ class DashboardController extends Controller
 
     public function index()
     {
-        
+
         $title = $this->title;
 
         if (! session()->has('siswa')) {
@@ -21,8 +21,6 @@ class DashboardController extends Controller
 
         $materi = Materi::select('id', 'nama', 'kelas', 'image')->where('kelas', session()->get('siswa')->kelas)->get();
         $capaianPembelajaran = CapaianPembelajaran::where('kelas', session()->get('siswa')->kelas)->first();
-
-
 
         return view('siswa.dashboard.index', compact('materi', 'capaianPembelajaran', 'title'));
     }

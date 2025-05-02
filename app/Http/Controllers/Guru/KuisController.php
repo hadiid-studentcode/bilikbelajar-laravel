@@ -53,7 +53,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil ditambahkan');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menambahkan kuis: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menambahkan kuis: '.$e->getMessage());
         }
     }
 
@@ -82,7 +82,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Kuis berhasil diperbarui');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal memperbarui kuis: ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui kuis: '.$e->getMessage());
         }
     }
 
@@ -91,9 +91,10 @@ class KuisController extends Controller
         try {
             Kuis::where('materi_id', $materi_id)->delete();
             nilaiKuis::where('materi_id', $materi_id)->delete();
+
             return back()->with('success', 'Kuis berhasil dihapus');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus kuis: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menghapus kuis: '.$e->getMessage());
         }
     }
 
@@ -114,7 +115,7 @@ class KuisController extends Controller
 
             return back()->with('success', 'Data kuis siswa berhasil dihapus');
         } catch (\Exception $e) {
-            return back()->with('error', 'Gagal menghapus data kuis: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menghapus data kuis: '.$e->getMessage());
         }
     }
 }

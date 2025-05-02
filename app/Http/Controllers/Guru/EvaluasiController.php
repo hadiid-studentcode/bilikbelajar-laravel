@@ -27,9 +27,7 @@ class EvaluasiController extends Controller
             })
             ->get();
 
-
         $materi = Materi::findOrFail($materi_id);
-
 
         return view('guru.materi.evaluasi.index', compact(
             'title',
@@ -140,8 +138,6 @@ class EvaluasiController extends Controller
                 'total_nilai' => $total_nilai,
                 'catatan' => $request->catatan,
             ]);
-
-
 
             return back()->with('success', 'Nilai evaluasi berhasil diperbarui');
         } catch (\Throwable $th) {

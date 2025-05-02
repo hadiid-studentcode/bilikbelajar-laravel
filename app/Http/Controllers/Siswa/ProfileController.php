@@ -6,17 +6,18 @@ use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
 
-
 class ProfileController extends Controller
 {
-    protected $title = "Profile";
+    protected $title = 'Profile';
 
     public function index()
     {
         $title = $this->title;
         $siswa = session('siswa');
+
         return view('siswa.profile.index', compact('title', 'siswa'));
     }
+
     public function update(Request $request, $id)
     {
         try {
@@ -39,10 +40,10 @@ class ProfileController extends Controller
             $siswaSession['kelas'] = $request->kelas;
             session()->put('siswa', $siswaSession);
 
-
             return back()->with('success', 'Profile Berhasil Diperbarui');
         } catch (\Throwable $th) {
             dd($th->getMessage());
+
             return back()->with('error', 'Profile Gagal Diperbarui');
         }
     }

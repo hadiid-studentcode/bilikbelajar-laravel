@@ -9,6 +9,8 @@ class Music_settings extends Model
 {
     /** @use HasFactory<\Database\Factories\MusicSettingsFactory> */
     use HasFactory;
+
     protected $table = 'music_settings';
+
     protected $guarded = ['id'];
 }

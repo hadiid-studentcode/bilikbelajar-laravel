@@ -11,6 +11,7 @@ class SiswaController extends Controller
     {
         $siswa = Siswa::all();
         dd($siswa);
+
         return view('guru.siswa.index', compact('siswa'));
     }
 
@@ -23,6 +24,7 @@ class SiswaController extends Controller
         ]);
 
         Siswa::create($request->all());
+
         return redirect()->route('guru.siswa.index')->with('success', 'Siswa berhasil ditambahkan');
     }
 
@@ -35,12 +37,14 @@ class SiswaController extends Controller
         ]);
 
         $siswa->update($request->all());
+
         return redirect()->route('guru.siswa.index')->with('success', 'Siswa berhasil diperbarui');
     }
 
     public function destroy(Siswa $siswa)
     {
         $siswa->delete();
+
         return redirect()->route('guru.siswa.index')->with('success', 'Siswa berhasil dihapus');
     }
 }

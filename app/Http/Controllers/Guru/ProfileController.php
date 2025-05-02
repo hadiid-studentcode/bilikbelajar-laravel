@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 
-use function Symfony\Component\String\b;
-
 class ProfileController extends Controller
 {
     protected $title = 'Profile';
+
     public function index()
     {
         $title = $this->title;
+
         return view('guru.profile.index', compact('title'));
     }
+
     public function update(Request $request, $id)
     {
         if ($request->password !== $request->password_confirmation) {
@@ -27,7 +28,6 @@ class ProfileController extends Controller
                 'password' => 'required|string|confirmed',
                 'password_confirmation' => 'required|string',
             ]);
-
 
             User::where('id', $id)->update([
                 'username' => $request->username,

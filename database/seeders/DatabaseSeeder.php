@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             'mapel' => 'Biologi',
         ]);
 
-
         $path_file = storage_path('app/public/materi/file');
         $path_video = storage_path('app/public/materi/video');
 

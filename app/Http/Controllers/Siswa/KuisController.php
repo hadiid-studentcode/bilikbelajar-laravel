@@ -15,7 +15,7 @@ class KuisController extends Controller
     public function index($materi_id)
     {
         $title = $this->title;
-        if (!session()->has('siswa')) {
+        if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
 
@@ -52,7 +52,7 @@ class KuisController extends Controller
             $siswa_id = session('siswa')->id;
 
             // Count not answered questions more efficiently
-            $not_answered = collect($answers)->filter(fn($answer) => empty($answer['answer']))->count();
+            $not_answered = collect($answers)->filter(fn ($answer) => empty($answer['answer']))->count();
 
             // Bulk insert answers
             $jawaban_data = collect($answers)->map(function ($answer) use ($siswa_id) {

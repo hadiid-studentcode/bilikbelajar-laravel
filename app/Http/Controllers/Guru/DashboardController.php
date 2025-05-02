@@ -16,12 +16,12 @@ class DashboardController extends Controller
         $data = [
             'title' => $this->title,
             'totalSiswa' => Siswa::count(),
-            'totalSekolah' => Siswa::distinct('asal_sekolah')->count('asal_sekolah')
+            'totalSekolah' => Siswa::distinct('asal_sekolah')->count('asal_sekolah'),
         ];
 
         $getTopScores = function ($model, $kelas) {
             return $model::with('siswa')
-                ->join('siswas', $model->getTable() . '.siswa_id', '=', 'siswas.id')
+                ->join('siswas', $model->getTable().'.siswa_id', '=', 'siswas.id')
                 ->where('siswas.kelas', $kelas)
                 ->select('siswa_id')
                 ->selectRaw('SUM(total_nilai) as total_nilai')
@@ -31,11 +31,10 @@ class DashboardController extends Controller
                 ->get();
         };
 
-        foreach(['10', '11', '12'] as $kelas) {
+        foreach (['10', '11', '12'] as $kelas) {
             $data["KuisKelas{$kelas}"] = $getTopScores(new nilaiKuis, $kelas);
             $data["EvaluasiKelas{$kelas}"] = $getTopScores(new NilaiEvaluasi, $kelas);
         }
-
 
         return view('guru.dashboard.index', $data);
     }
