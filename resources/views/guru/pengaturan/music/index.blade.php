@@ -28,7 +28,7 @@
                                 <label for="music" class="form-label">Pilih File Musik</label>
                                 <input class="form-control" type="file" name="music" id="music" accept="audio/*"
                                     required>
-                                        
+
                             </div>
                             <button type="submit"
                                 class="btn btn-primary mb-3">{{ $musikKuis ? 'Ubah Musik Kuis & Evaluasi' : 'Simpan Musik Kuis & Evaluasi' }}</button>
@@ -106,7 +106,7 @@
                         </form>
 
                         @if ($musikMateri)
-                            <label for="audioKuis">Musik Baca Materi ::</label><br>
+                            <label for="audioKuis">Musik Baca Materi :</label><br>
                             <audio id="audioKuis" controls preload="auto">
                                 <source src="{{ asset('storage/' . $musikMateri->file_name) }}" type="audio/mpeg">
                                 Browser Anda tidak mendukung elemen audio.
