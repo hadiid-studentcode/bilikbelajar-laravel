@@ -12,15 +12,17 @@ class DashboardController extends Controller
 
     public function index()
     {
-
+        
         $title = $this->title;
 
         if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
 
-        $materi = Materi::select('id', 'nama', 'kelas')->where('kelas', session()->get('siswa')->kelas)->get();
+        $materi = Materi::select('id', 'nama', 'kelas', 'image')->where('kelas', session()->get('siswa')->kelas)->get();
         $capaianPembelajaran = CapaianPembelajaran::where('kelas', session()->get('siswa')->kelas)->first();
+
+
 
         return view('siswa.dashboard.index', compact('materi', 'capaianPembelajaran', 'title'));
     }
