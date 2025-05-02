@@ -40,7 +40,6 @@ class KuisController extends Controller
 
         $musikKuis = Music_settings::where('type', 'kuisEvaluasi')->first();
 
-
         return view('siswa.kuis.index', compact('materi_id', 'title', 'kuis', 'nilaiKuis', 'musikKuis'));
     }
 

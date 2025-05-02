@@ -16,7 +16,6 @@ class MateriController extends Controller
         $materi = Materi::find($materi_id);
         $musikMateri = Music_settings::where('type', 'materi')->first();
 
-
         return view('siswa.materi.show', compact('materi', 'title', 'musikMateri'));
     }
 }

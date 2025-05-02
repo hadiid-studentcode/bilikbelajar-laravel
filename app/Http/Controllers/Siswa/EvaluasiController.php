@@ -31,7 +31,6 @@ class EvaluasiController extends Controller
 
         $musikEvaluasi = Music_settings::where('type', 'kuisEvaluasi')->first();
 
-
         return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi', 'musikEvaluasi'));
     }
 
