@@ -92,7 +92,7 @@
                                 <h1 class="display-3 text-white animated slideInDown">Media Digital Pembelajaran Biologi
                                     Berbasis LMS</h1>
                                 <p class="fs-5 text-white mb-4 pb-2">Sistem pembelajaran berbasis Learning Management
-                                    System untuk materi Perubahan Lingkungan Kelas X/Fase E di SMAN 2 Tambang</p>
+                                    System</p>
                                 <!-- <a href="#about" class="btn btn-primary py-md-3 px-md-5 me-3 animated slideInLeft">Pelajari Lebih Lanjut</a> -->
                                 <a href="#about" class="btn btn-light py-md-3 px-md-5 animated slideInRight">Mulai
                                     Belajar</a>
@@ -168,7 +168,7 @@
                     <h6 class="section-title bg-white text-start text-primary pe-3">Tentang Bilik Belajar</h6>
                     <h1 class="mb-4">Selamat Datang di Platform Pembelajaran Digital</h1>
                     <p class="mb-4">Bilik Belajar merupakan platform pembelajaran digital berbasis Learning
-                        Management System (LMS) untuk mata pelajaran Biologi khususnya materi Perubahan Lingkungan.</p>
+                        Management System (LMS) untuk mata pelajaran Biologi</p>
                     <div class="row gy-2 gx-4 mb-4">
                         <div class="col-sm-6">
                             <p class="mb-0"><i class="fa fa-arrow-right text-primary me-2"></i>Materi Pembelajaran
@@ -224,12 +224,21 @@
                             <h5 class="mb-0">Zahra Ramadhani</h5>
                             <small>Mahasiswa Tadris Biologi<br>UIN Mahmud Yunus Batusangkar</small>
                             <p class="mt-3 small">Lahir di Pekanbaru, 19 November 2002</p>
+                            <hr>
+                            <p class="small text-muted text-start">
+                                <strong>Tujuan Pengembang:</strong><br>
+                                Pengembangan Media Digital Pembelajaran Biologi Berbasis Learning Management System
+                                Materi Perubahan Lingkungan Kelas X/Fase E di SMAN 2 Tambang ini merupakan suatu produk
+                                dari karya tulis penulis untuk menyelesaikan jenjang pendidikan dan memperoleh gelar
+                                sarjana (S1) pada Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar.
+                            </p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
     <!-- Team End -->
 
 
@@ -266,16 +275,7 @@
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center mb-3">
-                        <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary"
-                            style="width: 50px; height: 50px;">
-                            <i class="fa fa-phone-alt text-white"></i>
-                        </div>
-                        <div class="ms-3">
-                            <h5 class="text-primary">Mobile</h5>
-                            <p class="mb-0">-</p> <!-- Tambahkan nomor jika tersedia -->
-                        </div>
-                    </div>
+                   
 
                     <div class="d-flex align-items-center">
                         <div class="d-flex align-items-center justify-content-center flex-shrink-0 bg-primary"
@@ -343,8 +343,11 @@
                         <img src="{{ asset('assets/landingpages/bilikbelajar/images/logokampus.png') }}"
                             alt="Logo UIN MY Batusangkar" style="max-width: 60px;">
                     </div>
-                    <p>Platform edukasi dari UIN Mahmud Yunus Batusangkar untuk menunjang proses belajar mengajar secara
-                        digital dan interaktif.</p>
+                    <p>Tujuan pengembang: Pengembangan Media Digital
+                        Pembelajaran Biologi Berbasis Learning Management System Materi
+                        Perubahan Lingkungan Kelas X/Fase E di SMAN 2 Tambang ini merupakan suatu produk dari karya
+                        tulis penulis untuk menyelesaikan jenjang pendidikan dan memperoleh gelar sarjana (S1) pada
+                        Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar</p>
                     <p>Dikembangkan oleh: Zahra Ramadhani, mahasiswa Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar
                     </p>
                 </div>

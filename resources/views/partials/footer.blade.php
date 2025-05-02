@@ -8,7 +8,7 @@
                   document.write(new Date().getFullYear());
               </script>
               , BilikBelajar |  by
-              <a href="https://creativecode5.vercel.app/" target="_blank" class="footer-link fw-bolder">CreativeCode5</a>
+              <a href="#" target="_blank" class="footer-link fw-bolder">Zahra Ramadhani</a>
           </div>
          
       </div>
