@@ -6,6 +6,7 @@ use App\Http\Controllers\Guru\EvaluasiController as GuruEvaluasiController;
 use App\Http\Controllers\Guru\KuisController as GuruKuisController;
 use App\Http\Controllers\Guru\ManajemenSiswaController as GuruManajemenSiswaController;
 use App\Http\Controllers\Guru\MateriController as GuruMateriController;
+use App\Http\Controllers\Guru\MusicController as GuruMusicController;
 use App\Http\Controllers\Guru\ProfileController as GuruProfileController;
 use App\Http\Controllers\Siswa\DashboardController as SiswaDashboardController;
 use App\Http\Controllers\Siswa\EvaluasiController as SiswaEvaluasiController;
@@ -81,6 +82,19 @@ Route::middleware('auth')->prefix('guru')->name('guru.')->group(function () {
     Route::prefix('/profile')->name('profile.')->group(function () {
         Route::get('/', [GuruProfileController::class, 'index'])->name('index');
         Route::put('/update/{id}', [GuruProfileController::class, 'update'])->name('update');
+    });
+
+    Route::prefix('/pengaturan')->name('pengaturan.')->group(function () {
+        Route::get('/', function () {
+            return back();
+        })->name('index');
+
+        Route::prefix('/music')->name('music.')->group(function () {
+            Route::get('/', [GuruMusicController::class, 'index'])->name('index');
+            Route::post('/store', [GuruMusicController::class, 'store'])->name('store');
+            Route::put('/update/{id}', [GuruMusicController::class, 'update'])->name('update');
+            Route::delete('/destroy/{id}', [GuruMusicController::class, 'destroy'])->name('destroy');
+        });
     });
 });
 

@@ -56,6 +56,17 @@
 
          </li>
 
+           <li class="menu-header small text-uppercase">
+             <span class="menu-header-text">Pengaturan</span>
+         </li>
+         <li class="menu-item {{ request()->is('guru/pengaturan/music*') ? 'active' : '' }}">
+             <a href="{{ route('guru.pengaturan.music.index') }}" class="menu-link">
+                 <i class="menu-icon tf-icons bx bx-music"></i>
+                 <div data-i18n="Account Settings">musik</div>
+             </a>
+
+         </li>
+
 
 
      </ul>
