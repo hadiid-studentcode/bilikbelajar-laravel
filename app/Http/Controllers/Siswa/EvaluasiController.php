@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use App\Models\Evaluasi;
 use App\Models\JawabanEvaluasi;
+use App\Models\Music_settings;
 use App\Models\nilaiEvaluasi;
 use Illuminate\Http\Request;
 
@@ -28,7 +29,10 @@ class EvaluasiController extends Controller
             ->where('materi_id', $materi_id)
             ->first();
 
-        return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi'));
+        $musikEvaluasi = Music_settings::where('type', 'kuisEvaluasi')->first();
+
+
+        return view('siswa.evaluasi.index', compact('materi_id', 'title', 'evaluasi', 'nilaiEvaluasi', 'musikEvaluasi'));
     }
 
     public function store(Request $request)

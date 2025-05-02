@@ -123,14 +123,16 @@
                         @endif
                         @if ($materi->file)
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ !$materi->video ? 'active' : '' }}" data-bs-toggle="pill" data-bs-target="#slides-content">
+                                <button class="nav-link {{ !$materi->video ? 'active' : '' }}" data-bs-toggle="pill"
+                                    data-bs-target="#slides-content">
                                     <i class="fas fa-file-powerpoint me-2"></i>Slide Presentasi
                                 </button>
                             </li>
                         @endif
                         @if ($materi->deskripsi)
                             <li class="nav-item" role="presentation">
-                                <button class="nav-link {{ (!$materi->video && !$materi->file) ? 'active' : '' }}" data-bs-toggle="pill" data-bs-target="#text-content">
+                                <button class="nav-link {{ !$materi->video && !$materi->file ? 'active' : '' }}"
+                                    data-bs-toggle="pill" data-bs-target="#text-content">
                                     <i class="fas fa-book me-2"></i>Materi Tertulis
                                 </button>
                             </li>
@@ -144,8 +146,8 @@
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="card shadow-sm">
                                             <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload"
-                                                    preload="metadata">
+                                                <video class="w-100 h-100 object-fit-cover" controls
+                                                    controlsList="nodownload" preload="metadata">
                                                     <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
                                                     Your browser does not support the video tag.
                                                 </video>
@@ -173,8 +175,8 @@
                                                     <h5 class="card-title mb-0 text-truncate">
                                                         {{ $materi->judul ?? 'Slide Presentasi' }}
                                                     </h5>
-                                                    <a href="{{ asset('storage/' . $materi->file) }}" class="btn btn-primary"
-                                                        download>
+                                                    <a href="{{ asset('storage/' . $materi->file) }}"
+                                                        class="btn btn-primary" download>
                                                         <i class="fas fa-download me-2"></i>
                                                         <span>Download Presentasi</span>
                                                     </a>
@@ -187,7 +189,8 @@
                         @endif
 
                         @if ($materi->deskripsi)
-                            <div class="tab-pane fade {{ (!$materi->video && !$materi->file) ? 'show active' : '' }}" id="text-content">
+                            <div class="tab-pane fade {{ !$materi->video && !$materi->file ? 'show active' : '' }}"
+                                id="text-content">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
@@ -222,7 +225,7 @@
 
             <!-- Background Music -->
             <audio id="bgMusic" loop>
-                <source src="{{ asset('assets/bilikbelajar/music/ReadingSoundtrack-baca.mp3') }}" type="audio/mpeg">
+                <source src="{{ asset('storage/' . $musikMateri?->file_name) }}" type="audio/mpeg">
                 Your browser does not support the audio element.
             </audio>
         </main>

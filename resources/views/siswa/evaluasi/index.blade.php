@@ -154,7 +154,7 @@
 
         <!-- Background Music -->
         <audio id="bgMusic" loop>
-            <source src="{{ asset('assets/bilikbelajar/music/QuizizzSoundtrack-kuis.mp3') }}" type="audio/mpeg">
+            <source src="{{ asset('storage/'. $musikEvaluasi?->file_name) }}" type="audio/mpeg">
             Your browser does not support the audio element.
         </audio>
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use App\Models\jawabanKuis;
 use App\Models\Kuis;
+use App\Models\Music_settings;
 use App\Models\nilaiKuis;
 use Illuminate\Http\Request;
 
@@ -37,7 +38,10 @@ class KuisController extends Controller
             $nilaiKuis->jawaban_kuis = $jawabanKuis;
         }
 
-        return view('siswa.kuis.index', compact('materi_id', 'title', 'kuis', 'nilaiKuis'));
+        $musikKuis = Music_settings::where('type', 'kuisEvaluasi')->first();
+
+
+        return view('siswa.kuis.index', compact('materi_id', 'title', 'kuis', 'nilaiKuis', 'musikKuis'));
     }
 
     public function store(Request $request)

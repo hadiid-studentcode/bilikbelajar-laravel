@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Materi;
+use App\Models\Music_settings;
 
 class MateriController extends Controller
 {
@@ -13,7 +14,9 @@ class MateriController extends Controller
     {
         $title = $this->title;
         $materi = Materi::find($materi_id);
+        $musikMateri = Music_settings::where('type', 'materi')->first();
 
-        return view('siswa.materi.show', compact('materi', 'title'));
+
+        return view('siswa.materi.show', compact('materi', 'title', 'musikMateri'));
     }
 }
