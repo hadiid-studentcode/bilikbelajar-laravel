@@ -43,11 +43,10 @@
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
-       @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @else
-        
-        @endif
+    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @else
+    @endif
 </head>
 
 <body>
@@ -71,8 +70,15 @@
                         <!-- /Logo -->
                         <p class="mb-4">Masuk Sebagai Guru</p>
 
-                        <form id="formAuthentication" class="mb-3" action="{{ route('authenticate') }}" method="POST">
-                          @csrf
+                        @if ($errors->any())
+                            <div class="alert alert-danger" role="alert">
+                                {{ $errors->first() }}
+                            </div>
+                        @endif
+
+                        <form id="formAuthentication" class="mb-3" action="{{ route('authenticate') }}"
+                            method="POST">
+                            @csrf
                             <div class="mb-3">
                                 <label for="email" class="form-label">Username</label>
                                 <input type="text" class="form-control" id="email" name="username"
@@ -81,7 +87,7 @@
                             <div class="mb-3 form-password-toggle">
                                 <div class="d-flex justify-content-between">
                                     <label class="form-label" for="password">Password</label>
-                                   
+
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input type="password" id="password" class="form-control" name="password"
@@ -90,13 +96,13 @@
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                             </div>
-                          
+
                             <div class="mb-3">
                                 <button class="btn btn-primary d-grid w-100" type="submit">Sign in</button>
                             </div>
                         </form>
 
-                     
+
                     </div>
                 </div>
                 <!-- /Register -->

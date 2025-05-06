@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('siswas', function (Blueprint $table) {
             $table->id()->autoIncrement();
-            $table->string('nama');
+            $table->string('nama')->unique();
             $table->string('asal_sekolah');
             $table->enum('kelas', [10, 11, 12]);
             $table->timestamps();
