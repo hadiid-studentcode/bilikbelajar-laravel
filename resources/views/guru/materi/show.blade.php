@@ -249,19 +249,25 @@
                             @csrf
                             @method('PUT')
                             <div class="row">
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">Nama Materi <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="nama" required
                                         value="{{ $m->nama }}">
                                     <div class="invalid-feedback">Nama materi harus diisi</div>
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label class="form-label">Kelas <span class="text-danger">*</span></label>
                                     <select class="form-select" name="kelas" required>
                                         <option value="{{ $m->kelas }}" selected>{{ $m->kelas }}</option>
 
                                     </select>
                                 </div>
+                                 <div class="col-md-4 mb-3">
+                                <label class="form-label">Upload Gambar Materi </label>
+                                <input type="file" class="form-control" name="image">
+                                <small class="text-muted">Format: JPEG, JPG, PNG</small>
+                                <div class="invalid-feedback">Nama materi harus diisi</div>
+                            </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Deskripsi</label>

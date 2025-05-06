@@ -23,6 +23,7 @@ class MateriController extends Controller
 
     public function kelas($kelas)
     {
+        
         $title = $this->title;
         $materi = Materi::where('kelas', $kelas)->get();
         $tujuanPembelajaran = TujuanPembelajaran::all();
@@ -66,6 +67,7 @@ class MateriController extends Controller
             $request->validate([
                 'tujuan_pembelajaran' => 'required',
                 'materi_id' => 'required',
+                
             ]);
 
             TujuanPembelajaran::create([
@@ -106,20 +108,38 @@ class MateriController extends Controller
                 'editContent' => 'nullable',
                 'file' => 'nullable',
                 'video' => 'nullable',
+                'image' => 'nullable|image',
             ]);
 
             $materi = Materi::find($id);
 
             if ($request->hasFile('file')) {
+                // delete old file if exists
+                if ($materi->file) {
+                    Storage::delete($materi->file);
+                }
                 $file = $request->file('file')->store('materi/file');
             } else {
                 $file = $materi->file;
             }
 
             if ($request->hasFile('video')) {
+                // delete old video if exists
+                if ($materi->video) {
+                    Storage::delete($materi->video);
+                }
                 $video = $request->file('video')->store('materi/video');
             } else {
                 $video = $materi->video;
+            }
+            if ($request->hasFile('image')) {
+                // delete old image if exists
+                if ($materi->image) {
+                    Storage::delete($materi->image);
+                }
+                $image = $request->file('image')->store('materi/image');
+            } else {
+                $image = $materi->image;
             }
 
             $materi->update([
@@ -128,6 +148,7 @@ class MateriController extends Controller
                 'deskripsi' => $request->input('editContent'),
                 'file' => $file,
                 'video' => $video,
+                'image' => $image,
             ]);
 
             return redirect()->back()->with('success', 'Materi berhasil diupdate');
