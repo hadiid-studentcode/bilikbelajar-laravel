@@ -51,7 +51,7 @@ class LoginController extends Controller
                 return redirect()->route('siswa.dashboard.index')->with('success', 'Login Berhasil');
             }
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            return back()->with('error', 'Login Gagal, Silahkan coba lagi');
         }
     }
 
@@ -64,7 +64,7 @@ class LoginController extends Controller
 
             return redirect('/');
         } catch (\Throwable $th) {
-            dd($th->getMessage());
+            return back()->with('error', 'Logout Gagal, Silahkan coba lagi');
         }
     }
 }

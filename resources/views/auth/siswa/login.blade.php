@@ -69,6 +69,8 @@
                         </div>
                         <!-- /Logo -->
                         <p class="mb-4">Masuk Sebagai Siswa</p>
+                        @include('components.alertComponents')
+
 
                         <form id="formAuthentication" class="mb-3" action="{{ route('siswa.login') }}"
                             method="POST">
