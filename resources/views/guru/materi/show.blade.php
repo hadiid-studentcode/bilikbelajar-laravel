@@ -133,33 +133,55 @@
                                 <label class="form-label">Kelas <span class="text-danger">*</span></label>
                                 <select class="form-select" name="kelas" required>
                                     <option selected value="{{ $kelas }}">{{ $kelas }}</option>
-
                                 </select>
                                 <div class="invalid-feedback">Pilih kelas</div>
                             </div>
                             <div class="col-md-4 mb-3">
-                                <label class="form-label">Upload Gambar Materi </label>
+                                <label class="form-label">Upload Gambar Materi</label>
                                 <input type="file" class="form-control" name="image">
                                 <small class="text-muted">Format: JPEG, JPG, PNG</small>
-                                <div class="invalid-feedback">Nama materi harus diisi</div>
                             </div>
                         </div>
+
                         <div class="mb-3">
                             <label class="form-label">Deskripsi <span class="text-danger">*</span></label>
                             <input type="hidden" name="content" id="content" required />
                             <div class="editor" data-target="content"></div>
                         </div>
+
                         <div class="row">
                             <div class="col-md-6 mb-3">
                                 <label class="form-label">File Materi</label>
                                 <input type="file" class="form-control" name="file"
                                     accept=".pdf,.doc,.docx,.ppt,.pptx">
-                                <small class="text-muted">Format: PDF</small>
+                                <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX</small>
                             </div>
+
                             <div class="col-md-6 mb-3">
-                                <label class="form-label">Video Pembelajaran</label>
-                                <input type="file" class="form-control" name="video" accept="video/*">
-                                <small class="text-muted">Format: MP4</small>
+                                <label class="form-label">Jenis Input Video</label>
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="video_type"
+                                            id="videoFileOption" value="file" checked onchange="toggleVideoInput()">
+                                        <label class="form-check-label" for="videoFileOption">Upload Video</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="video_type"
+                                            id="videoUrlOption" value="url" onchange="toggleVideoInput()">
+                                        <label class="form-check-label" for="videoUrlOption">URL YouTube</label>
+                                    </div>
+                                </div>
+
+                                <div class="mt-3" id="fileInput">
+                                    <input type="file" class="form-control" name="video_file" accept="video/*">
+                                    <small class="text-muted">Format: MP4</small>
+                                </div>
+
+                                <div class="mt-3" id="urlInput" style="display: none;">
+                                    <input type="url" class="form-control" name="video_url"
+                                        placeholder="https://www.youtube.com/watch?v=...">
+                                    <small class="text-muted">Masukkan URL Video YouTube.</small>
+                                </div>
                             </div>
                         </div>
                     </form>
@@ -175,6 +197,34 @@
             </div>
         </div>
     </div>
+
+    <script>
+        function toggleVideoInput() {
+            const videoType = document.querySelector('input[name="video_type"]:checked').value;
+            document.getElementById("fileInput").style.display = videoType === "file" ? "block" : "none";
+            document.getElementById("urlInput").style.display = videoType === "url" ? "block" : "none";
+
+            document.querySelector("input[name='video_file']").required = videoType === "file";
+            document.querySelector("input[name='video_url']").required = videoType === "url";
+        }
+
+        // Inisialisasi saat halaman dimuat
+        document.addEventListener("DOMContentLoaded", function() {
+            toggleVideoInput();
+        });
+    </script>
+
+    <style>
+        .form-check-label {
+            font-weight: 500;
+        }
+
+        #fileInput,
+        #urlInput {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+
 
 
     {{-- tujuan pembelajaran --}}
@@ -253,60 +303,96 @@
                                     <label class="form-label">Nama Materi <span class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="nama" required
                                         value="{{ $m->nama }}">
-                                    <div class="invalid-feedback">Nama materi harus diisi</div>
                                 </div>
                                 <div class="col-md-4 mb-3">
                                     <label class="form-label">Kelas <span class="text-danger">*</span></label>
                                     <select class="form-select" name="kelas" required>
                                         <option value="{{ $m->kelas }}" selected>{{ $m->kelas }}</option>
-
                                     </select>
                                 </div>
-                                 <div class="col-md-4 mb-3">
-                                <label class="form-label">Upload Gambar Materi </label>
-                                <input type="file" class="form-control" name="image">
-                                <small class="text-muted">Format: JPEG, JPG, PNG</small>
-                                <div class="invalid-feedback">Nama materi harus diisi</div>
+                                <div class="col-md-4 mb-3">
+                                    <label class="form-label">Upload Gambar Materi</label>
+                                    <input type="file" class="form-control" name="image">
+                                    <small class="text-muted">Format: JPEG, JPG, PNG</small>
+                                </div>
                             </div>
-                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">Deskripsi</label>
                                 <input type="hidden" name="editContent" id="editContent{{ $m->id }}"
                                     value="{{ $m->deskripsi }}" />
                                 <div class="editor" data-target="editContent{{ $m->id }}"></div>
                             </div>
+
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">File Materi</label>
-                                        <input type="file" class="form-control" name="file"
-                                            accept=".pdf,.doc,.docx,.ppt,.pptx" value="{{ $m->file }}">
-                                        <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX (Max. 10MB)</small>
-                                        @if ($m->file != null)
-                                            <div class="mt-2">
-                                                <a target="_blank" href="{{ asset('storage/' . $m->file) }}"
-                                                    class="btn btn-info">
-                                                    <i class="bx bx-file me-1"></i> Materi
-                                                </a>
-                                            </div>
-                                        @endif
-                                    </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">File Materi</label>
+                                    <input type="file" class="form-control" name="file"
+                                        accept=".pdf,.doc,.docx,.ppt,.pptx">
+                                    <small class="text-muted">Format: PDF, DOC, DOCX, PPT, PPTX</small>
+                                    @if ($m->file)
+                                        <div class="mt-2">
+                                            <a target="_blank" href="{{ asset('storage/' . $m->file) }}"
+                                                class="btn btn-info">
+                                                <i class="bx bx-file me-1"></i> Lihat Materi
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="mb-3">
-                                        <label class="form-label">Video Pembelajaran</label>
-                                        <input type="file" class="form-control" name="video" accept="video/*"
-                                            value="{{ $m->video }}">
-                                        <small class="text-muted">Format: MP4, MKV, AVI (Max. 100MB)</small>
-                                        @if ($m->video != null)
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label">Jenis Input Video</label>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio"
+                                                name="video_type_{{ $m->id }}" value="file"
+                                                onchange="toggleEditVideoInput({{ $m->id }})"
+                                                {{ $m->video && !filter_var($m->video, FILTER_VALIDATE_URL) ? 'checked' : '' }}>
+                                            <label class="form-check-label">Upload Video</label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio"
+                                                name="video_type_{{ $m->id }}" value="url"
+                                                onchange="toggleEditVideoInput({{ $m->id }})"
+                                                {{ filter_var($m->video, FILTER_VALIDATE_URL) ? 'checked' : '' }}>
+                                            <label class="form-check-label">URL YouTube</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3" id="editFileInput{{ $m->id }}"
+                                        style="display: {{ $m->video && !filter_var($m->video, FILTER_VALIDATE_URL) ? 'block' : 'none' }};">
+                                        <input type="file" class="form-control" name="video_file">
+                                        <small class="text-muted">Format: MP4</small>
+                                    </div>
+
+                                    <div class="mt-3" id="editUrlInput{{ $m->id }}"
+                                        style="display: {{ filter_var($m->video, FILTER_VALIDATE_URL) ? 'block' : 'none' }};">
+                                        <input type="url" class="form-control" name="video_url"
+                                            value="{{ filter_var($m->video, FILTER_VALIDATE_URL) ? $m->video : '' }}"
+                                            placeholder="https://www.youtube.com/watch?v=...">
+                                        <small class="text-muted">Masukkan URL Video YouTube.</small>
+                                    </div>
+                                    @if ($m->video != null)
+                                        @if (Storage::disk('public')->exists($m->video))
                                             <div class="mt-2">
                                                 <a target="_blank" href="{{ asset('storage/' . $m->video) }}"
                                                     class="btn btn-info">
                                                     <i class="bx bx-video me-1"></i> Video
                                                 </a>
                                             </div>
+                                        @else
+                                            <div class="mt-2">
+                                                <a target="_blank" href="{{ $m->video }}" class="btn btn-info">
+                                                    <i class="bx bx-video me-1"></i> Video
+                                                </a>
+                                            </div>
                                         @endif
-                                    </div>
+                                    @endif
+
+                                  
+
+
+
                                 </div>
                             </div>
                         </form>
@@ -323,6 +409,15 @@
             </div>
         </div>
     @endforeach
+
+    <script>
+        function toggleEditVideoInput(id) {
+            const videoType = document.querySelector(`input[name="video_type_${id}"]:checked`).value;
+            document.getElementById(`editFileInput${id}`).style.display = videoType === "file" ? "block" : "none";
+            document.getElementById(`editUrlInput${id}`).style.display = videoType === "url" ? "block" : "none";
+        }
+    </script>
+
 
     <!-- Delete Modal -->
     @foreach ($materi as $m)

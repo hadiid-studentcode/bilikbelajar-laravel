@@ -23,7 +23,7 @@ class MateriController extends Controller
 
     public function kelas($kelas)
     {
-        
+
         $title = $this->title;
         $materi = Materi::where('kelas', $kelas)->get();
         $tujuanPembelajaran = TujuanPembelajaran::all();
@@ -40,8 +40,16 @@ class MateriController extends Controller
                 'image' => 'nullable|image',
                 'content' => 'required',
                 'file' => 'nullable|file',
-                'video' => 'nullable|file',
+                'video_file' => 'nullable|file',
+                'video_url' => 'nullable',
             ]);
+            if ($request->hasFile('video_file')) {
+                $video = $request->file('video_file')->store('materi/video');
+            }
+
+            if ($request->video_url) {
+                $video = $request->video_url;
+            }
 
             $data = [
                 'guru_id' => Guru::where('user_id', Auth::id())->value('id'),
@@ -50,7 +58,7 @@ class MateriController extends Controller
                 'image' => $request->hasFile('image') ? $request->file('image')->store('materi/image') : null,
                 'deskripsi' => $validated['content'],
                 'file' => $request->hasFile('file') ? $request->file('file')->store('materi/file') : null,
-                'video' => $request->hasFile('video') ? $request->file('video')->store('materi/video') : null,
+                'video' => $video ?? null,
             ];
 
             Materi::create($data);
@@ -67,7 +75,7 @@ class MateriController extends Controller
             $request->validate([
                 'tujuan_pembelajaran' => 'required',
                 'materi_id' => 'required',
-                
+
             ]);
 
             TujuanPembelajaran::create([
@@ -107,7 +115,8 @@ class MateriController extends Controller
                 'kelas' => 'required',
                 'editContent' => 'nullable',
                 'file' => 'nullable',
-                'video' => 'nullable',
+                'video_url' => 'nullable',
+                'video_file' => 'nullable|file',
                 'image' => 'nullable|image',
             ]);
 
@@ -123,15 +132,31 @@ class MateriController extends Controller
                 $file = $materi->file;
             }
 
-            if ($request->hasFile('video')) {
-                // delete old video if exists
-                if ($materi->video) {
-                    Storage::delete($materi->video);
+            // Periksa apakah ada file video baru yang diunggah
+            if ($request->hasFile('video_file')) {
+                // Hapus video lama jika ada dan bukan URL
+                if ($materi->video && !filter_var($materi->video, FILTER_VALIDATE_URL)) {
+                    Storage::disk('public')->delete($materi->video);
                 }
-                $video = $request->file('video')->store('materi/video');
+
+                // Simpan file video baru
+                $video = $request->file('video_file')->store('materi/video', 'public');
+            } elseif ($request->filled('video_url')) {
+                // Jika URL video baru diberikan, hapus video lama (file fisik atau URL)
+                if ($materi->video && !filter_var($materi->video, FILTER_VALIDATE_URL)) {
+                    Storage::disk('public')->delete($materi->video);
+                }
+
+                // Simpan URL video baru
+                $video = $request->video_url;
             } else {
+                // Jika tidak ada perubahan video, tetap gunakan video lama
                 $video = $materi->video;
             }
+
+
+
+
             if ($request->hasFile('image')) {
                 // delete old image if exists
                 if ($materi->image) {

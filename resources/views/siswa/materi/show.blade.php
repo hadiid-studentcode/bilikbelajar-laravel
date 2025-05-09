@@ -141,42 +141,68 @@
 
                     <div class="tab-content" id="resourceTabContent">
                         @if ($materi->video)
-                            <div class="tab-pane fade show active" id="video-content">
-                                <div class="row justify-content-center">
-                                    <div class="col-lg-12 col-md-12 col-12">
-                                        <div class="card shadow-sm">
-                                            <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                <video class="w-100 h-100 object-fit-cover" controls
-                                                    controlsList="nodownload" preload="metadata">
-                                                    <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
-                                                    Your browser does not support the video tag.
-                                                </video>
+                            @if (Storage::disk('public')->exists($materi->video))
+                                <div class="tab-pane fade show active" id="video-content">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <div class="card shadow-sm">
+                                                <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                                    <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload" preload="metadata">
+                                                        <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
                                             </div>
-
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            @elseif(filter_var($materi->video, FILTER_VALIDATE_URL) && str_contains($materi->video, 'youtube.com'))
+                                <div class="tab-pane fade show active" id="video-content">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <div class="card shadow-sm">
+                                                <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                                    <iframe class="w-100 h-100" 
+                                                        src="{{ Str::replace('watch?v=', 'embed/', $materi->video) }}" 
+                                                        allowfullscreen>
+                                                    </iframe>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="tab-pane fade show active" id="video-content">
+                                    <div class="row justify-content-center">
+                                        <div class="col-lg-12 col-md-12 col-12">
+                                            <div class="card shadow-sm">
+                                                <div class="ratio ratio-16x9 rounded-top overflow-hidden">
+                                                    <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload" preload="metadata">
+                                                        <source src="{{ $materi->video }}" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
                         @endif
-
+                    
                         @if ($materi->file)
                             <div class="tab-pane fade {{ !$materi->video ? 'show active' : '' }}" id="slides-content">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="card shadow-sm">
                                             <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                <iframe src="{{ asset('storage/' . $materi->file) }}" frameborder="0"
-                                                    class="w-200 h-200" allowfullscreen>
-                                                </iframe>
+                                                <iframe src="{{ asset('storage/' . $materi->file) }}" frameborder="0" class="w-100 h-100" allowfullscreen></iframe>
                                             </div>
                                             <div class="card-body">
-                                                <div
-                                                    class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
+                                                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
                                                     <h5 class="card-title mb-0 text-truncate">
                                                         {{ $materi->judul ?? 'Slide Presentasi' }}
                                                     </h5>
-                                                    <a href="{{ asset('storage/' . $materi->file) }}"
-                                                        class="btn btn-primary" download>
+                                                    <a href="{{ asset('storage/' . $materi->file) }}" class="btn btn-primary" download>
                                                         <i class="fas fa-download me-2"></i>
                                                         <span>Download Presentasi</span>
                                                     </a>
@@ -187,10 +213,9 @@
                                 </div>
                             </div>
                         @endif
-
+                    
                         @if ($materi->deskripsi)
-                            <div class="tab-pane fade {{ !$materi->video && !$materi->file ? 'show active' : '' }}"
-                                id="text-content">
+                            <div class="tab-pane fade {{ !$materi->video && !$materi->file ? 'show active' : '' }}" id="text-content">
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
@@ -205,6 +230,7 @@
                             </div>
                         @endif
                     </div>
+                    
                 </div>
             </section>
 
