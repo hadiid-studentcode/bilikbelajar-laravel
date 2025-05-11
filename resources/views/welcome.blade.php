@@ -228,7 +228,7 @@
                             <p class="small text-muted text-start">
                                 <strong>Tujuan Pengembang:</strong><br>
                                 Pengembangan Media Digital Pembelajaran Biologi Berbasis Learning Management System
-                                Materi Perubahan Lingkungan Kelas X/Fase E di SMAN 2 Tambang ini merupakan suatu produk
+                                Materi Perubahan Lingkungan Kelas X/Fase E ini merupakan suatu produk
                                 dari karya tulis penulis untuk menyelesaikan jenjang pendidikan dan memperoleh gelar
                                 sarjana (S1) pada Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar.
                             </p>
@@ -345,7 +345,7 @@
                     </div>
                     <p>Tujuan pengembang: Pengembangan Media Digital
                         Pembelajaran Biologi Berbasis Learning Management System Materi
-                        Perubahan Lingkungan Kelas X/Fase E di SMAN 2 Tambang ini merupakan suatu produk dari karya
+                        Perubahan Lingkungan Kelas X/Fase E ini merupakan suatu produk dari karya
                         tulis penulis untuk menyelesaikan jenjang pendidikan dan memperoleh gelar sarjana (S1) pada
                         Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar</p>
                     <p>Dikembangkan oleh: Zahra Ramadhani, mahasiswa Jurusan Tadris Biologi UIN Mahmud Yunus Batusangkar
