@@ -204,8 +204,8 @@
             document.getElementById("fileInput").style.display = videoType === "file" ? "block" : "none";
             document.getElementById("urlInput").style.display = videoType === "url" ? "block" : "none";
 
-            document.querySelector("input[name='video_file']").required = videoType === "file";
-            document.querySelector("input[name='video_url']").required = videoType === "url";
+            document.querySelector("input[name='video_file']") = videoType === "file";
+            document.querySelector("input[name='video_url']") = videoType === "url";
         }
 
         // Inisialisasi saat halaman dimuat
