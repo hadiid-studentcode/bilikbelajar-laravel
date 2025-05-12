@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Guru;
 
 use App\Http\Controllers\Controller;
-use App\Models\CapaianPembelajaran;
+use App\Models\capaianPembelajaran;
 use Illuminate\Http\Request;
 
 class CapaianPembelajaranController extends Controller
