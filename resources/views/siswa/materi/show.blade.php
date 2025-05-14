@@ -100,6 +100,7 @@
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.6.172/pdf.min.js"></script>
 @endpush
 
 @section('content')
@@ -112,7 +113,7 @@
 
             <!-- Learning Resources Tabs -->
             <section class="resource-tabs">
-                <div class="container">
+                <div class="">
                     <ul class="nav nav-pills mb-4 justify-content-center flex-wrap" id="resourceTabs" role="tablist">
                         @if ($materi->video)
                             <li class="nav-item" role="presentation">
@@ -147,8 +148,10 @@
                                         <div class="col-lg-12 col-md-12 col-12">
                                             <div class="card shadow-sm">
                                                 <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                    <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload" preload="metadata">
-                                                        <source src="{{ asset('storage/' . $materi->video) }}" type="video/mp4">
+                                                    <video class="w-100 h-100 object-fit-cover" controls
+                                                        controlsList="nodownload" preload="metadata">
+                                                        <source src="{{ asset('storage/' . $materi->video) }}"
+                                                            type="video/mp4">
                                                         Your browser does not support the video tag.
                                                     </video>
                                                 </div>
@@ -162,8 +165,8 @@
                                         <div class="col-lg-12 col-md-12 col-12">
                                             <div class="card shadow-sm">
                                                 <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                    <iframe class="w-100 h-100" 
-                                                        src="{{ Str::replace('watch?v=', 'embed/', $materi->video) }}" 
+                                                    <iframe class="w-100 h-100"
+                                                        src="{{ Str::replace('watch?v=', 'embed/', $materi->video) }}"
                                                         allowfullscreen>
                                                     </iframe>
                                                 </div>
@@ -177,7 +180,12 @@
                                         <div class="col-lg-12 col-md-12 col-12">
                                             <div class="card shadow-sm">
                                                 <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $materi->video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                                                    <iframe width="560" height="315"
+                                                        src="https://www.youtube.com/embed/{{ $materi->video }}"
+                                                        title="YouTube video player" frameborder="0"
+                                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                                        referrerpolicy="strict-origin-when-cross-origin"
+                                                        allowfullscreen></iframe>
                                                 </div>
                                             </div>
                                         </div>
@@ -185,21 +193,25 @@
                                 </div>
                             @endif
                         @endif
-                    
+
                         @if ($materi->file)
                             <div class="tab-pane fade {{ !$materi->video ? 'show active' : '' }}" id="slides-content">
                                 <div class="row justify-content-center">
-                                    <div class="col-lg-12 col-md-12 col-12">
+                                    <div class="col-lg-10 col-md-12 col-12">
                                         <div class="card shadow-sm">
                                             <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                <iframe src="{{ asset('storage/' . $materi->file) }}" frameborder="0" class="w-100 h-100" allowfullscreen></iframe>
+                                                <canvas id="pdfCanvas" class="w-100 h-100"></canvas>
                                             </div>
                                             <div class="card-body">
-                                                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3">
-                                                    <h5 class="card-title mb-0 text-truncate">
+                                                <div
+                                                    class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+                                                    <h5
+                                                        class="card-title mb-2 mb-md-0 text-truncate text-center text-md-start w-100">
                                                         {{ $materi->judul ?? 'Slide Presentasi' }}
                                                     </h5>
-                                                    <a href="{{ asset('storage/' . $materi->file) }}" class="btn btn-primary" download>
+                                                    <a href="{{ asset('storage/' . $materi->file) }}"
+                                                        class="btn btn-primary d-block d-md-inline-block mt-2 mt-md-0"
+                                                        download>
                                                         <i class="fas fa-download me-2"></i>
                                                         <span>Download Presentasi</span>
                                                     </a>
@@ -209,10 +221,41 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <script>
+                                document.addEventListener("DOMContentLoaded", function() {
+                                    const url = "{{ asset('storage/' . $materi->file) }}";
+                                    const canvas = document.getElementById("pdfCanvas");
+                                    const ctx = canvas.getContext("2d");
+
+                                    const renderPDF = async () => {
+                                        const loadingTask = pdfjsLib.getDocument(url);
+                                        const pdf = await loadingTask.promise;
+                                        const page = await pdf.getPage(1);
+                                        const viewport = page.getViewport({
+                                            scale: 1.5
+                                        });
+                                        canvas.width = viewport.width;
+                                        canvas.height = viewport.height;
+
+                                        const renderContext = {
+                                            canvasContext: ctx,
+                                            viewport: viewport
+                                        };
+                                        await page.render(renderContext);
+                                    };
+
+                                    renderPDF().catch(err => {
+                                        console.error("Gagal memuat PDF:", err);
+                                    });
+                                });
+                            </script>
                         @endif
-                    
+
                         @if ($materi->deskripsi)
-                            <div class="tab-pane fade {{ !$materi->video && !$materi->file ? 'show active' : '' }}" id="text-content">
+                            <div class="tab-pane fade {{ !$materi->video && !$materi->file ? 'show active' : '' }}"
+                                id="text-content">
+
                                 <div class="row justify-content-center">
                                     <div class="col-lg-12 col-md-12 col-12">
                                         <div class="content-wrapper bg-white p-4 rounded-4 shadow-sm">
@@ -227,7 +270,7 @@
                             </div>
                         @endif
                     </div>
-                    
+
                 </div>
             </section>
 
