@@ -177,10 +177,7 @@
                                         <div class="col-lg-12 col-md-12 col-12">
                                             <div class="card shadow-sm">
                                                 <div class="ratio ratio-16x9 rounded-top overflow-hidden">
-                                                    <video class="w-100 h-100 object-fit-cover" controls controlsList="nodownload" preload="metadata">
-                                                        <source src="{{ $materi->video }}" type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
+                                                    <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ $materi->video }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                                                 </div>
                                             </div>
                                         </div>

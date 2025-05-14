@@ -347,28 +347,28 @@
                                             <input class="form-check-input" type="radio"
                                                 name="video_type_{{ $m->id }}" value="file"
                                                 onchange="toggleEditVideoInput({{ $m->id }})"
-                                                {{ $m->video && !filter_var($m->video, FILTER_VALIDATE_URL) ? 'checked' : '' }}>
+                                                {{ $m->video && !filter_var($m->video) ? 'checked' : '' }}>
                                             <label class="form-check-label">Upload Video</label>
                                         </div>
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio"
                                                 name="video_type_{{ $m->id }}" value="url"
                                                 onchange="toggleEditVideoInput({{ $m->id }})"
-                                                {{ filter_var($m->video, FILTER_VALIDATE_URL) ? 'checked' : '' }}>
+                                                {{ filter_var($m->video) ? 'checked' : '' }}>
                                             <label class="form-check-label">URL YouTube</label>
                                         </div>
                                     </div>
 
                                     <div class="mt-3" id="editFileInput{{ $m->id }}"
-                                        style="display: {{ $m->video && !filter_var($m->video, FILTER_VALIDATE_URL) ? 'block' : 'none' }};">
+                                        style="display: {{ $m->video && !filter_var($m->video) ? 'block' : 'none' }};">
                                         <input type="file" class="form-control" name="video_file">
                                         <small class="text-muted">Format: MP4</small>
                                     </div>
 
                                     <div class="mt-3" id="editUrlInput{{ $m->id }}"
-                                        style="display: {{ filter_var($m->video, FILTER_VALIDATE_URL) ? 'block' : 'none' }};">
-                                        <input type="url" class="form-control" name="video_url"
-                                            value="{{ filter_var($m->video, FILTER_VALIDATE_URL) ? $m->video : '' }}"
+                                        style="display: {{ filter_var($m->video) ? 'block' : 'none' }};">
+                                        <input type="text" class="form-control" name="video_url"
+                                            value="{{ filter_var($m->video) ? $m->video : '' }}"
                                             placeholder="https://www.youtube.com/watch?v=...">
                                         <small class="text-muted">Masukkan URL Video YouTube.</small>
                                     </div>
@@ -382,7 +382,7 @@
                                             </div>
                                         @else
                                             <div class="mt-2">
-                                                <a target="_blank" href="{{ $m->video }}" class="btn btn-info">
+                                                <a target="_blank" href="https://youtu.be/{{ $m->video }}" class="btn btn-info">
                                                     <i class="bx bx-video me-1"></i> Video
                                                 </a>
                                             </div>
