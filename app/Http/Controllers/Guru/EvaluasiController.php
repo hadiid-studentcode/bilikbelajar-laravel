@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Evaluasi;
 use App\Models\jawabanEvaluasi;
 use App\Models\Materi;
-use App\Models\NilaiEvaluasi;
+use App\Models\nilaiEvaluasi;
 use Illuminate\Http\Request;
 
 class EvaluasiController extends Controller
