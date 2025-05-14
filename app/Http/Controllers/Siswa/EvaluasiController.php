@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Siswa;
 
 use App\Http\Controllers\Controller;
 use App\Models\Evaluasi;
-use App\Models\JawabanEvaluasi;
+use App\Models\jawabanEvaluasi;
 use App\Models\Music_settings;
 use App\Models\nilaiEvaluasi;
 use Illuminate\Http\Request;
@@ -48,7 +48,7 @@ class EvaluasiController extends Controller
             $questionIds = json_decode($request->question_ids, true);
 
             foreach ($answers as $answer) {
-                JawabanEvaluasi::create([
+                jawabanEvaluasi::create([
                     'evaluasi_id' => $answer['question_id'],
                     'siswa_id' => session('siswa')->id,
                     'jawaban' => $answer['answer'],

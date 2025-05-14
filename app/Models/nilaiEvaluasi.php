@@ -27,7 +27,7 @@ class nilaiEvaluasi extends Model
     public function detailNilai()
     {
         return $this->hasManyThrough(
-            JawabanEvaluasi::class,
+            jawabanEvaluasi::class,
             Evaluasi::class,
             'materi_id', // Foreign key on evaluasis table
             'evaluasi_id', // Foreign key on jawaban_evaluasis table
