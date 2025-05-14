@@ -178,7 +178,7 @@
                                 </div>
 
                                 <div class="mt-3" id="urlInput" style="display: none;">
-                                    <input type="url" class="form-control" name="video_url"
+                                    <input type="text" class="form-control" name="video_url"
                                         placeholder="https://www.youtube.com/watch?v=...">
                                     <small class="text-muted">Masukkan URL Video YouTube.</small>
                                 </div>
