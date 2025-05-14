@@ -732,15 +732,17 @@
                             .jawaban_benar.toLowerCase();
                         if (isCorrect) {
                             totalCorrect++;
-                            this.answerPoints[index] = this.kuis[index].poin_benar;
-                            totalPoints += this.kuis[index].poin_benar;
+                            this.answerPoints[index] = parseInt(this.kuis[index]
+                                .poin_benar) || 0;
+                            totalPoints += parseInt(this.kuis[index].poin_benar) || 0;
                         } else {
                             this.answerPoints[index] = 0;
                         }
                     });
 
                     this.correctAnswers = totalCorrect;
-                    const totalPossiblePoints = this.kuis.reduce((acc, q) => acc + q.poin_benar, 0);
+                    let totalPossiblePoints = this.kuis.reduce((acc, q) => acc + parseInt(q
+                        .poin_benar) || 0, 0);
                     this.finalScore = (totalPoints / totalPossiblePoints) * 100;
                     this.quizFinished = true;
 

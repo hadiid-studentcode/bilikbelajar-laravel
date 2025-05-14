@@ -45,6 +45,9 @@ class KuisController extends Controller
 
     public function store(Request $request)
     {
+
+        dd($request->score);
+
         if (! session()->has('siswa')) {
             return redirect()->route('siswa.login')->with('error', 'Silahkan login terlebih dahulu');
         }
