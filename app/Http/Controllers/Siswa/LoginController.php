@@ -5,11 +5,15 @@ namespace App\Http\Controllers\Siswa;
 use App\Http\Controllers\Controller;
 use App\Models\Siswa;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
     public function index()
     {
+        if (Auth::check()) {
+            return redirect()->route('guru.dashboard.index');
+        }
 
         if (session('siswa')) {
             return redirect()->route('siswa.dashboard.index');
